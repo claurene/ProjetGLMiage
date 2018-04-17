@@ -1,0 +1,383 @@
+{
+  "id": 2,
+  "nomLigne": "Métro 2",
+  "tempsParcours": 50,
+  "incident": false,
+  "listeStation": [
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Nation",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.848,
+        "lon": 2.396
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Avron",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.851,
+        "lon": 2.396
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Alexandre-Dumas",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.856,
+        "lon": 2.392
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Philippe Auguste",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.858,
+        "lon": 2.388
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Père-Lachaise",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.863,
+        "lon": 2.385
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Menilmontant",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.866,
+        "lon": 2.381
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Couronnes",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.869,
+        "lon": 2.378
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Belleville",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.872,
+        "lon": 2.374
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Colonel Fabien",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.877,
+        "lon": 2.368
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Jaurès",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.881,
+        "lon": 2.368
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Stalingrad",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.884,
+        "lon": 2.363
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "La Chapelle",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.884,
+        "lon": 2.358
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Barbes-Rochechouart",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.883,
+        "lon": 2.348
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Anvers",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.882,
+        "lon": 2.342
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Pigalle",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.882,
+        "lon": 2.335
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Blanche",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.883,
+        "lon": 2.33
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Place de Clichy",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.883,
+        "lon": 2.325
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Rome",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.882,
+        "lon": 2.319
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Villiers",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.881,
+        "lon": 2.313
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Monceau",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.88,
+        "lon": 2.307
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Courcelles",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.879,
+        "lon": 2.301
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Ternes",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.878,
+        "lon": 2.298
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Charles de Gaulle-Étoile",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.874,
+        "lon": 2.292
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Victor Hugo",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.869,
+        "lon": 2.283
+      }
+    },
+    {
+      "TEMPS_MINIMUM_ARRET": 0,
+      "TEMPS_MAXIMUM_ARRET": 10,
+      "nomStation": "Porte Dauphine",
+      "tempsArret": 2,
+      "incident": false,
+      "position": {
+        "LATITUDE_MIN": 48.7534,
+        "LATITUDE_MAX": 48.9534,
+        "LONGITUDE_MIN": 2.0488,
+        "LONGITUDE_MAX": 2.5488,
+        "lat": 48.871,
+        "lon": 2.275
+      }
+    }
+  ]
+}
