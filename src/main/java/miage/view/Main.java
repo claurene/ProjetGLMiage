@@ -48,9 +48,10 @@ public class Main {
         do {
             System.out.println("Votre Geolocalisation est : "+utilisateur.toString());
             System.out.println("Voici les fonctions disponibles :");
-            System.out.println("[1] Afficher les informations d'une ligne de métro");
-            System.out.println("[2] Afficher les informations d'une station de métro");
-            System.out.println("[3] Quitter l'application");
+            System.out.println("[1] Indiquer un itinéraire");
+            System.out.println("[2] Afficher les informations d'une ligne de métro");
+            System.out.println("[3] Afficher les informations d'une station de métro");
+            System.out.println("[4] Quitter l'application");
 
             // Gestion des choix de l'utilisateur
             Scanner sc = new Scanner(System.in);
@@ -66,20 +67,40 @@ public class Main {
             // Action effectuée en fonction du choix :
             switch(choix) {
                 case 1:
+                    // Commencer un itinéraire
+                    //TODO Verifier que le choix existe
+                    //TODO Verifier que depart et arrivee ne sont pas en travaux
+                    // On vide la ligne avant d'en lire une autre
+                    String depart = "";
+                    String arrivee = "";
+                    sc.nextLine();
+                    while(depart.equals(arrivee)) {
+                        System.out.println("Indiquer votre départ : ");
+                        depart = sc.nextLine();
+                        System.out.println("Indiquer votre arrivée : ");
+                        arrivee = sc.nextLine();
+                        if (depart.equals(arrivee))
+                            System.out.println("Veuillez choisir un départ différent de l'arrivée !");
+                        else {
+                            System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
+                        }
+                    }
+                    break;
+                case 2:
                     // Afficher les informations d'une ligne de métro
                     //TODO
 
                     // En attente d'une nouvelle commande
                     break;
 
-                case 2:
+                case 3:
                     // Afficher les informations d'une station de métro
                     //TODO
 
                     // En attente d'une nouvelle commande
                     break;
 
-                case 3:
+                case 4:
                     // Quitter l'application
                     System.out.println("Au revoir !");
                     running=false;
