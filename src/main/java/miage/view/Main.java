@@ -14,6 +14,7 @@ public class Main {
     // Création du logger
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
+    private static Position utilisateur = new Position();
     /*
      * Lancement du programme principal
      */
@@ -45,6 +46,7 @@ public class Main {
         // Menu utilisateur
         System.out.println("Bienvenue sur notre application.");
         do {
+            System.out.println("Votre Geolocalisation est : "+utilisateur.toString());
             System.out.println("Voici les fonctions disponibles :");
             System.out.println("[1] Afficher les informations d'une ligne de métro");
             System.out.println("[2] Afficher les informations d'une station de métro");
