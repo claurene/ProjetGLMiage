@@ -2,6 +2,8 @@ package miage.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Classe ligne qui permet de modéliser une ligne de metro
@@ -126,5 +128,11 @@ public class Ligne implements Serializable {
      */
     public Station getDepart(){
         return this.listeStation.get(0);
+    }
+
+    public void afficherListeLigne(HashMap<String, Ligne> listeLigne){
+        for(Map.Entry<String, Ligne> ligne : listeLigne.entrySet()){
+            System.out.println(ligne.getKey());
+        }
     }
 }

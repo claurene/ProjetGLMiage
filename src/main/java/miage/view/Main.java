@@ -1,5 +1,6 @@
 package miage.view;
 
+import miage.Controller.LigneController;
 import miage.model.*;
 
 import java.io.*;
@@ -14,6 +15,8 @@ public class Main {
     private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private static Position utilisateur = new Position();
+
+    private static LigneController ligneController = new LigneController();
     /*
      * Lancement du programme principal
      */
@@ -37,7 +40,7 @@ public class Main {
                 while(true) {
                     try {
                         Ligne l = (Ligne) ois.readObject();
-                        lignes.put(l.getNomLigne(),l); //TODO: changer avec l'id ?
+                        //lignes.put(l.getNomLigne(),l);
                     } catch (EOFException e){
                         break;
                     }
@@ -68,7 +71,7 @@ public class Main {
                 while(true) {
                     try {
                         Station s = (Station) ois.readObject();
-                        stations.put(s.getNomStation(),s); //TODO: changer avec l'id ?
+                        stations.put(s.getNomStation(),s);
                     } catch (EOFException e){
                         break;
                     }
@@ -137,7 +140,12 @@ public class Main {
                     break;
                 case 2:
                     // Afficher les informations d'une ligne de métro
-                    //TODO
+                    boolean listeExiste = ligneController.listeLigne(lignes);
+                    if(listeExiste) {
+                        System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
+                        String nomLigne = sc.nextLine().toLowerCase();
+                        String ligne = ligneController.afficherLigne(lignes, nomLigne);
+                    }
 
                     // En attente d'une nouvelle commande
                     break;
