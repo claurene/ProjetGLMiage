@@ -79,18 +79,32 @@ public class Main {
                     sc.nextLine();
                     // Afficher les informations d'une ligne de métro
                     System.out.println("Les lignes disponibles sont : ");
-                    System.out.println(ligneController.listeLigne());
-                    System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
-
-                    String nomLigne = sc.nextLine().toLowerCase();
-                    System.out.println(ligneController.afficherLigne(nomLigne));
+                    String listeLigneExiste = ligneController.listeLigne();
+                    if(!listeLigneExiste.equals("noLigne")){
+                        System.out.println(listeLigneExiste);
+                        System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
+                        String nomLigne = sc.nextLine().toLowerCase();
+                        System.out.println(ligneController.afficherLigne(nomLigne));
+                    }else{
+                        System.out.println("Il n'y a aucune ligne.");
+                    }
 
                     // En attente d'une nouvelle commande
                     break;
 
                 case 3:
+                    sc.nextLine();
                     // Afficher les informations d'une station de métro
-                    //TODO
+                    System.out.println("Les stations disponibles sont : ");
+                    String listeStationExiste = stationController.listeStation();
+                    if(!listeStationExiste.equals("noStation")){
+                        System.out.println(listeStationExiste);
+                        System.out.println("Veuillez choisir la station dont vous souhaitez des informations : ");
+                        String nomStation = sc.nextLine().toLowerCase();
+                        System.out.println(stationController.afficherStation(nomStation));
+                    }else{
+                        System.out.println("Il n'y a aucune station.");
+                    }
 
                     // En attente d'une nouvelle commande
                     break;

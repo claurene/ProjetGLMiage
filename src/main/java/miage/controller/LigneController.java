@@ -91,7 +91,7 @@ public class LigneController {
                 reponse += ligne.getKey()+"\n";
             }
         } else {
-            reponse = "Il n'y a aucune ligne de métro disponible.";
+            reponse = "noLigne";
         }
         return reponse;
     }

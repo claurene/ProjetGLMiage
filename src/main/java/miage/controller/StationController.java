@@ -4,6 +4,7 @@ import miage.model.Station;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class StationController {
@@ -77,5 +78,36 @@ public class StationController {
             } catch (IOException e) {
             }
         }
+    }
+
+    /**
+     * Méthode qui permet de lister toutes les stations existantes
+     * @return string la liste des stations
+     */
+    public String listeStation(){
+        String reponse = "";
+        if(stations.size()>0){
+            for(Map.Entry<String, Station> station : stations.entrySet()){
+                reponse += station.getKey()+"\n";
+            }
+        } else {
+            reponse = "noStation";
+        }
+        return reponse;
+    }
+
+    /**
+     * Methode qui affiche les informations d'une station
+     * @param nomStation la station dont l'utilisateur veut les informations
+     * @return string les informations de la station
+     */
+    public String afficherStation(String nomStation){
+        String reponse = "";
+        if(stations.containsKey(nomStation)){
+            reponse += stations.get(nomStation);
+        }else{
+            reponse = "La station "+nomStation+" n'existe pas.";
+        }
+        return reponse;
     }
 }
