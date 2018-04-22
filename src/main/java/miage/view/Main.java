@@ -139,12 +139,12 @@ public class Main {
                     break;
                 case 2:
                     // Afficher les informations d'une ligne de métro
-                    boolean listeExiste = ligneController.listeLigne(lignes);
-                    if(listeExiste) {
+                    System.out.println("Les lignes disponibles sont : ");
+                    ligneController.listeLigne(lignes);
                         System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
                         String nomLigne = sc.nextLine().toLowerCase();
-                        String ligne = ligneController.afficherLigne(lignes, nomLigne);
-                    }
+                        ligneController.afficherLigne(lignes, nomLigne);
+
 
                     // En attente d'une nouvelle commande
                     break;

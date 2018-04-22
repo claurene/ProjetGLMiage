@@ -18,6 +18,7 @@ public class Ligne implements Serializable {
     private boolean incident;
     private ArrayList<Station> listeStation;
 
+
     /**
      * Constructeur d'une ligne de metro
      * @param id id de la ligne
@@ -84,13 +85,13 @@ public class Ligne implements Serializable {
     public String toString() {
         String reponse;
         if(incident){
-            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et possède un incident. Elle passe par les stations suivantes : \n";
             for(int i=0; i<listeStation.size(); i++){
                 reponse += "-"+listeStation.get(i).getNomStation()+"\n";
             }
         }else{
-            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et ne possède pas d'incident. Elle passe par les stations suivantes :\n";
             for(int i=0; i<listeStation.size(); i++){
                 reponse += "-"+listeStation.get(i).getNomStation()+"\n";
@@ -132,9 +133,4 @@ public class Ligne implements Serializable {
         return this.listeStation.get(0);
     }
 
-    public void afficherListeLigne(HashMap<String, Ligne> listeLigne){
-        for(Map.Entry<String, Ligne> ligne : listeLigne.entrySet()){
-            System.out.println(ligne.getKey());
-        }
-    }
 }
