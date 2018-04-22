@@ -1,6 +1,7 @@
 package miage.view;
 
 import miage.controller.LigneController;
+import miage.controller.StationController;
 import miage.model.*;
 
 import java.io.*;
@@ -10,12 +11,12 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Main {
-    // Création du logger
-    private static final Logger LOG = Logger.getLogger(Main.class.getName());
+
+    private static LigneController ligneController = new LigneController();
+    private static StationController stationController = new StationController();
 
     private static Position utilisateur = new Position();
 
-    private static LigneController ligneController = new LigneController();
     /*
      * Lancement du programme principal
      */
@@ -23,74 +24,11 @@ public class Main {
         // Booléen vrai tant qu'on est dans le système
         boolean running = true;
 
-        // Liste des lignes et stations de métro
-        HashMap<String,Ligne> lignes = new HashMap<String,Ligne>();
-        HashMap<String,Station> stations = new HashMap<String,Station>();
-
         // Chargement des lignes de métro
-
-        FileInputStream in = null;
-        ObjectInputStream ois = null;
-
-        try {
-            in = new FileInputStream("src/main/resources/lignes.txt");
-            try {
-                ois = new ObjectInputStream(in);
-                while(true) {
-                    try {
-                        Ligne l = (Ligne) ois.readObject();
-                        lignes.put(l.getNomLigne(),l);
-                    } catch (EOFException e){
-                        break;
-                    }
-                }
-
-            } catch (StreamCorruptedException e) {
-                // Fichier corrompu
-                LOG.warning("Fichier lignes.txt corrompu");
-            }  catch (Exception e ) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                }
-            }
-        } catch (FileNotFoundException e) {
-            // Fichier ligne non trouvé
-            LOG.warning("Aucun fichier lignes.txt trouvé");
-        }
+        ligneController.initialisationLignes();
 
         // Chargement des stations de métro
-
-        try {
-            in = new FileInputStream("src/main/resources/stations.txt");
-            try {
-                ois = new ObjectInputStream(in);
-                while(true) {
-                    try {
-                        Station s = (Station) ois.readObject();
-                        stations.put(s.getNomStation(),s);
-                    } catch (EOFException e){
-                        break;
-                    }
-                }
-
-            } catch (StreamCorruptedException e) {
-                // Fichier corrompu
-                LOG.warning("Fichier stations.txt corrompu");
-            }  catch (Exception e ) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    ois.close();
-                } catch (IOException e) {
-                }
-            }
-        } catch (FileNotFoundException e) {
-            // Fichier ligne non trouvé
-            LOG.warning("Aucun fichier stations.txt trouvé");
-        }
+        stationController.initialisationStations();
 
         /*------------------------------------------*/
 
@@ -138,13 +76,14 @@ public class Main {
                     }
                     break;
                 case 2:
+                    sc.nextLine();
                     // Afficher les informations d'une ligne de métro
                     System.out.println("Les lignes disponibles sont : ");
-                    ligneController.listeLigne(lignes);
-                        System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
-                        String nomLigne = sc.nextLine().toLowerCase();
-                        ligneController.afficherLigne(lignes, nomLigne);
+                    System.out.println(ligneController.listeLigne());
+                    System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
 
+                    String nomLigne = sc.nextLine().toLowerCase();
+                    System.out.println(ligneController.afficherLigne(nomLigne));
 
                     // En attente d'une nouvelle commande
                     break;
@@ -171,52 +110,9 @@ public class Main {
         /*------------------------------------------*/
 
         // Sauvegarde des lignes de métro
-
-        FileOutputStream out=null;
-        ObjectOutputStream oos=null;
-
-        try {
-            out = new FileOutputStream("src/main/resources/lignes.txt");
-        } catch (FileNotFoundException e) {
-            // Fichier non trouvé : création du fichier
-            LOG.info("Création d'un fichier lignes.txt");
-        }
-
-        try {
-            oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Ligne> entry : lignes.entrySet()) {
-                oos.writeObject(entry.getValue());
-            }
-            oos.flush();
-        } catch (IOException e) {
-        } finally {
-            try {
-                oos.close();
-            } catch (IOException e) {
-            }
-        }
+        ligneController.sauvegardeLignes();
 
         // Sauvegarde des stations
-
-        try {
-            out = new FileOutputStream("src/main/resources/stations.txt");
-        } catch (FileNotFoundException e) {
-            // Fichier non trouvé : création du fichier
-            LOG.info("Création d'un fichier stations.txt");
-        }
-
-        try {
-            oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Station> entry : stations.entrySet()) {
-                oos.writeObject(entry.getValue());
-            }
-            oos.flush();
-        } catch (IOException e) {
-        } finally {
-            try {
-                oos.close();
-            } catch (IOException e) {
-            }
-        }
+        stationController.sauvegardeStations();
     }
 }
