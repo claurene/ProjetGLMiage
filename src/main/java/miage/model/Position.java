@@ -7,6 +7,8 @@ import java.util.Random;
  * Classe position permettant de représenter la position d'un utilisateur ou d'une station
  */
 public class Position implements Serializable {
+    private static final long serialVersionUID = 7195882432555722461L;
+
     private final double LATITUDE_MIN = 48.7534;
     private final double LATITUDE_MAX = 48.9534;
     private final double LONGITUDE_MIN = 2.0488;

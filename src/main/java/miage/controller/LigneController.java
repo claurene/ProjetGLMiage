@@ -1,4 +1,4 @@
-package miage.Controller;
+package miage.controller;
 
 import miage.model.Ligne;
 

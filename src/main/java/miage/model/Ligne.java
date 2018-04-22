@@ -10,6 +10,8 @@ import java.util.Map;
  */
 
 public class Ligne implements Serializable {
+    private static final long serialVersionUID = -5023105476811757582L;
+
     private int id;
     private String nomLigne;
     private int tempsParcours;

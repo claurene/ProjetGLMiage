@@ -1,10 +1,9 @@
 package miage.view;
 
-import miage.Controller.LigneController;
+import miage.controller.LigneController;
 import miage.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -40,7 +39,7 @@ public class Main {
                 while(true) {
                     try {
                         Ligne l = (Ligne) ois.readObject();
-                        //lignes.put(l.getNomLigne(),l);
+                        lignes.put(l.getNomLigne(),l);
                     } catch (EOFException e){
                         break;
                     }
