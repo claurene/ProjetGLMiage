@@ -28,7 +28,7 @@ public class StationController {
                 while(true) {
                     try {
                         Station s = (Station) ois.readObject();
-                        stations.put(s.getNomStation(),s);
+                        this.stations.put(s.getNomStation(),s);
                     } catch (EOFException e){
                         break;
                     }
@@ -67,7 +67,7 @@ public class StationController {
 
         try {
             oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Station> entry : stations.entrySet()) {
+            for (HashMap.Entry<String,Station> entry : this.stations.entrySet()) {
                 oos.writeObject(entry.getValue());
             }
             oos.flush();
@@ -86,8 +86,8 @@ public class StationController {
      */
     public String listeStation(){
         String reponse = "";
-        if(stations.size()>0){
-            for(Map.Entry<String, Station> station : stations.entrySet()){
+        if(this.stations.size()>0){
+            for(Map.Entry<String, Station> station : this.stations.entrySet()){
                 reponse += station.getKey()+"\n";
             }
         } else {
@@ -103,8 +103,8 @@ public class StationController {
      */
     public String afficherStation(String nomStation){
         String reponse = "";
-        if(stations.containsKey(nomStation)){
-            reponse += stations.get(nomStation);
+        if(this.stations.containsKey(nomStation)){
+            reponse += this.stations.get(nomStation);
         }else{
             reponse = "La station "+nomStation+" n'existe pas.";
         }

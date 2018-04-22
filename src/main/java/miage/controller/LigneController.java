@@ -28,7 +28,7 @@ public class LigneController {
                 while(true) {
                     try {
                         Ligne l = (Ligne) ois.readObject();
-                        lignes.put(l.getNomLigne(),l);
+                        this.lignes.put(l.getNomLigne(),l);
                     } catch (EOFException e){
                         break;
                     }
@@ -67,7 +67,7 @@ public class LigneController {
 
         try {
             oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Ligne> entry : lignes.entrySet()) {
+            for (HashMap.Entry<String,Ligne> entry : this.lignes.entrySet()) {
                 oos.writeObject(entry.getValue());
             }
             oos.flush();
@@ -86,8 +86,8 @@ public class LigneController {
      */
     public String listeLigne(){
         String reponse = "";
-        if(lignes.size()>0){
-            for(Map.Entry<String, Ligne> ligne : lignes.entrySet()){
+        if(this.lignes.size()>0){
+            for(Map.Entry<String, Ligne> ligne : this.lignes.entrySet()){
                 reponse += ligne.getKey()+"\n";
             }
         } else {
@@ -103,8 +103,25 @@ public class LigneController {
      */
     public String afficherLigne(String nomLigne){
         String reponse = "";
-        if(lignes.containsKey(nomLigne)){
-            reponse += lignes.get(nomLigne);
+        if(this.lignes.containsKey(nomLigne)){
+            reponse += this.lignes.get(nomLigne);
+        }else{
+            reponse = "La ligne "+nomLigne+" n'existe pas.";
+        }
+        return reponse;
+    }
+
+    /**
+     * Méthode qui permet de supprimer une ligne
+     * @param nomLigne la ligne à supprimer
+     * @return string la ligne supprimée
+     */
+    public String supprimerLigne(String nomLigne){
+        String reponse = "";
+        if(this.lignes.containsKey(nomLigne)){
+            //Suppression de la boisson
+            this.lignes.remove(nomLigne);
+            reponse = nomLigne+" a été supprimé \n";
         }else{
             reponse = "La ligne "+nomLigne+" n'existe pas.";
         }

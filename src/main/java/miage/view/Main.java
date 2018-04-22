@@ -30,6 +30,10 @@ public class Main {
         // Chargement des stations de métro
         stationController.initialisationStations();
 
+        //Attributs
+        String listeLigneExiste;
+        String listeStationExiste;
+
         /*------------------------------------------*/
 
         // Menu utilisateur
@@ -40,7 +44,9 @@ public class Main {
             System.out.println("[1] Indiquer un itinéraire");
             System.out.println("[2] Afficher les informations d'une ligne de métro");
             System.out.println("[3] Afficher les informations d'une station de métro");
-            System.out.println("[4] Quitter l'application");
+            System.out.println("[4] Ajouter une ligne de métro");
+            System.out.println("[5] Supprimer une ligne de métro");
+            System.out.println("[10] Quitter l'application");
 
             // Gestion des choix de l'utilisateur
             Scanner sc = new Scanner(System.in);
@@ -79,7 +85,7 @@ public class Main {
                     sc.nextLine();
                     // Afficher les informations d'une ligne de métro
                     System.out.println("Les lignes disponibles sont : ");
-                    String listeLigneExiste = ligneController.listeLigne();
+                    listeLigneExiste = ligneController.listeLigne();
                     if(!listeLigneExiste.equals("noLigne")){
                         System.out.println(listeLigneExiste);
                         System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
@@ -96,7 +102,7 @@ public class Main {
                     sc.nextLine();
                     // Afficher les informations d'une station de métro
                     System.out.println("Les stations disponibles sont : ");
-                    String listeStationExiste = stationController.listeStation();
+                    listeStationExiste = stationController.listeStation();
                     if(!listeStationExiste.equals("noStation")){
                         System.out.println(listeStationExiste);
                         System.out.println("Veuillez choisir la station dont vous souhaitez des informations : ");
@@ -109,7 +115,24 @@ public class Main {
                     // En attente d'une nouvelle commande
                     break;
 
-                case 4:
+                case 5:
+                    sc.nextLine();
+                    // Supprimer une ligne de métro
+                    System.out.println("Les lignes disponibles sont : ");
+                    listeLigneExiste = ligneController.listeLigne();
+                    if(!listeLigneExiste.equals("noLigne")){
+                        System.out.println(listeLigneExiste);
+                        System.out.println("Veuillez choisir la ligne que vous souhaitez supprimer : ");
+                        String nomLigne = sc.nextLine().toLowerCase();
+                        System.out.println(ligneController.supprimerLigne(nomLigne));
+                    }else{
+                        System.out.println("Il n'y a aucune ligne.");
+                    }
+
+                    // En attente d'une nouvelle commande
+                    break;
+
+                case 10:
                     // Quitter l'application
                     System.out.println("Au revoir !");
                     running=false;
