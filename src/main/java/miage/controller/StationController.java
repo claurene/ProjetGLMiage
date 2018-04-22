@@ -14,6 +14,14 @@ public class StationController {
     //Liste des stations de metro
     HashMap<String,Station> stations = new HashMap<String,Station>();
 
+    public HashMap<String, Station> getStations() {
+        return stations;
+    }
+
+    public void setStations(HashMap<String, Station> stations) {
+        this.stations = stations;
+    }
+
     /**
      * Méthode qui permet de recuperer les donnees du fichier stations.txt
      */

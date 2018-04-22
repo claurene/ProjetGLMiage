@@ -5,6 +5,7 @@ import miage.controller.StationController;
 import miage.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -33,6 +34,7 @@ public class Main {
         //Attributs
         String listeLigneExiste;
         String listeStationExiste;
+        String nomLigne;
 
         /*------------------------------------------*/
 
@@ -89,7 +91,7 @@ public class Main {
                     if(!listeLigneExiste.equals("noLigne")){
                         System.out.println(listeLigneExiste);
                         System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
-                        String nomLigne = sc.nextLine().toLowerCase();
+                        nomLigne = sc.nextLine().toLowerCase();
                         System.out.println(ligneController.afficherLigne(nomLigne));
                     }else{
                         System.out.println("Il n'y a aucune ligne.");
@@ -115,6 +117,69 @@ public class Main {
                     // En attente d'une nouvelle commande
                     break;
 
+                case 4:
+                    sc.nextLine();
+                    int idLigne;
+                    int tmpParc = 0 ;
+                    String nomStation;
+                    int compteur = 0;
+
+                    //Ajouter une ligne
+                    System.out.println("Veuillez saisir les informations suivantes : ");
+
+                    //nom ligne
+                    System.out.println("- Nom de la ligne");
+                    nomLigne = sc.nextLine();
+                    if(!ligneController.ligneExiste(nomLigne)){
+
+                        //id ligne
+                        System.out.println("- id de la ligne");
+                        idLigne = sc.nextInt();
+
+                        //temps parcours
+                        System.out.println("- Temps de parcours");
+                        while(tmpParc <= 0 ){
+                            tmpParc = sc.nextInt();
+                            if(tmpParc <= 0){
+                                System.out.println("Le temps de parcours doit être strictement superieur à 0");
+                            }
+                        }
+
+                        //listeStation
+                        listeStationExiste = stationController.listeStation();
+                        if (!listeStationExiste.equals("noStation")) {
+                            System.out.println(listeStationExiste);
+                            System.out.println("- Veuillez saisir au moins 2 stations présentes sur une ligne " +
+                                    "(Saisissez 'Fin' lorsque vous aurez terminé) : ");
+                            ArrayList<Station> listeStation = new ArrayList<Station>();
+                            sc.nextLine();
+                            while (true) {
+                                nomStation = sc.nextLine().toLowerCase();
+                                System.out.print("- ");
+                                if (nomStation.equals("fin")) {
+                                    if(compteur <= 1){
+                                        System.out.println("Veuillez saisir au moins 2 stations.");
+                                    }else{
+                                        break;
+                                    }
+                                } else {
+                                    if(stationController.getStations().containsKey(nomStation)){
+                                        listeStation.add(stationController.getStations().get(nomStation));
+                                        compteur += 1;
+                                    }else{
+                                        System.out.println("La station "+ nomStation +" n'existe pas");
+                                    }
+                                }
+                            }
+                            System.out.println(ligneController.ajouterLigne(nomLigne, idLigne, tmpParc, listeStation));
+                        }
+                    }else{
+                        System.out.println("La ligne "+nomLigne+" existe déjà.");
+                    }
+
+                    // En attente d'une nouvelle commande
+                    break;
+
                 case 5:
                     sc.nextLine();
                     // Supprimer une ligne de métro
@@ -123,7 +188,7 @@ public class Main {
                     if(!listeLigneExiste.equals("noLigne")){
                         System.out.println(listeLigneExiste);
                         System.out.println("Veuillez choisir la ligne que vous souhaitez supprimer : ");
-                        String nomLigne = sc.nextLine().toLowerCase();
+                        nomLigne = sc.nextLine().toLowerCase();
                         System.out.println(ligneController.supprimerLigne(nomLigne));
                     }else{
                         System.out.println("Il n'y a aucune ligne.");

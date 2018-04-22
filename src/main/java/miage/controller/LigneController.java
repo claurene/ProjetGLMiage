@@ -1,8 +1,10 @@
 package miage.controller;
 
 import miage.model.Ligne;
+import miage.model.Station;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -13,6 +15,14 @@ public class LigneController {
 
     // Liste des lignes de métro
     HashMap<String,Ligne> lignes = new HashMap<String,Ligne>();
+
+    public HashMap<String, Ligne> getLignes() {
+        return lignes;
+    }
+
+    public void setLignes(HashMap<String, Ligne> lignes) {
+        this.lignes = lignes;
+    }
 
     /**
      * Méthode qui permet de recuperer les donnees du fichier lignes.txt
@@ -127,4 +137,20 @@ public class LigneController {
         }
         return reponse;
     }
+
+    public Boolean ligneExiste(String nomLigne){
+        Boolean reponse = false;
+        if(this.lignes.containsKey(nomLigne)){
+            reponse = true;
+        }
+        return reponse;
+    }
+
+    public String ajouterLigne(String nomLigne, int idLigne, int tempsParcours, ArrayList<Station> listeStation){
+        Ligne l = new Ligne(idLigne, nomLigne, tempsParcours, listeStation);
+        this.lignes.put(nomLigne, l);
+        String reponse = "La ligne a bien été ajoutée";
+        return reponse;
+    }
+
 }
