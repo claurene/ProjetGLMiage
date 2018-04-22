@@ -1,11 +1,10 @@
 package miage.view;
 
-import miage.controller.JSONProcessor;
 import miage.model.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -22,23 +21,73 @@ public class Main {
         // Booléen vrai tant qu'on est dans le système
         boolean running = true;
 
-        // Liste des lignes de métro
-        ArrayList<Ligne> lignes = new ArrayList<Ligne>();
+        // Liste des lignes et stations de métro
+        HashMap<String,Ligne> lignes = new HashMap<String,Ligne>();
+        HashMap<String,Station> stations = new HashMap<String,Station>();
 
         // Chargement des lignes de métro
-        File dir = new File("src/main/resources");
-        if (dir.listFiles() != null) {
-            for (File fichier : dir.listFiles()) {
-                Ligne l = null;
+
+        FileInputStream in = null;
+        ObjectInputStream ois = null;
+
+        try {
+            in = new FileInputStream("src/main/resources/lignes.txt");
+            try {
+                ois = new ObjectInputStream(in);
+                while(true) {
+                    try {
+                        Ligne l = (Ligne) ois.readObject();
+                        lignes.put(l.getNomLigne(),l); //TODO: changer avec l'id ?
+                    } catch (EOFException e){
+                        break;
+                    }
+                }
+
+            } catch (StreamCorruptedException e) {
+                // Fichier corrompu
+                LOG.warning("Fichier lignes.txt corrompu");
+            }  catch (Exception e ) {
+                e.printStackTrace();
+            } finally {
                 try {
-                    l = JSONProcessor.deserialize(fichier.getPath());
-                    lignes.add(l);
+                    ois.close();
                 } catch (IOException e) {
-                    LOG.warning("Erreur de désérialisation");
                 }
             }
-        } else {
-            LOG.info("Aucune donnée trouvée");
+        } catch (FileNotFoundException e) {
+            // Fichier ligne non trouvé
+            LOG.warning("Aucun fichier lignes.txt trouvé");
+        }
+
+        // Chargement des stations de métro
+
+        try {
+            in = new FileInputStream("src/main/resources/stations.txt");
+            try {
+                ois = new ObjectInputStream(in);
+                while(true) {
+                    try {
+                        Station s = (Station) ois.readObject();
+                        stations.put(s.getNomStation(),s); //TODO: changer avec l'id ?
+                    } catch (EOFException e){
+                        break;
+                    }
+                }
+
+            } catch (StreamCorruptedException e) {
+                // Fichier corrompu
+                LOG.warning("Fichier stations.txt corrompu");
+            }  catch (Exception e ) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    ois.close();
+                } catch (IOException e) {
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // Fichier ligne non trouvé
+            LOG.warning("Aucun fichier stations.txt trouvé");
         }
 
         /*------------------------------------------*/
@@ -115,12 +164,51 @@ public class Main {
         /*------------------------------------------*/
 
         // Sauvegarde des lignes de métro
-        for (Ligne l : lignes) {
-            String filename = "src/main/resources/"+l.getNomLigne()+".json";
+
+        FileOutputStream out=null;
+        ObjectOutputStream oos=null;
+
+        try {
+            out = new FileOutputStream("src/main/resources/lignes.txt");
+        } catch (FileNotFoundException e) {
+            // Fichier non trouvé : création du fichier
+            LOG.info("Création d'un fichier lignes.txt");
+        }
+
+        try {
+            oos = new ObjectOutputStream(out);
+            for (HashMap.Entry<String,Ligne> entry : lignes.entrySet()) {
+                oos.writeObject(entry.getValue());
+            }
+            oos.flush();
+        } catch (IOException e) {
+        } finally {
             try {
-                JSONProcessor.serialize(l,filename);
+                oos.close();
             } catch (IOException e) {
-                LOG.warning("Erreur de sérialisation");
+            }
+        }
+
+        // Sauvegarde des stations
+
+        try {
+            out = new FileOutputStream("src/main/resources/stations.txt");
+        } catch (FileNotFoundException e) {
+            // Fichier non trouvé : création du fichier
+            LOG.info("Création d'un fichier stations.txt");
+        }
+
+        try {
+            oos = new ObjectOutputStream(out);
+            for (HashMap.Entry<String,Station> entry : stations.entrySet()) {
+                oos.writeObject(entry.getValue());
+            }
+            oos.flush();
+        } catch (IOException e) {
+        } finally {
+            try {
+                oos.close();
+            } catch (IOException e) {
             }
         }
     }

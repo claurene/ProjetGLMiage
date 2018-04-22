@@ -1,11 +1,12 @@
 package miage.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Classe position permettant de représenter la position d'un utilisateur ou d'une station
  */
-public class Position {
+public class Position implements Serializable {
     private final double LATITUDE_MIN = 48.7534;
     private final double LATITUDE_MAX = 48.9534;
     private final double LONGITUDE_MIN = 2.0488;

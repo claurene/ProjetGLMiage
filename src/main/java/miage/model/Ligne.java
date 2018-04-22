@@ -1,12 +1,13 @@
 package miage.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Classe ligne qui permet de modéliser une ligne de metro
  */
 
-public class Ligne {
+public class Ligne implements Serializable {
     private int id;
     private String nomLigne;
     private int tempsParcours;
