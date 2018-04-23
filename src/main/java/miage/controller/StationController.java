@@ -1,11 +1,16 @@
 package miage.controller;
 
 import miage.model.Station;
+import miage.model.Position;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 public class StationController {
     // Création du logger
@@ -117,5 +122,42 @@ public class StationController {
             reponse = "La station "+nomStation+" n'existe pas.";
         }
         return reponse;
+    }
+
+    /**
+     * Fonction qui permet de renvoyer sous forme de liste les deux stations les plus proches d'une position
+     * @param utilisateur position par rapport à laquelle on veut calculer les stations les plus proches
+     * @param stations Hashmap des différentes stations
+     * @return une Liste comprenant les deux stations les plus proches
+     */
+    public static List<Station> deuxplusProches(Position utilisateur, HashMap<String,Station> stations){
+        // initialisation des variables
+        String clefs[] =  {"", ""};
+        List<Station> proches = new ArrayList<>();
+        double premier, deuxieme;
+        // On initialise ces variables la valeur maximale comme on cherche les valeurs minimales
+        premier = deuxieme = Double.MAX_VALUE;
+
+        // parcours de la hashmap
+        for(Map.Entry<String, Station> entry : stations.entrySet()) {
+
+            double distance = utilisateur.distance(entry.getValue().getPosition());
+            // on passe l'itération s'il y a un accident
+            if (entry.getValue().isIncident()){ continue; }
+            // on trie et on sauvegarde les clefs correspondantes
+            if (distance<premier){
+                deuxieme = premier;
+                premier = distance;
+                clefs[1] = clefs[0];
+                clefs[0] = entry.getKey();
+            } else if(distance<deuxieme && distance != premier){
+                deuxieme = distance;
+                clefs[1] = entry.getKey();
+            }
+        }
+        proches.add(stations.get(clefs[0]));
+        proches.add(stations.get(clefs[1]));
+        return proches;
+
     }
 }

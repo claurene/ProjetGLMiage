@@ -104,4 +104,14 @@ public class Position implements Serializable {
     public boolean VerifierPosition(double latx,double lony){
         return (VerifierLatitude(latx) && VerifierLongitude(lony));
     }
+
+    /**
+     * Méthode permettant de calculer la distance entre un objet et une position
+     * @param p la position sur laquelle on va calculer la distance
+     * @return un double correspondant à la distance entre les deux objets
+     */
+
+    public double distance(Position p){
+        return Math.sqrt(Math.abs(p.getLat()-this.getLat()) + Math.abs(p.getLon()-this.getLon()));
+    }
 }

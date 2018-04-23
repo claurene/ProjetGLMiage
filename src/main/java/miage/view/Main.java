@@ -5,10 +5,7 @@ import miage.controller.StationController;
 import miage.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class Main {
@@ -67,6 +64,10 @@ public class Main {
                     // Commencer un itinéraire
                     //TODO Verifier que le choix existe
                     //TODO Verifier que depart et arrivee ne sont pas en travaux
+
+                    // calcul des stations les plus proches par rapport à la position de l'utilisateur
+                    List<Station> plusProches = StationController.deuxplusProches(utilisateur,stationController.getStations());
+                    System.out.println("Station la plus proche : "+plusProches.get(0).getNomStation()+"\nSeconde station la plus proche : "+plusProches.get(1).getNomStation());
                     // On vide la ligne avant d'en lire une autre
                     String depart = "";
                     String arrivee = "";
