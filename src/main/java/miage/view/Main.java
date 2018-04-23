@@ -72,13 +72,36 @@ public class Main {
                     String depart = "";
                     String arrivee = "";
                     sc.nextLine();
-                    while(depart.equals(arrivee)) {
-                        System.out.println("Indiquer votre départ : ");
-                        depart = sc.nextLine();
-                        System.out.println("Indiquer votre arrivée : ");
-                        arrivee = sc.nextLine();
-                        if (depart.equals(arrivee))
+                    while(depart.equals(arrivee) || depart.equals("") || arrivee.equals("")) {
+                        if(depart.equals("")) {
+                            System.out.println("Indiquer votre départ  : ");
+                            depart = sc.nextLine();
+                        }
+                        while(!stationController.getStations().containsKey(depart)) {
+                            System.out.println("La station demandée n'existe pas, réessayez");
+                            depart = sc.nextLine();
+                        }
+                        if(arrivee.equals("")) {
+                            System.out.println("Indiquer votre arrivée : ");
+                            arrivee = sc.nextLine();
+                        }
+                        while(!stationController.getStations().containsKey(arrivee)) {
+                            System.out.println("La station demandée n'existe pas, réessayez");
+                            arrivee = sc.nextLine();
+                        }
+                        if (depart.equals(arrivee)) {
                             System.out.println("Veuillez choisir un départ différent de l'arrivée !");
+                            depart = "";
+                            arrivee = "";
+                        }
+                        else if(stationController.getStations().get(depart).isIncident()){
+                            System.out.println("Votre départ est en travaux, veuillez choisir un autre départ");
+                            depart = "";
+                        }
+                        else if(stationController.getStations().get(depart).isIncident()){
+                            System.out.println("Votre arrivée est en travaux, veuillez choisir une autre arrivée");
+                            arrivee = "";
+                        }
                         else {
                             System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
                         }

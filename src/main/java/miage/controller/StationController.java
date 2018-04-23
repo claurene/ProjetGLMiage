@@ -136,7 +136,7 @@ public class StationController {
     public String ajouterStation(String nom, int temps, boolean inc, double latitude, double longitude){
         String reponse ="";
         Station s = new Station(nom, temps, inc, latitude,longitude);
-        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon())) {
+        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
             if(this.stations.containsKey(nom)){
                 this.stations.put(nom,s);
                 reponse = "La station a été remplacée";
