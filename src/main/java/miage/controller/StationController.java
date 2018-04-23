@@ -125,6 +125,53 @@ public class StationController {
     }
 
     /**
+     * Méthode qui permet d'ajouter une station dans le fichier de sauvegarde
+     * @param nom , le nom de la station
+     * @param temps , le temps d'arret de la station
+     * @param inc , présence d'un incident ou non
+     * @param latitude , la latitude de la station
+     * @param longitude , la longitude de la station
+     * @return reponse , la reponse de l'ajout de la station
+     */
+    public String ajouterStation(String nom, int temps, boolean inc, double latitude, double longitude){
+        String reponse ="";
+        Station s = new Station(nom, temps, inc, latitude,longitude);
+        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon())) {
+            if(this.stations.containsKey(nom)){
+                this.stations.put(nom,s);
+                reponse = "La station a été remplacée";
+            }
+            else {
+                this.stations.put(nom, s);
+                reponse = "La station a bien été ajoutée";
+            }
+        }
+        else{
+            reponse = "La station n'a pas été ajoutée pour cause d'erreur de position";
+        }
+        return reponse;
+    }
+
+    /**
+     * Methode permettant de supprimer une station
+     * @param nom , le nom de la station a supprimée
+     * @return reponse, la reponse a affichée
+     */
+    public String supprimerStation(String nom){
+        String reponse ="";
+        if(this.stations.containsKey(nom)) {
+            this.stations.remove(nom);
+            reponse = "La station a bien été supprimée";
+        }
+        else{
+            reponse = "La station n'a pas pu être supprimée car elle n'existe pas";
+        }
+        return reponse;
+    }
+
+
+
+    /**
      * Fonction qui permet de renvoyer sous forme de liste les deux stations les plus proches d'une position
      * @param utilisateur position par rapport à laquelle on veut calculer les stations les plus proches
      * @param stations Hashmap des différentes stations
