@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 public class Horaire {
 
     private final int NOMBRE_RAMES_HEURE = 10;
-    private int minutesRames;
     private Station arret;
     private Ligne ligne;
     private String direction;
@@ -44,12 +43,11 @@ public class Horaire {
      * @return la date de prochain passage au format LocalDateTime
      */
 
-    public LocalDateTime getProchainPassage() {
+    private LocalDateTime getProchainPassage() {
         LocalDateTime heureActuelle = LocalDateTime.now();
         int minutes = heureActuelle.getMinute();
         int calcul = minutesEntreRames() - (minutes % minutesEntreRames());
-        LocalDateTime prochainPassage = heureActuelle.plusMinutes(calcul);
-        return prochainPassage;
+        return heureActuelle.plusMinutes(calcul);
     }
 
 
@@ -60,7 +58,8 @@ public class Horaire {
      */
 
 
-    public int minutesEntreRames(){
+    private int minutesEntreRames(){
+        int minutesRames;
         minutesRames = 60/NOMBRE_RAMES_HEURE;
         return minutesRames;
     }
@@ -99,6 +98,10 @@ public class Horaire {
 
     public void setStatut(String statut) {
         this.statut = statut;
+    }
+
+    public LocalDateTime getHeure() {
+        return heure;
     }
 
     @Override

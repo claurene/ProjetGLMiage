@@ -98,7 +98,7 @@ public class Main {
                             System.out.println("Votre départ est en travaux, veuillez choisir un autre départ");
                             depart = "";
                         }
-                        else if(stationController.getStations().get(depart).isIncident()){
+                        else if(stationController.getStations().get(arrivee).isIncident()){
                             System.out.println("Votre arrivée est en travaux, veuillez choisir une autre arrivée");
                             arrivee = "";
                         }
