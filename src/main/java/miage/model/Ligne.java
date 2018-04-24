@@ -1,17 +1,23 @@
 package miage.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Classe ligne qui permet de modéliser une ligne de metro
  */
 
-public class Ligne {
+public class Ligne implements Serializable {
+    private static final long serialVersionUID = -5023105476811757582L;
+
     private int id;
     private String nomLigne;
     private int tempsParcours;
     private boolean incident;
     private ArrayList<Station> listeStation;
+
 
     /**
      * Constructeur d'une ligne de metro
@@ -79,13 +85,13 @@ public class Ligne {
     public String toString() {
         String reponse;
         if(incident){
-            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et possède un incident. Elle passe par les stations suivantes : \n";
             for(int i=0; i<listeStation.size(); i++){
                 reponse += "-"+listeStation.get(i).getNomStation()+"\n";
             }
         }else{
-            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et ne possède pas d'incident. Elle passe par les stations suivantes :\n";
             for(int i=0; i<listeStation.size(); i++){
                 reponse += "-"+listeStation.get(i).getNomStation()+"\n";
@@ -126,4 +132,5 @@ public class Ligne {
     public Station getDepart(){
         return this.listeStation.get(0);
     }
+
 }

@@ -139,11 +139,15 @@ public class PositionTest {
         );
     }
 
-
-
-
-
-
-
-
+    @Test
+    @DisplayName("Une distance ne peut être négative")
+    void distanceNePeutEtreNegative(){
+        Position p = new Position(48.7534,2.0488);
+        Position p2 = new Position(48.9534,2.5488);
+        System.out.println(p.distance(p2));
+        assertAll(
+                () -> assertTrue(p.distance(p2)>=0),
+                () -> assertTrue(p2.distance(p)>=0)
+        );
+    }
 }

@@ -1,11 +1,14 @@
 package miage.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Classe position permettant de représenter la position d'un utilisateur ou d'une station
  */
-public class Position {
+public class Position implements Serializable {
+    private static final long serialVersionUID = 7195882432555722461L;
+
     private final double LATITUDE_MIN = 48.7534;
     private final double LATITUDE_MAX = 48.9534;
     private final double LONGITUDE_MIN = 2.0488;
@@ -100,5 +103,15 @@ public class Position {
 
     public boolean VerifierPosition(double latx,double lony){
         return (VerifierLatitude(latx) && VerifierLongitude(lony));
+    }
+
+    /**
+     * Méthode permettant de calculer la distance entre un objet et une position
+     * @param p la position sur laquelle on va calculer la distance
+     * @return un double correspondant à la distance entre les deux objets
+     */
+
+    public double distance(Position p){
+        return Math.sqrt(Math.abs(p.getLat()-this.getLat()) + Math.abs(p.getLon()-this.getLon()));
     }
 }
