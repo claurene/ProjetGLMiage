@@ -144,7 +144,6 @@ public class Main {
                 case 4:
                     sc.nextLine();
                     int idLigne;
-                    int tmpParc = 0 ;
                     String nomStation;
                     int compteur = 0;
 
@@ -160,14 +159,6 @@ public class Main {
                         System.out.println("- id de la ligne");
                         idLigne = sc.nextInt();
 
-                        //temps parcours
-                        System.out.println("- Temps de parcours");
-                        while(tmpParc <= 0 ){
-                            tmpParc = sc.nextInt();
-                            if(tmpParc <= 0){
-                                System.out.println("Le temps de parcours doit être strictement superieur à 0");
-                            }
-                        }
 
                         //listeStation
                         listeStationExiste = stationController.listeStation();
@@ -195,7 +186,24 @@ public class Main {
                                     }
                                 }
                             }
-                            System.out.println(ligneController.ajouterLigne(nomLigne, idLigne, tmpParc, listeStation));
+
+                            //temps parcours
+                            ArrayList<Integer> listeTempsParcours = new ArrayList<>();
+                            System.out.println("Veuillez renseigner le temps de parcours pour chacune des stations de la ligne");
+                            for (int i =0; i<(listeStation.size()-1);i++){
+                                int tmpParc = 0;
+                                System.out.println("Temps de parcours entre "+listeStation.get(i).getNomStation()+" et "+listeStation.get(i+1).getNomStation());
+                                while(tmpParc <= 0 ){
+                                    tmpParc = sc.nextInt();
+                                    if(tmpParc <= 0){
+                                        System.out.println("Le temps de parcours doit être strictement superieur à 0");
+                                    } else {
+                                        listeTempsParcours.add(tmpParc);
+                                    }
+                                }
+                            }
+
+                            System.out.println(ligneController.ajouterLigne(nomLigne, idLigne, listeTempsParcours, listeStation));
                         }
                     }else{
                         System.out.println("La ligne "+nomLigne+" existe déjà.");

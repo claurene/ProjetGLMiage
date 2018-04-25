@@ -32,7 +32,7 @@ public class LigneController {
         ObjectInputStream ois = null;
 
         try {
-            in = new FileInputStream("src/main/resources/lignes.txt");
+            in = new FileInputStream("src/main/resources/lignesv2.txt");
             try {
                 ois = new ObjectInputStream(in);
                 while(true) {
@@ -46,7 +46,7 @@ public class LigneController {
 
             } catch (StreamCorruptedException e) {
                 // Fichier corrompu
-                LOG.warning("Fichier lignes.txt corrompu");
+                LOG.warning("Fichier lignesv2.txt corrompu");
             }  catch (Exception e ) {
                 e.printStackTrace();
             } finally {
@@ -57,7 +57,7 @@ public class LigneController {
             }
         } catch (FileNotFoundException e) {
             // Fichier ligne non trouvé
-            LOG.warning("Aucun fichier lignes.txt trouvé");
+            LOG.warning("Aucun fichier lignesv2.txt trouvé");
         }
     }
 
@@ -69,10 +69,10 @@ public class LigneController {
         ObjectOutputStream oos=null;
 
         try {
-            out = new FileOutputStream("src/main/resources/lignes.txt");
+            out = new FileOutputStream("src/main/resources/lignesv2.txt");
         } catch (FileNotFoundException e) {
             // Fichier non trouvé : création du fichier
-            LOG.info("Création d'un fichier lignes.txt");
+            LOG.info("Création d'un fichier lignesv2.txt");
         }
 
         try {
@@ -146,11 +146,10 @@ public class LigneController {
         return reponse;
     }
 
-    public String ajouterLigne(String nomLigne, int idLigne, int tempsParcours, ArrayList<Station> listeStation){
+    public String ajouterLigne(String nomLigne, int idLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
         Ligne l = new Ligne(idLigne, nomLigne, tempsParcours, listeStation);
         this.lignes.put(nomLigne, l);
-        String reponse = "La ligne a bien été ajoutée";
-        return reponse;
+        return "La ligne a bien été ajoutée";
     }
 
 }

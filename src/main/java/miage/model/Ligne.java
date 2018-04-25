@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class Ligne implements Serializable {
     private static final long serialVersionUID = -5023105476811757582L;
-
+    private String stationDepart;
     private int id;
     private String nomLigne;
-    private int tempsParcours;
+    private ArrayList<Integer> tempsParcours;
     private boolean incident;
     private ArrayList<Station> listeStation;
 
@@ -23,19 +23,19 @@ public class Ligne implements Serializable {
      * Constructeur d'une ligne de metro
      * @param id id de la ligne
      * @param nomLigne nom de la ligne
-     * @param tempsParcours temps pour parcourir toute la ligne
+     * @param tempsParcours liste de temps de parcours entre deux stations
      * @param listeStation liste des stations de la ligne
      */
-    public Ligne(int id, String nomLigne, int tempsParcours, ArrayList<Station> listeStation) {
+    public Ligne(int id, String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation) {
         this.id = id;
         this.nomLigne = nomLigne;
         this.tempsParcours = tempsParcours;
         this.listeStation = listeStation;
-        for (int i = 0; i < this.listeStation.size(); i++) {
-            if(this.listeStation.get(i).isIncident()==true){
+        for (Station aListeStation : this.listeStation) {
+            if (aListeStation.isIncident()) {
                 this.incident = true;
                 break;
-            }else{
+            } else {
                 this.incident = false;
             }
         }
@@ -57,12 +57,41 @@ public class Ligne implements Serializable {
         this.nomLigne = nomLigne;
     }
 
-    public int getTempsParcours() {
+    public ArrayList<Integer> getListeTempsParcours() {
         return tempsParcours;
     }
 
-    public void setTempsParcours(int tempsParcours) {
+    /**
+    * permet de récupérer le temps de parcours entre les deux stations de la ligne
+     * @param stationDepart nom de la station de départ
+     * @param tempsParcours liste des temps de parcours
+     * @return le temps de parcours entre la station précisée et la suivante
+     **/
+
+    public int getTempsParcours(String stationDepart, ArrayList<Integer> tempsParcours){
         this.tempsParcours = tempsParcours;
+        this.stationDepart = stationDepart;
+        int positionListe = trouverPosListeStation(stationDepart);
+        return tempsParcours.get(positionListe);
+    }
+
+    public void setListeTempsParcours(ArrayList<Integer> tempsParcours) {
+        this.tempsParcours = tempsParcours;
+    }
+
+    /**
+     * permet de modifier le temps de parcours entre les deux stations de la ligne
+     * @param temps nouvelle valeur pour le temps de parcours
+     * @param stationDepart nom de la station de départ
+     * @param tempsParcours liste des temps de parcours
+     **/
+
+
+    public void setTempsParcours(int temps, String stationDepart, ArrayList<Integer> tempsParcours){
+        this.tempsParcours = tempsParcours;
+        this.stationDepart = stationDepart;
+        int positionListe = trouverPosListeStation(stationDepart);
+        tempsParcours.set(positionListe, temps);
     }
 
     public boolean isIncident() {
@@ -87,14 +116,14 @@ public class Ligne implements Serializable {
         if(incident){
             reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et possède un incident. Elle passe par les stations suivantes : \n";
-            for(int i=0; i<listeStation.size(); i++){
-                reponse += "-"+listeStation.get(i).getNomStation()+"\n";
+            for (Station aListeStation : listeStation) {
+                reponse += "-" + aListeStation.getNomStation() + "\n";
             }
         }else{
             reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
                     " minutes et ne possède pas d'incident. Elle passe par les stations suivantes :\n";
-            for(int i=0; i<listeStation.size(); i++){
-                reponse += "-"+listeStation.get(i).getNomStation()+"\n";
+            for (Station aListeStation : listeStation) {
+                reponse += "-" + aListeStation.getNomStation() + "\n";
             }
         }
         return reponse;
@@ -108,13 +137,25 @@ public class Ligne implements Serializable {
     public boolean trouverStation(String nomStation){
         String nomStationActuelle;
         Boolean existe = false;
-        for(int i=0; i<this.listeStation.size(); i++){
-            nomStationActuelle = this.listeStation.get(i).getNomStation();
-            if(nomStation == nomStationActuelle){
+        for (Station aListeStation : this.listeStation) {
+            nomStationActuelle = aListeStation.getNomStation();
+            if (nomStation == nomStationActuelle) {
                 existe = true;
             }
         }
         return existe;
+    }
+
+    public int trouverPosListeStation(String nomStation){
+        String nomStationActuelle;
+        int posListe = -1;
+        for(int i=0; i<this.listeStation.size(); i++){
+            nomStationActuelle = this.listeStation.get(i).getNomStation();
+            if (nomStation.equals(nomStationActuelle)){
+                posListe = i;
+            }
+        }
+        return posListe;
     }
 
     /**

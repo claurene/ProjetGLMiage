@@ -17,7 +17,7 @@ public class StationController {
     private static final Logger LOG = Logger.getLogger(StationController.class.getName());
 
     //Liste des stations de metro
-    HashMap<String,Station> stations = new HashMap<String,Station>();
+    private HashMap<String,Station> stations = new HashMap<String,Station>();
 
     public HashMap<String, Station> getStations() {
         return stations;
