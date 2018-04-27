@@ -138,8 +138,7 @@ public class StationController {
         Station s = new Station(nom, temps, inc, latitude,longitude);
         if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
             if(this.stations.containsKey(nom)){
-                this.stations.put(nom,s);
-                reponse = "La station a été remplacée";
+                reponse = "La station existe déjà";
             }
             else {
                 this.stations.put(nom, s);
@@ -148,6 +147,33 @@ public class StationController {
         }
         else{
             reponse = "La station n'a pas été ajoutée pour cause d'erreur de position";
+        }
+        return reponse;
+    }
+
+    /**
+     * Méthode qui permet de modifier une station dans le fichier de sauvegarde
+     * @param nom , le nom de la station
+     * @param temps , le temps d'arret de la station
+     * @param inc , présence d'un incident ou non
+     * @param latitude , la latitude de la station
+     * @param longitude , la longitude de la station
+     * @return reponse , la reponse de la modification de la station
+     */
+    public String modifierStation(String nom, int temps, boolean inc, double latitude, double longitude){
+        String reponse ="";
+        Station s = new Station(nom, temps, inc, latitude,longitude);
+        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
+            if(this.stations.containsKey(nom)){
+                this.stations.put(nom,s);
+                reponse = "La station a été remplacée";
+            }
+            else {
+                reponse = "La station que vous souhaitez modifier n'existe pas";
+            }
+        }
+        else{
+            reponse = "La station n'a pas été modifiée pour cause d'erreur de position";
         }
         return reponse;
     }

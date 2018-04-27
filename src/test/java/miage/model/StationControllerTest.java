@@ -54,6 +54,19 @@ public class StationControllerTest {
     }
 
     @Test
+    @DisplayName("Ajout d'une station déjà existante dans la HashMap")
+    void AjoutStationHashMapExistante(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        int taille = stationController.getStations().size();
+        String reponse = stationController.ajouterStation("gare du nord",2,false,48.79,2.12);
+        assertAll(
+                () -> assertTrue(stationController.getStations().size()==taille),
+                () -> assertTrue(reponse.equals("La station existe déjà"))
+        );
+    }
+
+    @Test
     @DisplayName("Ajout d'une station fausse dans la HashMap")
     void AjoutStationHashMapFausse(){
         StationController stationController = new StationController();
@@ -67,15 +80,41 @@ public class StationControllerTest {
     }
 
     @Test
-    @DisplayName("Ajout d'une station remplacée dans la HashMap")
-    void AjoutStationHashMapRemplacement(){
+    @DisplayName("Modification d'une station dans la HashMap")
+    void ModifierStationHashMap(){
         StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
-        String reponse = stationController.ajouterStation("gare du nord",2,false,48.79,2.12);
+        String reponse = stationController.modifierStation("gare du nord",2,false,48.79,2.12);
         assertAll(
                 () -> assertTrue(stationController.getStations().size()==taille),
                 () -> assertTrue(reponse.equals("La station a été remplacée"))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification d'une station dans la HashMap pour la rendre fausse")
+    void ModifierStationHashMapFausse(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        int taille = stationController.getStations().size();
+        String reponse = stationController.modifierStation("gare du nord",2,false,78.79,2.12);
+        assertAll(
+                () -> assertTrue(stationController.getStations().size()==taille),
+                () -> assertTrue(reponse.equals("La station n'a pas été modifiée pour cause d'erreur de position"))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification d'une station dans la HashMap qui n'existe pas")
+    void ModifierStationHashMapInexistante(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        int taille = stationController.getStations().size();
+        String reponse = stationController.modifierStation("gare inexistante",2,false,48.79,2.12);
+        assertAll(
+                () -> assertTrue(stationController.getStations().size()==taille),
+                () -> assertTrue(reponse.equals("La station que vous souhaitez modifier n'existe pas"))
         );
     }
 
