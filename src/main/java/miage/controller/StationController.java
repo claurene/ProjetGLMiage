@@ -179,6 +179,28 @@ public class StationController {
     }
 
     /**
+     * Méthode qui permet de modifier l'incident d'une station dans le fichier de sauvegarde
+     * @param nom , le nom de la station
+     * @param inc , présence d'un incident ou non
+     * @return reponse , la reponse de la modification de l'incident de la station
+     */
+    public String modifierStationIncident(String nom, boolean inc) {
+        String reponse = "";
+        if (this.stations.containsKey(nom)) {
+            Station s = this.stations.get(nom);
+            s.setIncident(inc);
+            this.stations.put(nom, s);
+            if (inc)
+                reponse = "La station possède maintenant un incident";
+            else
+                reponse = "La station ne possède maintenant plus d'incident";
+        } else
+            reponse = "La station que vous souhaitez modifiée n'existe pas";
+        return reponse;
+    }
+
+
+    /**
      * Methode permettant de supprimer une station
      * @param nom , le nom de la station a supprimée
      * @return reponse, la reponse a affichée

@@ -144,4 +144,37 @@ public class StationControllerTest {
         );
     }
 
+    @Test
+    @DisplayName("Modification de l'incident d'une station en True")
+    void ModifierStationIncidentHashMapTrue(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        String reponse = stationController.modifierStationIncident("gare du nord",true);
+        assertAll(
+                () -> assertTrue(stationController.getStations().get("gare du nord").isIncident()==true),
+                () -> assertTrue(reponse.equals("La station possède maintenant un incident"))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification de l'incident d'une station en False")
+    void ModifierStationIncidentHashMapFalse(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        String reponse = stationController.modifierStationIncident("gare du nord",false);
+        assertAll(
+                () -> assertTrue(stationController.getStations().get("gare du nord").isIncident()==false),
+                () -> assertTrue(reponse.equals("La station ne possède maintenant plus d'incident"))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification de l'incident d'une station en False")
+    void ModifierStationIncidentHashMapInexistante(){
+        StationController stationController = new StationController();
+        stationController.initialisationStations();
+        String reponse = stationController.modifierStationIncident("gare inexistante",false);
+        assertTrue(reponse.equals("La station que vous souhaitez modifiée n'existe pas"));
+    }
+
 }
