@@ -32,7 +32,7 @@ public class LigneController {
         ObjectInputStream ois = null;
 
         try {
-            in = new FileInputStream("src/main/resources/lignesv2.txt");
+            in = new FileInputStream("src/main/resources/lignes.txt");
             try {
                 ois = new ObjectInputStream(in);
                 while(true) {
@@ -46,7 +46,7 @@ public class LigneController {
 
             } catch (StreamCorruptedException e) {
                 // Fichier corrompu
-                LOG.warning("Fichier lignesv2.txt corrompu");
+                LOG.warning("Fichier lignes.txt corrompu");
             }  catch (Exception e ) {
                 e.printStackTrace();
             } finally {
@@ -57,7 +57,7 @@ public class LigneController {
             }
         } catch (FileNotFoundException e) {
             // Fichier ligne non trouvé
-            LOG.warning("Aucun fichier lignesv2.txt trouvé");
+            LOG.warning("Aucun fichier lignes.txt trouvé");
         }
     }
 
@@ -69,10 +69,10 @@ public class LigneController {
         ObjectOutputStream oos=null;
 
         try {
-            out = new FileOutputStream("src/main/resources/lignesv2.txt");
+            out = new FileOutputStream("src/main/resources/lignes.txt");
         } catch (FileNotFoundException e) {
             // Fichier non trouvé : création du fichier
-            LOG.info("Création d'un fichier lignesv2.txt");
+            LOG.info("Création d'un fichier lignes.txt");
         }
 
         try {
