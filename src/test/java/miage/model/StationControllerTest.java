@@ -17,10 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("StationController")
 public class StationControllerTest {
+    private final StationController stationController = new StationController();
+
     @Test
     @DisplayName("2 Plus proches stations différentes")
     void DeuxPlusProchesNotEquals(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         Position utilisateur = new Position();
         List<Station> plusProches = StationController.deuxplusProches(utilisateur,stationController.getStations());
@@ -30,7 +31,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("2 Plus proches stations pas d'incidents")
     void DeuxPlusProchesPasIncident(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         Position utilisateur = new Position();
         List<Station> plusProches = StationController.deuxplusProches(utilisateur,stationController.getStations());
@@ -43,7 +43,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Ajout d'une station dans la HashMap")
     void AjoutStationHashMapJuste(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.ajouterStation("Gare de l'est",2,false,48.79,2.12);
@@ -56,7 +55,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Ajout d'une station déjà existante dans la HashMap")
     void AjoutStationHashMapExistante(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.ajouterStation("gare du nord",2,false,48.79,2.12);
@@ -69,7 +67,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Ajout d'une station fausse dans la HashMap")
     void AjoutStationHashMapFausse(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.ajouterStation("Gare de l'est",2,false,60.79,2.12);
@@ -82,7 +79,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification d'une station dans la HashMap")
     void ModifierStationHashMap(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.modifierStation("gare du nord",2,false,48.79,2.12);
@@ -95,7 +91,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification d'une station dans la HashMap pour la rendre fausse")
     void ModifierStationHashMapFausse(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.modifierStation("gare du nord",2,false,78.79,2.12);
@@ -108,7 +103,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification d'une station dans la HashMap qui n'existe pas")
     void ModifierStationHashMapInexistante(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.modifierStation("gare inexistante",2,false,48.79,2.12);
@@ -121,7 +115,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Suppression d'une station de la HashMap")
     void SuppressionStationHashMap(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.supprimerStation("gare du nord");
@@ -134,7 +127,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Suppression d'une station inexistante de la HashMap")
     void SuppressionStationInexistanteHashMap(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         int taille = stationController.getStations().size();
         String reponse = stationController.supprimerStation("gare fantooooooome");
@@ -147,7 +139,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification de l'incident d'une station en True")
     void ModifierStationIncidentHashMapTrue(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         String reponse = stationController.modifierStationIncident("gare du nord",true);
         assertAll(
@@ -159,7 +150,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification de l'incident d'une station en False")
     void ModifierStationIncidentHashMapFalse(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         String reponse = stationController.modifierStationIncident("gare du nord",false);
         assertAll(
@@ -171,7 +161,6 @@ public class StationControllerTest {
     @Test
     @DisplayName("Modification de l'incident d'une station en False")
     void ModifierStationIncidentHashMapInexistante(){
-        StationController stationController = new StationController();
         stationController.initialisationStations();
         String reponse = stationController.modifierStationIncident("gare inexistante",false);
         assertTrue(reponse.equals("La station que vous souhaitez modifiée n'existe pas"));
