@@ -152,4 +152,32 @@ public class LigneController {
         return "La ligne a bien été ajoutée";
     }
 
+    public String modifierLigne(String nomLigne, int idLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
+        String reponse = "";
+        Ligne l = new Ligne(idLigne, nomLigne, tempsParcours, listeStation);
+        if (ligneExiste(nomLigne)){
+            this.lignes.put(nomLigne,l);
+            reponse = "La ligne a bien été modifiée";
+        } else {
+            reponse = "La ligne que vous souhaitez modifier n'existe pas";
+        }
+        return reponse;
+    }
+
+    public String modifierLigneIncident(String nomLigne, boolean inc){
+        String reponse = "";
+        if (ligneExiste(nomLigne)){
+            Ligne l = this.lignes.get(nomLigne);
+            l.setIncident(inc);
+            if (inc) {
+                reponse = "La ligne possède maintenant un incident";
+            } else {
+                reponse = "La ligne ne possède maintenant plus d'incident";
+            }
+        } else {
+            reponse = "La ligne que vous souhaitez modifier n'existe pas";
+        }
+        return reponse;
+    }
+
 }
