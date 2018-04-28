@@ -143,7 +143,6 @@ public class Main {
 
                 case 4:
                     sc.nextLine();
-                    int idLigne;
                     String nomStation;
                     int compteur = 0;
 
@@ -154,11 +153,6 @@ public class Main {
                     System.out.println("- Nom de la ligne");
                     nomLigne = sc.nextLine();
                     if(!ligneController.ligneExiste(nomLigne)){
-
-                        //id ligne
-                        System.out.println("- id de la ligne");
-                        idLigne = sc.nextInt();
-
 
                         //listeStation
                         listeStationExiste = stationController.listeStation();
@@ -203,7 +197,7 @@ public class Main {
                                 }
                             }
 
-                            System.out.println(ligneController.ajouterLigne(nomLigne, idLigne, listeTempsParcours, listeStation));
+                            System.out.println(ligneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation));
                         }
                     }else{
                         System.out.println("La ligne "+nomLigne+" existe déjà.");

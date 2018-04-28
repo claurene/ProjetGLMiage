@@ -19,7 +19,7 @@ public class LigneTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertFalse(l.isIncident());
     }
 
@@ -31,7 +31,7 @@ public class LigneTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,true,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertTrue( l.isIncident());
     }
 
@@ -43,7 +43,7 @@ public class LigneTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         l.setTempsParcours(60,"Gare du nord",tempsParcours);
         assertEquals(l.getTempsParcours("Gare du nord",tempsParcours),60, "Le temps devrait être 60.");
     }
@@ -55,7 +55,7 @@ public class LigneTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertEquals(l.getTotalTempsParcours(),10, "Le temps devrait être 10.");
     }
 
@@ -67,7 +67,7 @@ public class LigneTest {
         tempsParcours.add(10);
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertTrue(l.trouverStation("Gare de l'est"));
     }
 
@@ -83,7 +83,7 @@ public class LigneTest {
         listeStation.add(new Station("Gare de l'est",2,false,49.82,2.2));
         listeStation.add(new Station("Jacques-Bonsergent",2,false,50.19,2.4));
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertEquals(l.getDepart(),listeStation.get(0), "La station finale doit etre Gare du nord.");
     }
 
@@ -97,7 +97,7 @@ public class LigneTest {
         listeStation.add(new Station("Gare de l'est",2,false,49.82,2.2));
         listeStation.add(new Station("Jacques-Bonsergent",2,false,50.19,2.4));
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertEquals(l.getTerminus(),listeStation.get(listeStation.size()-1), "La station finale doit etre Republique.");
     }
 }

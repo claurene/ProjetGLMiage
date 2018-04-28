@@ -29,7 +29,7 @@ public class LigneControllerTest {
         ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
         tempsParcours.add(1);
 
-        String reponse = ligneController.ajouterLigne("1bis",0,tempsParcours,stations);
+        String reponse = ligneController.ajouterLigne("1bis",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille+1),
                 () -> assertTrue(reponse.equals("La ligne a bien été ajoutée"))
@@ -39,13 +39,13 @@ public class LigneControllerTest {
     @Test
     @DisplayName("Ajout d'une ligne déjà existante")
     void AjoutLigneExistante(){
-        //TODO
+        //TODO: modifier la méthode ajouterLigne
     }
 
     @Test
     @DisplayName("Ajout d'une ligne avec moins de deux stations")
     void AjoutLigneSansStations(){
-        //TODO
+        //TODO: modifier la méthode ajouterLigne
     }
 
     @Test
@@ -75,7 +75,7 @@ public class LigneControllerTest {
         ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
         tempsParcours.add(1);
 
-        String reponse = ligneController.modifierLigne("lignev2",1,tempsParcours,stations);
+        String reponse = ligneController.modifierLigne("1",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille),
                 () -> assertTrue(reponse.equals("La ligne a bien été modifiée"))
@@ -97,7 +97,7 @@ public class LigneControllerTest {
         ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
         tempsParcours.add(1);
 
-        String reponse = ligneController.modifierLigne("1bis",0,tempsParcours,stations);
+        String reponse = ligneController.modifierLigne("1bis",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille),
                 () -> assertTrue(reponse.equals("La ligne que vous souhaitez modifier n'existe pas"))
@@ -108,20 +108,28 @@ public class LigneControllerTest {
     @DisplayName("Ajout d'un incident sur une ligne")
     void AjoutIncidentLigne(){
         ligneController.initialisationLignes();
-        String reponse = ligneController.modifierLigneIncident("lignev2",true);
+        String reponse = ligneController.modifierLigneIncident("1",true);
         assertAll(
-                () -> assertTrue(ligneController.getLignes().get("lignev2").isIncident()),
+                () -> assertTrue(ligneController.getLignes().get("1").isIncident()),
                 () -> assertTrue(reponse.equals("La ligne possède maintenant un incident"))
         );
+    }
+
+    @Test
+    @DisplayName("Ajout d'un incident sur une ligne inexistante")
+    void AjoutIncidentLigneInexistante(){
+        ligneController.initialisationLignes();
+        String reponse = ligneController.modifierLigneIncident("1bis",true);
+        assertTrue(reponse.equals("La ligne que vous souhaitez modifier n'existe pas"));
     }
 
     @Test
     @DisplayName("Suppression d'un incident sur une ligne")
     void SupprimerIncidentLigne(){
         ligneController.initialisationLignes();
-        String reponse = ligneController.modifierLigneIncident("lignev2",false);
+        String reponse = ligneController.modifierLigneIncident("1",false);
         assertAll(
-                () -> assertFalse(ligneController.getLignes().get("lignev2").isIncident()),
+                () -> assertFalse(ligneController.getLignes().get("1").isIncident()),
                 () -> assertTrue(reponse.equals("La ligne ne possède maintenant plus d'incident"))
         );
     }

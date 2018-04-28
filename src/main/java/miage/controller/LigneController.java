@@ -146,15 +146,15 @@ public class LigneController {
         return reponse;
     }
 
-    public String ajouterLigne(String nomLigne, int idLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
-        Ligne l = new Ligne(idLigne, nomLigne, tempsParcours, listeStation);
+    public String ajouterLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
+        Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
         this.lignes.put(nomLigne, l);
         return "La ligne a bien été ajoutée";
     }
 
-    public String modifierLigne(String nomLigne, int idLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
+    public String modifierLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
         String reponse = "";
-        Ligne l = new Ligne(idLigne, nomLigne, tempsParcours, listeStation);
+        Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
         if (ligneExiste(nomLigne)){
             this.lignes.put(nomLigne,l);
             reponse = "La ligne a bien été modifiée";

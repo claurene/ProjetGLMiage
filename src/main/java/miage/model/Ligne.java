@@ -12,7 +12,6 @@ import java.util.Map;
 public class Ligne implements Serializable {
     private static final long serialVersionUID = -5023105476811757582L;
     private String stationDepart;
-    private int id;
     private String nomLigne;
     private ArrayList<Integer> tempsParcours;
     private boolean incident;
@@ -21,13 +20,11 @@ public class Ligne implements Serializable {
 
     /**
      * Constructeur d'une ligne de metro
-     * @param id id de la ligne
      * @param nomLigne nom de la ligne
      * @param tempsParcours liste de temps de parcours entre deux stations
      * @param listeStation liste des stations de la ligne
      */
-    public Ligne(int id, String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation) {
-        this.id = id;
+    public Ligne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation) {
         this.nomLigne = nomLigne;
         this.tempsParcours = tempsParcours;
         this.listeStation = listeStation;
@@ -39,14 +36,6 @@ public class Ligne implements Serializable {
                 this.incident = false;
             }
         }
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNomLigne() {
@@ -123,13 +112,13 @@ public class Ligne implements Serializable {
     public String toString() {
         String reponse;
         if(incident){
-            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + getTotalTempsParcours() +
+            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + getTotalTempsParcours() +
                     " minutes et possède un incident. Elle passe par les stations suivantes : \n";
             for (Station aListeStation : listeStation) {
                 reponse += "-" + aListeStation.getNomStation() + "\n";
             }
         }else{
-            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + getTotalTempsParcours() +
+            reponse = "La ligne : " + nomLigne + ", a un temps de parcours de " + getTotalTempsParcours() +
                     " minutes et ne possède pas d'incident. Elle passe par les stations suivantes :\n";
             for (Station aListeStation : listeStation) {
                 reponse += "-" + aListeStation.getNomStation() + "\n";

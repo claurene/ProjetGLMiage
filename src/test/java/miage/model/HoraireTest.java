@@ -23,7 +23,7 @@ public class HoraireTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
 
         h.setDirection("Est-Nord");
@@ -43,7 +43,7 @@ public class HoraireTest {
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne(71,"Metro 5",tempsParcours,listeStation);
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
 
         h.setStatut("Annulé");
