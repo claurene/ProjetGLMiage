@@ -110,17 +110,26 @@ public class Ligne implements Serializable {
         this.listeStation = listeStation;
     }
 
+    public int getTotalTempsParcours(){
+        // Le temps de parcours total équivaut au temps de parcours entre la première et la dernière station de la ligne, sans compter leur temps d'arrêt
+        int total = this.tempsParcours.get(0);
+        for (int i=1;i<this.tempsParcours.size();i++) {
+            total+=this.tempsParcours.get(i)+this.listeStation.get(i).getTempsArret();
+        }
+        return total;
+    }
+
     @Override
     public String toString() {
         String reponse;
         if(incident){
-            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + getTotalTempsParcours() +
                     " minutes et possède un incident. Elle passe par les stations suivantes : \n";
             for (Station aListeStation : listeStation) {
                 reponse += "-" + aListeStation.getNomStation() + "\n";
             }
         }else{
-            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + tempsParcours +
+            reponse = "La ligne : " + nomLigne + ", d'id "+ id +", a un temps de parcours de " + getTotalTempsParcours() +
                     " minutes et ne possède pas d'incident. Elle passe par les stations suivantes :\n";
             for (Station aListeStation : listeStation) {
                 reponse += "-" + aListeStation.getNomStation() + "\n";
