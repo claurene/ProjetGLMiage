@@ -131,13 +131,18 @@ public class LigneController {
         if(this.lignes.containsKey(nomLigne)){
             //Suppression de la boisson
             this.lignes.remove(nomLigne);
-            reponse = nomLigne+" a été supprimé \n";
+            reponse = "La ligne "+nomLigne+" a été supprimée.";
         }else{
             reponse = "La ligne "+nomLigne+" n'existe pas.";
         }
         return reponse;
     }
 
+    /**
+     * Méthode qui permet de déterminer si une ligne existe déjà
+     * @param nomLigne la ligne à identifier
+     * @return true si la ligne existe
+     */
     public Boolean ligneExiste(String nomLigne){
         Boolean reponse = false;
         if(this.lignes.containsKey(nomLigne)){
@@ -146,10 +151,27 @@ public class LigneController {
         return reponse;
     }
 
+    /**
+     * Méthode qui permet d'ajouter une ligne en fonction de plusieurs critères
+     * @param nomLigne le nom de la ligne a ajouter
+     * @param tempsParcours liste des temps de parcours entre les stations
+     * @param listeStation liste des stations de la ligne
+     * @return string la ligne a été ajoutée
+     */
     public String ajouterLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
-        Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
-        this.lignes.put(nomLigne, l);
-        return "La ligne a bien été ajoutée";
+        String reponse;
+        if(!ligneExiste(nomLigne)){
+            if(listeStation.size() > 1){
+                Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
+                this.lignes.put(nomLigne, l);
+                reponse = "La ligne "+ nomLigne +" a été ajoutée avec succès.";
+            }else{
+                reponse = "Il faut au moins deux stations pour pouvoir créer une ligne.";
+            }
+        }else{
+            reponse = "Cette ligne existe déjà.";
+        }
+        return reponse;
     }
 
     public String modifierLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){

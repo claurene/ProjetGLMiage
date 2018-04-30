@@ -32,32 +32,80 @@ public class LigneControllerTest {
         String reponse = ligneController.ajouterLigne("1bis",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille+1),
-                () -> assertTrue(reponse.equals("La ligne a bien été ajoutée"))
+                () -> assertTrue(stations.size()>1),
+                () -> assertTrue(ligneController.ligneExiste("1bis")),
+                () -> assertTrue(reponse.equals("La ligne 1bis a été ajoutée avec succès."))
         );
     }
 
     @Test
     @DisplayName("Ajout d'une ligne déjà existante")
     void AjoutLigneExistante(){
-        //TODO: modifier la méthode ajouterLigne
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        ArrayList<Station> stations = new ArrayList<Station>();
+        Station s11 = new Station("chateau de vincennes",2,false,48.844,2.442);
+        stations.add(s11);
+        Station s12 = new Station("berault",2,false,48.845,2.427);
+        stations.add(s12);
+
+        ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
+        tempsParcours.add(1);
+
+        String reponse = ligneController.ajouterLigne("1",tempsParcours,stations);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(ligneController.ligneExiste("1")),
+                () -> assertTrue(reponse.equals("Cette ligne existe déjà."))
+        );
     }
 
     @Test
-    @DisplayName("Ajout d'une ligne avec moins de deux stations")
+    @DisplayName("Ajout d'une ligne sans station")
     void AjoutLigneSansStations(){
-        //TODO: modifier la méthode ajouterLigne
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        ArrayList<Station> stations = new ArrayList<Station>();
+
+        ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
+        tempsParcours.add(1);
+
+        String reponse = ligneController.ajouterLigne("1bis",tempsParcours,stations);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertFalse(stations.size()>1),
+                () -> assertTrue(reponse.equals("Il faut au moins deux stations pour pouvoir créer une ligne."))
+        );
     }
 
     @Test
     @DisplayName("Supprimer une ligne")
     void SupprimerLigne(){
-        //TODO
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        String reponse = ligneController.supprimerLigne("1");
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille-1),
+                () -> assertFalse(ligneController.ligneExiste("1")),
+                () -> assertTrue(reponse.equals("La ligne 1 a été supprimée."))
+        );
     }
 
     @Test
     @DisplayName("Supprimer une ligne inexsistante")
     void SupprimerLigneInexistante(){
-        //TODO
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        String reponse = ligneController.supprimerLigne("1000");
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertFalse(ligneController.ligneExiste("1000")),
+                () -> assertTrue(reponse.equals("La ligne 1000 n'existe pas."))
+        );
     }
 
     @Test
