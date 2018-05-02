@@ -137,7 +137,7 @@ public class Ligne implements Serializable {
         Boolean existe = false;
         for (Station aListeStation : this.listeStation) {
             nomStationActuelle = aListeStation.getNomStation();
-            if (nomStation == nomStationActuelle) {
+            if (nomStation.equals(nomStationActuelle)) {
                 existe = true;
             }
         }

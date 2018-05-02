@@ -237,6 +237,8 @@ public class Main {
                     break;
                 case 8:
                     //TODO Supprimer une station de métro
+                    sc.nextLine();
+                    supprimerStationUtilisateur(sc);
                     break;
                 case 9:
                     //TODO Modifier une station de métro
@@ -270,7 +272,7 @@ public class Main {
         boolean tps,pos;
         System.out.println("Veuillez saisir les informations suivantes : ");
         System.out.println("Nom de la station");
-        nomStation = sc.nextLine();
+        nomStation = sc.nextLine().toLowerCase();
         System.out.println("Temps d'arret de la station");
         tempsArret = sc.nextInt();
         while(!Station.verifierTempsArret(tempsArret)){
@@ -290,6 +292,16 @@ public class Main {
         }
         String message = stationController.ajouterStation(nomStation,tempsArret,false,latitude,longitude);
         System.out.println(message);
+    }
+
+    public static void supprimerStationUtilisateur(Scanner sc){
+        //TODO supprimer des lignes aussi et mettre a jour le temps de parcours
+        String nomStation;
+        System.out.println("Les stations disponibles sont :");
+        System.out.println(stationController.listeStation());
+        System.out.println("Veuillez choisir la station que vous souhaitez supprimer : ");
+        nomStation = sc.nextLine().toLowerCase();
+        System.out.println(stationController.supprimerStation(nomStation,ligneController));
     }
 
 }

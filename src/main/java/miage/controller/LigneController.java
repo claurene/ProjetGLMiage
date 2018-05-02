@@ -202,4 +202,40 @@ public class LigneController {
         return reponse;
     }
 
+    public boolean supprimerStationLigne(String nom) {
+        boolean suppressionpossible = true;
+        boolean suppressioneffectue = false;
+        // On commence par vérifier que la station existe et si la suppression est possible
+        // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
+        for (HashMap.Entry<String, Ligne> entry : this.lignes.entrySet()) {
+            if (entry.getValue().trouverStation(nom) && entry.getValue().getListeStation().size() <= 2) {
+                suppressionpossible = false;
+            }
+        }
+        // Si la suppression est possible alors
+        if (suppressionpossible) {
+            // Pour chaque ligne où elle existe
+            for (HashMap.Entry<String, Ligne> entry : this.lignes.entrySet()) {
+                if (entry.getValue().trouverStation(nom)) {
+                    ArrayList<Station> listeStation = entry.getValue().getListeStation();
+                    ArrayList<Integer> listeTempsParcours = entry.getValue().getListeTempsParcours();
+                    int index = entry.getValue().trouverPosListeStation(nom);
+                    // On supprime la valeur du temps de parcours ou on la modifie selon le cas
+                    if (index == 0) {
+                        listeTempsParcours.remove(0);
+                    } else if (index == listeStation.size() - 1) {
+                        listeTempsParcours.remove(listeTempsParcours.size() - 1);
+                    } else {
+                        listeTempsParcours.set(index, listeTempsParcours.get(index) + listeTempsParcours.get(index - 1));
+                        listeTempsParcours.remove(index - 1);
+                    }
+                    listeStation.remove(index);
+                    this.lignes.get(entry.getKey()).setListeTempsParcours(listeTempsParcours);
+                    this.lignes.get(entry.getKey()).setListeStation(listeStation);
+                    suppressioneffectue = true;
+                }
+            }
+        }
+        return suppressioneffectue;
+    }
 }
