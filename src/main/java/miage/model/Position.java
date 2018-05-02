@@ -79,7 +79,7 @@ public class Position implements Serializable {
     /**
      * Methode permettant de verifier que la longitude reste dans l'intervalle définie
      * @param lony la longitude
-     * @return
+     * @return boolean
      */
     public boolean VerifierLongitude(double lony){
         return (lony >= LONGITUDE_MIN && lony <= LONGITUDE_MAX);
@@ -88,7 +88,7 @@ public class Position implements Serializable {
     /**
      * Methode permettant de verifier que la latitude reste dans l'intervalle définie
      * @param latx la latitude
-     * @return
+     * @return boolean
      */
     public boolean VerifierLatitude(double latx){
         return (latx>=LATITUDE_MIN && latx<=LATITUDE_MAX);
@@ -98,7 +98,7 @@ public class Position implements Serializable {
      * Methode permettant de verifier que la position reste dans l'intervalle définie
      * @param latx la latitude
      * @param lony la longitude
-     * @return
+     * @return boolean
      */
 
     public boolean VerifierPosition(double latx,double lony){

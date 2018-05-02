@@ -17,7 +17,7 @@ public class StationController {
     private static final Logger LOG = Logger.getLogger(StationController.class.getName());
 
     //Liste des stations de metro
-    HashMap<String,Station> stations = new HashMap<String,Station>();
+    private HashMap<String,Station> stations = new HashMap<String,Station>();
 
     public HashMap<String, Station> getStations() {
         return stations;
@@ -138,8 +138,7 @@ public class StationController {
         Station s = new Station(nom, temps, inc, latitude,longitude);
         if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
             if(this.stations.containsKey(nom)){
-                this.stations.put(nom,s);
-                reponse = "La station a été remplacée";
+                reponse = "La station existe déjà";
             }
             else {
                 this.stations.put(nom, s);
@@ -151,6 +150,55 @@ public class StationController {
         }
         return reponse;
     }
+
+    /**
+     * Méthode qui permet de modifier une station dans le fichier de sauvegarde
+     * @param nom , le nom de la station
+     * @param temps , le temps d'arret de la station
+     * @param inc , présence d'un incident ou non
+     * @param latitude , la latitude de la station
+     * @param longitude , la longitude de la station
+     * @return reponse , la reponse de la modification de la station
+     */
+    public String modifierStation(String nom, int temps, boolean inc, double latitude, double longitude){
+        String reponse ="";
+        Station s = new Station(nom, temps, inc, latitude,longitude);
+        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
+            if(this.stations.containsKey(nom)){
+                this.stations.put(nom,s);
+                reponse = "La station a été remplacée";
+            }
+            else {
+                reponse = "La station que vous souhaitez modifier n'existe pas";
+            }
+        }
+        else{
+            reponse = "La station n'a pas été modifiée pour cause d'erreur de position";
+        }
+        return reponse;
+    }
+
+    /**
+     * Méthode qui permet de modifier l'incident d'une station dans le fichier de sauvegarde
+     * @param nom , le nom de la station
+     * @param inc , présence d'un incident ou non
+     * @return reponse , la reponse de la modification de l'incident de la station
+     */
+    public String modifierStationIncident(String nom, boolean inc) {
+        String reponse = "";
+        if (this.stations.containsKey(nom)) {
+            Station s = this.stations.get(nom);
+            s.setIncident(inc);
+            this.stations.put(nom, s);
+            if (inc)
+                reponse = "La station possède maintenant un incident";
+            else
+                reponse = "La station ne possède maintenant plus d'incident";
+        } else
+            reponse = "La station que vous souhaitez modifiée n'existe pas";
+        return reponse;
+    }
+
 
     /**
      * Methode permettant de supprimer une station

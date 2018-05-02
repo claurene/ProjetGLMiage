@@ -23,7 +23,7 @@ public class Horaire {
      * @param ligne nom de la ligne
      * @param direction direction de la ligne
      * @param statut statut
-     * @param heure
+     * @param heure heure
      */
 
     public Horaire(Station arret, Ligne ligne, String direction, String statut, LocalDateTime heure){

@@ -107,6 +107,7 @@ public class Main {
                         }
                     }
                     break;
+
                 case 2:
                     sc.nextLine();
                     // Afficher les informations d'une ligne de métro
@@ -143,10 +144,12 @@ public class Main {
 
                 case 4:
                     sc.nextLine();
-                    int idLigne;
-                    int tmpParc = 0 ;
+
+                    //paramètres
                     String nomStation;
-                    int compteur = 0;
+                    ArrayList<Station> listeStation = new ArrayList<Station>();
+                    ArrayList<Integer> listeTempsParcours = new ArrayList<>();
+                    int tmpParc;
 
                     //Ajouter une ligne
                     System.out.println("Veuillez saisir les informations suivantes : ");
@@ -154,52 +157,51 @@ public class Main {
                     //nom ligne
                     System.out.println("- Nom de la ligne");
                     nomLigne = sc.nextLine();
-                    if(!ligneController.ligneExiste(nomLigne)){
 
-                        //id ligne
-                        System.out.println("- id de la ligne");
-                        idLigne = sc.nextInt();
+                    //Liste de stations
+                    listeStationExiste = stationController.listeStation();
+                    //sc.nextLine();
+                    if (!listeStationExiste.equals("noStation")) {
+                        System.out.println(listeStationExiste);
+                        System.out.println("- Veuillez saisir au moins 2 stations présentes sur une ligne " +
+                                "(Saisissez 'Fin' lorsque vous aurez terminé) : ");
 
-                        //temps parcours
-                        System.out.println("- Temps de parcours");
+                        while(true){
+                            System.out.print("- ");
+                            nomStation = sc.nextLine().toLowerCase();
+                            if (nomStation.equals("fin")) {
+                                break;
+                            } else {
+                                if(stationController.getStations().containsKey(nomStation)){
+                                    listeStation.add(stationController.getStations().get(nomStation));
+                                }else{
+                                    System.out.println("La station "+ nomStation +" n'existe pas");
+                                }
+                            }
+
+                        }
+                        //Suppression des doublons
+                        listeStation = new ArrayList<Station>(new LinkedHashSet<Station>(listeStation));
+                    }else{
+                        System.out.println("Il n'y a aucune station de disponible, veuillez ajouter des stations avant d'ajouter une ligne.");
+                    }
+
+                    //temps parcours
+                    System.out.println("Veuillez renseigner le temps de parcours pour chacune des stations de la ligne");
+                    for (int i =0; i<(listeStation.size()-1);i++){
+                        tmpParc = 0;
+                        System.out.println("Temps de parcours entre "+listeStation.get(i).getNomStation()+" et "+listeStation.get(i+1).getNomStation());
                         while(tmpParc <= 0 ){
                             tmpParc = sc.nextInt();
                             if(tmpParc <= 0){
                                 System.out.println("Le temps de parcours doit être strictement superieur à 0");
+                            } else {
+                                listeTempsParcours.add(tmpParc);
                             }
                         }
-
-                        //listeStation
-                        listeStationExiste = stationController.listeStation();
-                        if (!listeStationExiste.equals("noStation")) {
-                            System.out.println(listeStationExiste);
-                            System.out.println("- Veuillez saisir au moins 2 stations présentes sur une ligne " +
-                                    "(Saisissez 'Fin' lorsque vous aurez terminé) : ");
-                            ArrayList<Station> listeStation = new ArrayList<Station>();
-                            sc.nextLine();
-                            while (true) {
-                                nomStation = sc.nextLine().toLowerCase();
-                                System.out.print("- ");
-                                if (nomStation.equals("fin")) {
-                                    if(compteur <= 1){
-                                        System.out.println("Veuillez saisir au moins 2 stations.");
-                                    }else{
-                                        break;
-                                    }
-                                } else {
-                                    if(stationController.getStations().containsKey(nomStation)){
-                                        listeStation.add(stationController.getStations().get(nomStation));
-                                        compteur += 1;
-                                    }else{
-                                        System.out.println("La station "+ nomStation +" n'existe pas");
-                                    }
-                                }
-                            }
-                            System.out.println(ligneController.ajouterLigne(nomLigne, idLigne, tmpParc, listeStation));
-                        }
-                    }else{
-                        System.out.println("La ligne "+nomLigne+" existe déjà.");
                     }
+
+                    System.out.println(ligneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation));
 
                     // En attente d'une nouvelle commande
                     break;
