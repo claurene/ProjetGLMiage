@@ -49,7 +49,8 @@
                 System.out.println("[7] Ajouter une station de métro");
                 System.out.println("[8] Supprimer une station de métro");
                 System.out.println("[9] Modifier une station de métro");
-                System.out.println("[10] Quitter l'application");
+                System.out.println("[10] Modifier un incident de station de métro");
+                System.out.println("[0] Quitter l'application");
 
                 // Gestion des choix de l'utilisateur
                 Scanner sc = new Scanner(System.in);
@@ -245,8 +246,12 @@
                         sc.nextLine();
                         modifierStationUtilisateur(sc);
                         break;
-
                     case 10:
+                        //Modifier une station de métro
+                        sc.nextLine();
+                        modifierStationIncidentUtilisateur(sc);
+                        break;
+                    case 0:
                         // Quitter l'application
                         System.out.println("Au revoir !");
                         running=false;
@@ -337,6 +342,32 @@
                 System.out.println("La station n'existe pas");
         }
 
+        }
+
+        public static void modifierStationIncidentUtilisateur(Scanner sc){
+            String nomStation,inc;
+            boolean incident = false;
+            System.out.println("Veuillez saisir les informations suivantes : ");
+            System.out.println("Nom de la station");
+            nomStation = sc.nextLine().toLowerCase();
+            if(stationController.getStations().containsKey(nomStation)){
+                System.out.println("Incident ?");
+                System.out.println("y/n");
+                inc = sc.nextLine().toLowerCase();
+                if(inc.equals("y")){
+                    incident = true;
+                }
+                if(inc.equals("y")||inc.equals("n")){
+                    stationController.modifierStationIncident(nomStation,incident);
+                    System.out.println("L'incident de la station "+nomStation.toLowerCase()+" est maintenant "+incident);
+                }
+                else{
+                    System.out.println("Le systeme n'a pas compris votre reponse d'incident");
+                }
+            }
+            else{
+                System.out.println("La station n'existe pas");
+            }
         }
 
     }
