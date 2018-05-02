@@ -45,10 +45,15 @@ public class Main {
             System.out.println("[3] Afficher les informations d'une station de métro");
             System.out.println("[4] Ajouter une ligne de métro");
             System.out.println("[5] Supprimer une ligne de métro");
+            System.out.println("[6] Modifier une ligne de métro");
+            System.out.println("[7] Ajouter une station de métro");
+            System.out.println("[8] Supprimer une station de métro");
+            System.out.println("[9] Modifier une station de métro");
             System.out.println("[10] Quitter l'application");
 
             // Gestion des choix de l'utilisateur
             Scanner sc = new Scanner(System.in);
+            sc.useLocale(Locale.US);
             System.out.println("Entrez votre choix : ");
             int choix;
             try {
@@ -222,6 +227,20 @@ public class Main {
 
                     // En attente d'une nouvelle commande
                     break;
+                case 6:
+                    //TODO Modifier une ligne de métro
+                    break;
+                case 7:
+                    //TODO Ajouter une station de métro
+                    sc.nextLine();
+                    ajouterStationUtilisateur(sc);
+                    break;
+                case 8:
+                    //TODO Supprimer une station de métro
+                    break;
+                case 9:
+                    //TODO Modifier une station de métro
+                    break;
 
                 case 10:
                     // Quitter l'application
@@ -243,4 +262,34 @@ public class Main {
         // Sauvegarde des stations
         stationController.sauvegardeStations();
     }
+
+    public static void ajouterStationUtilisateur(Scanner sc){
+        String nomStation;
+        int tempsArret;
+        double latitude,longitude;
+        boolean tps,pos;
+        System.out.println("Veuillez saisir les informations suivantes : ");
+        System.out.println("Nom de la station");
+        nomStation = sc.nextLine();
+        System.out.println("Temps d'arret de la station");
+        tempsArret = sc.nextInt();
+        while(!Station.verifierTempsArret(tempsArret)){
+            System.out.println("Votre temps d'arrêt est faux recommencez");
+            tempsArret = sc.nextInt();
+        }
+        System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+" et "+Position.getLATITUDE_MAX()+" )");
+        latitude = sc.nextDouble();
+        System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
+        longitude = sc.nextDouble();
+        while(!Position.VerifierPosition(latitude,longitude)){
+            System.out.println("Votre latitude ou longitude est fausse veuillez recommencez");
+            System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+"et "+Position.getLATITUDE_MAX()+" )");
+            latitude = sc.nextDouble();
+            System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
+            longitude = sc.nextDouble();
+        }
+        String message = stationController.ajouterStation(nomStation,tempsArret,false,latitude,longitude);
+        System.out.println(message);
+    }
+
 }
