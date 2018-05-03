@@ -28,14 +28,7 @@ public class Ligne implements Serializable {
         this.nomLigne = nomLigne;
         this.tempsParcours = tempsParcours;
         this.listeStation = listeStation;
-        for (Station aListeStation : this.listeStation) {
-            if (aListeStation.isIncident()) {
-                this.incident = true;
-                break;
-            } else {
-                this.incident = false;
-            }
-        }
+        this.incident = false;
     }
 
     public String getNomLigne() {
