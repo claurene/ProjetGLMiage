@@ -186,18 +186,25 @@ public class LigneController {
         return reponse;
     }
 
-    public String modifierLigneIncident(String nomLigne, boolean inc){
+    /**
+     * Méthode qui permet de modifier l'incident d'une ligne
+     * @param nomLigne la ligne qu'on souhaite modifier l'incident
+     * @param incident yes/no il y a un incident
+     * @return string l'indent a été modifié
+     */
+    public String modifierLigneIncident(String nomLigne, String incident){
         String reponse = "";
         if (ligneExiste(nomLigne)){
             Ligne l = this.lignes.get(nomLigne);
-            l.setIncident(inc);
-            if (inc) {
-                reponse = "La ligne possède maintenant un incident";
+            if (incident.equals("y")) {
+                l.setIncident(true);
+                reponse = "La ligne "+nomLigne+" possède maintenant un incident.";
             } else {
-                reponse = "La ligne ne possède maintenant plus d'incident";
+                l.setIncident(false);
+                reponse = "La ligne "+nomLigne+" ne possède maintenant plus d'incident.";
             }
         } else {
-            reponse = "La ligne que vous souhaitez modifier n'existe pas";
+            reponse = "La ligne "+nomLigne+" que vous souhaitez modifier n'existe pas.";
         }
         return reponse;
     }

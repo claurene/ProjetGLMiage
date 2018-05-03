@@ -231,23 +231,29 @@
                     case 6:
                         //TODO Modifier une ligne de métro
                         break;
-                    case 7:
+                    case 7 :
+                        //Modifier l'incident d'une ligne de métro
+                        sc.nextLine();
+                        modifierLigneIncidentUtilisateur(sc);
+                        break;
+
+                    case 8:
                         //Ajouter une station de métro
                         sc.nextLine();
                         ajouterStationUtilisateur(sc);
                         break;
-                    case 8:
+                    case 9:
                         //Supprimer une station de métro
                         sc.nextLine();
                         supprimerStationUtilisateur(sc);
                         break;
-                    case 9:
+                    case 10:
                         //Modifier une station de métro
                         sc.nextLine();
                         modifierStationUtilisateur(sc);
                         break;
-                    case 10:
-                        //Modifier une station de métro
+                    case 11:
+                        //Modifier l'incident d'une station de métro
                         sc.nextLine();
                         modifierStationIncidentUtilisateur(sc);
                         break;
@@ -270,6 +276,22 @@
 
             // Sauvegarde des stations
             stationController.sauvegardeStations();
+        }
+
+        /**
+         * Méthode qui permet à l'utilisateur de modifier l'incident d'une ligne
+         * @param sc
+         */
+        public static void modifierLigneIncidentUtilisateur(Scanner sc){
+            String nomLigne, incident;
+            System.out.println("Veuillez saisir les informations suivantes : ");
+            System.out.println("Nom de la station");
+            nomLigne = sc.nextLine().toLowerCase();
+            System.out.println("Incident ?");
+            System.out.println("y/n");
+            incident = sc.nextLine().toLowerCase();
+            String reponse = ligneController.modifierLigneIncident(nomLigne,incident);
+            System.out.println(reponse);
         }
 
         public static void ajouterStationUtilisateur(Scanner sc){

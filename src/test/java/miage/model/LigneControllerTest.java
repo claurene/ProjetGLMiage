@@ -156,10 +156,10 @@ public class LigneControllerTest {
     @DisplayName("Ajout d'un incident sur une ligne")
     void AjoutIncidentLigne(){
         ligneController.initialisationLignes();
-        String reponse = ligneController.modifierLigneIncident("1",true);
+        String reponse = ligneController.modifierLigneIncident("1","y");
         assertAll(
                 () -> assertTrue(ligneController.getLignes().get("1").isIncident()),
-                () -> assertTrue(reponse.equals("La ligne possède maintenant un incident"))
+                () -> assertTrue(reponse.equals("La ligne "+ligneController.getLignes().get("1").getNomLigne()+" possède maintenant un incident."))
         );
     }
 
@@ -167,18 +167,18 @@ public class LigneControllerTest {
     @DisplayName("Ajout d'un incident sur une ligne inexistante")
     void AjoutIncidentLigneInexistante(){
         ligneController.initialisationLignes();
-        String reponse = ligneController.modifierLigneIncident("1bis",true);
-        assertTrue(reponse.equals("La ligne que vous souhaitez modifier n'existe pas"));
+        String reponse = ligneController.modifierLigneIncident("1bis","y");
+        assertTrue(reponse.equals("La ligne 1bis que vous souhaitez modifier n'existe pas."));
     }
 
     @Test
     @DisplayName("Suppression d'un incident sur une ligne")
     void SupprimerIncidentLigne(){
         ligneController.initialisationLignes();
-        String reponse = ligneController.modifierLigneIncident("1",false);
+        String reponse = ligneController.modifierLigneIncident("1","n");
         assertAll(
                 () -> assertFalse(ligneController.getLignes().get("1").isIncident()),
-                () -> assertTrue(reponse.equals("La ligne ne possède maintenant plus d'incident"))
+                () -> assertTrue(reponse.equals("La ligne "+ligneController.getLignes().get("1").getNomLigne()+" ne possède maintenant plus d'incident."))
         );
     }
 
