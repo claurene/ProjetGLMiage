@@ -1,7 +1,10 @@
 package miage.model;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 /**
  * Classe Horaire qui permet de connaître les horaires de passage des rames sur l'arrêt d'une ligne
@@ -10,6 +13,7 @@ import java.time.LocalDateTime;
 public class Horaire {
 
     private final int NOMBRE_RAMES_HEURE = 10;
+    private final LocalTime DEBUT_RAMES = LocalTime.MIDNIGHT;
     private Station arret;
     private Ligne ligne;
     private String direction;
@@ -33,6 +37,45 @@ public class Horaire {
         this.direction = direction;
         this.statut = statut;
         this.heure = heure;
+    }
+
+    /**
+     * Calcul des horaires de passage des rames à la station de départ de chaque ligne
+     * @return table des horaires
+     */
+    private ArrayList<LocalDateTime> tableHoraireRames(LocalDate date){
+        LocalDateTime heure = LocalDateTime.of(date,DEBUT_RAMES);
+        ArrayList<LocalDateTime> tableHoraire = new ArrayList<LocalDateTime>();
+        for (int i=0;i<24*NOMBRE_RAMES_HEURE;i++){
+            tableHoraire.add(heure);
+            heure = heure.plusMinutes(60/NOMBRE_RAMES_HEURE);
+        }
+        return tableHoraire;
+    }
+
+    private LocalDateTime getDateDepartRame(LocalDateTime heure) {
+        for (LocalDateTime e : tableHoraireRames(heure.toLocalDate())) {
+            if (e.isAfter(heure)) {return e;}
+        }
+        //Si passage après 24h
+        return LocalDateTime.of(heure.toLocalDate().plusDays(1),DEBUT_RAMES);
+    }
+
+    /**
+     * Obtenir l'horaire désiré en fonction de la ligne, la station, la direction et l'heure choisies
+     * @return l'horaire approprié
+     */
+    public LocalDateTime getHoraire() {
+        //TODO : gérer la direction !!
+        Station departLigne = this.ligne.getDepart();
+        LocalDateTime horaire = this.heure; //initialisation
+        // Si la station est un départ de ligne :
+        if (this.arret.getNomStation().equals(departLigne.getNomStation())) {
+            horaire = getDateDepartRame(this.heure);
+        } else {
+            //TODO : avec temps de parcours entre deux stations
+        }
+        return horaire;
     }
 
     /**
@@ -106,7 +149,7 @@ public class Horaire {
 
     @Override
     public String toString() {
-        return "Le prochain passage d'une rame à l'arrêt : " + arret + " de la ligne "+ ligne +" direction "+ direction + " se fera le " + getProchainPassage();
+        return "Le prochain passage d'une rame à l'arrêt : " + arret.getNomStation() + " de la ligne "+ ligne.getNomLigne() +" direction "+ direction + " se fera le " + getProchainPassage();
     }
 
 }
