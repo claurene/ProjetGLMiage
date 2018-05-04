@@ -320,6 +320,65 @@ public class LigneController {
         return reponse;
     }
 
+    public String modifierLigneAjouterStation(int choix, HashMap<String, Station> listeStations, String nomLigne, String nouvStation, String precStation, String suivStation, int tmpParcPrec, int tmpParcSuiv){
+        String reponse = "";
+        int posStation = 0;
+        StationController stationController = new StationController();
+        //On vérifie que la ligne existe
+        if(this.lignes.containsKey(nomLigne)){
+            Ligne ligne = this.lignes.get(nomLigne);
+            if(!ligne.trouverStation(nouvStation)) {
+                switch (choix) {
+                    case 1:
+                        //Station Départ
+                        if(listeStations.containsKey(nouvStation)) {
+                            if (ligne.trouverStation(suivStation)) {
+                                if (tmpParcSuiv > 0) {
+                                    ligne.getListeStation().add(0, stationController.getStations().get(nouvStation));
+                                    ligne.getListeTempsParcours().add(0, tmpParcSuiv);
+                                    reponse = "L'ajout de la station "+nouvStation+" a été effectué en tant que départ de la ligne "+nomLigne+".";
+                                } else {
+                                    reponse = "Le temps de parcours entre " + nouvStation + " et " + suivStation + " doit être strictement supérieur à 0.";
+                                }
+                            } else {
+                                reponse = "La station " + suivStation + " n'est pas présente dans la ligne " + nomLigne + ".";
+                            }
+                        }else{
+                            reponse = "La station " + nouvStation + " n'existe pas.";
+                        }
+                        break;
+                    case 2:
+                        //Station Terminus
+                        if(listeStations.containsKey(nouvStation)) {
+                            if (ligne.trouverStation(precStation)) {
+                                if (tmpParcPrec > 0) {
+                                    ligne.getListeStation().add(stationController.getStations().get(nouvStation));
+                                    ligne.getListeTempsParcours().add(tmpParcPrec);
+                                    reponse = "L'ajout de la station "+nouvStation+" a été effectué en tant que terminus de la ligne "+nomLigne+".";
+                                } else {
+                                    reponse = "Le temps de parcours entre " + precStation + " et " + nouvStation + " doit être strictement supérieur à 0.";
+                                }
+                            } else {
+                                reponse = "La station " + precStation + " n'est pas présente dans la ligne " + nomLigne + ".";
+                            }
+                        }else{
+                            reponse = "La station " + nouvStation + " n'existe pas.";
+                        }
+                        break;
+                    case 3:
+                        //Entre deux stations
+                        break;
+                }
+            }else{
+                reponse = "La station "+nouvStation+" est dejà présente dans la ligne "+nomLigne+"." ;
+            }
+
+        }else{
+            reponse = "La ligne saisie n'existe pas.";
+        }
+        return reponse;
+    }
+
     /**
      * Méthode qui permet de modifier l'incident d'une ligne
      * @param nomLigne la ligne qu'on souhaite modifier l'incident

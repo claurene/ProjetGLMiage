@@ -1,6 +1,7 @@
 package miage.model;
 
 import miage.controller.LigneController;
+import miage.controller.StationController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("LigneController")
 public class LigneControllerTest {
     private final LigneController ligneController = new LigneController();
+    private final StationController stationController= new StationController();
 
     @Test
     @DisplayName("Ajout d'une ligne")
@@ -291,6 +293,86 @@ public class LigneControllerTest {
                 () -> assertTrue(reponse.equals("La station "+station1+" ne peut pas être supprimer puisque la ligne ne comportera plus qu'une seule station."))
         );
     }*/
+
+    @Test
+    @DisplayName("Ajouter une station en position départ dans une ligne.")
+    void ModifierLigneAjouterStationDepart(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String reponse = ligneController.modifierLigneAjouterStation(1, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(),"",l.getListeStation().get(0).getNomStation(), 0, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("L'ajout de la station "+l2.getListeStation().get(0).getNomStation()+" a été effectué en tant que départ de la ligne 1."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station en position terminus dans une ligne.")
+    void ModifierLigneAjouterStationTerminus(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(l.getListeStation().size()-1).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(2, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,"", 5, 0);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("L'ajout de la station "+l2.getListeStation().get(0).getNomStation()+" a été effectué en tant que terminus de la ligne 1."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station entre deux stations dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeux(){
+
+    }
+
+    @Test
+    @DisplayName("Ajouter une station inexistante dans une ligne.")
+    void ModifierLigneAjouterStationInexistante(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        String reponse = ligneController.modifierLigneAjouterStation(1, stationController.getStations(), "1", "pas station","",l.getListeStation().get(0).getNomStation(), 0, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station pas station n'existe pas."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station qui existe déjà dans la ligne.")
+    void ModifierLigneAjouterStationExistante(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        String reponse = ligneController.modifierLigneAjouterStation(1, stationController.getStations(), "1", l.getListeStation().get(1).getNomStation(),"",l.getListeStation().get(0).getNomStation(), 0, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station "+l.getListeStation().get(1).getNomStation()+" est dejà présente dans la ligne "+l.getNomLigne()+"."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station avec un temps de parcours incorrect une ligne.")
+    void ModifierLigneAjouterStationTmpParcIncorrect(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String reponse = ligneController.modifierLigneAjouterStation(1, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(),"",l.getListeStation().get(0).getNomStation(), 0, -5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("Le temps de parcours entre " + l2.getListeStation().get(0).getNomStation() + " et " + l.getListeStation().get(0).getNomStation() + " doit être strictement supérieur à 0."))
+        );
+    }
 
     @Test
     @DisplayName("Ajout d'un incident sur une ligne")
