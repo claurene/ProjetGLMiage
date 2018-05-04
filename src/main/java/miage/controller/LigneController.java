@@ -107,6 +107,24 @@ public class LigneController {
     }
 
     /**
+     * Méthode qui permet d'afficher les stations d'une ligne donnée ainsi que le temps de parcours entre chaque station
+     * @param nomLigne ligne dont on souhaite les stations
+     * @return string la liste des stations de la ligne
+     */
+    public String listeStationsParLigne(String nomLigne){
+        String reponse = "";
+        ArrayList<Station> listeStations = getLignes().get(nomLigne).getListeStation();
+        ArrayList<Integer> tmpParcours = getLignes().get(nomLigne).getListeTempsParcours();
+        for(int i = 0; i<listeStations.size(); i++){
+            reponse += "Station : "+listeStations.get(i).getNomStation()+"\n";
+            if(i != listeStations.size()-1) {
+                reponse += "Temps de parcours : " + tmpParcours.get(i) + " min\n";
+            }
+        }
+        return reponse;
+    }
+
+    /**
      * Methode qui affiche les informations d'une ligne
      * @param nomLigne la ligne dont l'utilisateur veut les informations
      * @return string les informations de la ligne
@@ -174,6 +192,79 @@ public class LigneController {
         return reponse;
     }
 
+    /**
+     * Méthode qui permet de modifier le temps de parcours d'une ligne
+     * @param nomLigne la ligne à modifier
+     * @param station1 la premiere station entre laquelle on souhaite changer le temps de parcours
+     * @param station2 la deuxieme station entre laquelle on souhaite changer le temps de parcours
+     * @param tmpParc le nouveau temps de parcours entre les deux stations
+     * @return String la ligne a été modifiée
+     */
+    public String modifierLigneTempsParcours(String nomLigne, String station1, String station2, int tmpParc){
+        String reponse="";
+        int posStation1 = 0, posStation2 = 0;
+
+        //On vérifie que la ligne existe
+        if(this.lignes.containsKey(nomLigne)){
+            Ligne ligne = this.lignes.get(nomLigne);
+
+            //On vérifie que le temps de parcours saisie est strictement supérieur à 0
+            if(tmpParc > 0) {
+
+                //On vérifie que les deux stations sont bien différentes
+                if (!station1.equals(station2)) {
+
+                    //On vérifie que les deux stations sont bien présentes dans la ligne
+                    if (ligne.trouverStation(station1)) {
+                        if (ligne.trouverStation(station2)) {
+
+                            //On récupère la position des deux stations dans la liste
+                            ArrayList<Station> listeStation = ligne.getListeStation();
+                            for (int i = 0; i < listeStation.size(); i++) {
+                                if (listeStation.get(i).getNomStation().equals(station1)) {
+                                    posStation1 = i;
+                                }
+                                if (listeStation.get(i).getNomStation().equals(station2)) {
+                                    posStation2 = i;
+                                }
+                            }
+
+                            int posTmpParcours = posStation1 - posStation2;
+
+                            //on vérifie que les deux stations sont l'une à la suite de l'autre
+                            if (posTmpParcours == 1 || posTmpParcours == -1) {
+                                if (posTmpParcours == 1) {
+                                    //On modifie le temps de parcours entre les deux
+                                    ligne.setTempsParcours(tmpParc,station2,ligne.getListeTempsParcours());
+                                    reponse = "Le temps de parcours entre " + station2 + " et "+station1+" a bien été modifié.";
+                                }else{
+                                    //On modifie le temps de parcours entre les deux
+                                    ligne.setTempsParcours(tmpParc,station1,ligne.getListeTempsParcours());
+                                    reponse = "Le temps de parcours entre " + station1 + " et "+station2+" a bien été modifié.";
+                                }
+                            } else {
+                                reponse = "La station " + station1 + " et la station " + station2 + " ne sont pas reliées directement.";
+                            }
+
+                        } else {
+                            reponse = "La station " + station2 + " n'existe pas.";
+                        }
+                    } else {
+                        reponse = "La station " + station1 + " n'existe pas.";
+                    }
+                } else {
+                    reponse = "Les deux stations doivent être différentes";
+                }
+            }else{
+                reponse = "Le temps de parcours doit être strictement supérieur à 0.";
+            }
+        }else{
+            reponse = "La ligne saisie n'existe pas.";
+        }
+        return reponse;
+    }
+
+
     public String modifierLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
         String reponse = "";
         Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
@@ -209,6 +300,11 @@ public class LigneController {
         return reponse;
     }
 
+    /**
+     * Méthode qui permet de supprimer une station d'une ligne
+     * @param nom nom de la station à supprimer
+     * @return boolean si la station a ete supprimee
+     */
     public boolean supprimerStationLigne(String nom) {
         boolean suppressionpossible = true;
         boolean suppressioneffectue = false;

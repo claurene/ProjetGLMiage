@@ -199,8 +199,8 @@
                 System.out.println(listeLigneExiste);
                 System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
                 nomLigne = sc.nextLine().toLowerCase();
-                String reponse = ligneController.afficherLigne(nomLigne);
-                System.out.println(reponse);
+                String message = ligneController.afficherLigne(nomLigne);
+                System.out.println(message);
             }else{
                 System.out.println("Il n'y a aucune ligne.");
             }
@@ -217,8 +217,8 @@
                 System.out.println(listeStationExiste);
                 System.out.println("Veuillez choisir la station dont vous souhaitez des informations : ");
                 String nomStation = sc.nextLine().toLowerCase();
-                String reponse = stationController.afficherStation(nomStation);
-                System.out.println(reponse);
+                String message = stationController.afficherStation(nomStation);
+                System.out.println(message);
             }else{
                 System.out.println("Il n'y a aucune station.");
             }
@@ -284,8 +284,8 @@
                 }
             }
 
-            String reponse = ligneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation);
-            System.out.println(reponse);
+            String message = ligneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation);
+            System.out.println(message);
         }
 
         /**
@@ -310,7 +310,70 @@
          * @param sc
          */
         public static void modifierLigneUtilisateur(Scanner sc){
+            boolean run = true;
+            System.out.println("Les lignes disponibles sont : ");
+            listeLigneExiste = ligneController.listeLigne();
+            if(!listeLigneExiste.equals("noLigne")) {
+                System.out.println(listeLigneExiste);
+                System.out.println("Veuillez saisir les informations suivantes : ");
+                System.out.println("Nom de la ligne");
+                nomLigne = sc.nextLine().toLowerCase();
+                if (ligneController.getLignes().containsKey(nomLigne)){
+                    while(run) {
+                        System.out.println("[1] Modifier le temps de parcours entre 2 stations");
+                        System.out.println("[2] Ajouter une station entre 2 stations");
+                        System.out.println("[3] Supprimer une station entre 2 stations");
+                        System.out.println("[0] Fin dela modification d'une ligne");
 
+                        System.out.println("Entrez votre choix : ");
+                        int choix;
+                        try {
+                            choix = sc.nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
+                            continue;
+                        }
+                        switch (choix) {
+                            case 1:
+                                //TODO modifier temps parcours
+                                //Afficher les stations de la ligne
+                                String listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                System.out.println(listeStation);
+                                sc.nextLine();
+
+                                //Sélectionner 2 stations
+                                System.out.println("Veuillez saisir les stations entre lesquelles vous voulez changer le temps de parcours");
+                                System.out.println("Station 1 : ");
+                                String station1 = sc.nextLine().toLowerCase();
+                                System.out.println("Station 2 : ");
+                                String station2 = sc.nextLine().toLowerCase();
+
+                                //Saisir temps de parcours à modifier
+                                System.out.println("Veuillez saisir le nouveau temps de parcours entre la station "+station1+" et la station "+station2);
+                                int tmpParc = sc.nextInt();
+
+                                String message = ligneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
+                                System.out.println(message);
+                                break;
+                            case 2:
+                                //TODO Ajouter une station entre 2
+                                break;
+                            case 3:
+                                //TODO Supprimer une station entre 2
+                                break;
+                            case 0:
+                                run = false;
+                                break;
+                            default:
+                                System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
+                        }
+                    }
+                }else{
+                    System.out.println("La ligne "+nomLigne+" n'existe pas.");
+                }
+            }else{
+                System.out.println("Aucune ligne n'est disponble.");
+            }
         }
 
         /**
@@ -325,8 +388,8 @@
             System.out.println("Incident ?");
             System.out.println("y/n");
             incident = sc.nextLine().toLowerCase();
-            String reponse = ligneController.modifierLigneIncident(nomLigne,incident);
-            System.out.println(reponse);
+            String message = ligneController.modifierLigneIncident(nomLigne,incident);
+            System.out.println(message);
         }
 
         public static void ajouterStationUtilisateur(Scanner sc){

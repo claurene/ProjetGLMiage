@@ -44,7 +44,7 @@ public class Ligne implements Serializable {
     }
 
     /**
-    * permet de récupérer le temps de parcours entre les deux stations de la ligne
+     * permet de récupérer le temps de parcours entre les deux stations de la ligne
      * @param stationDepart nom de la station de départ
      * @param tempsParcours liste des temps de parcours
      * @return le temps de parcours entre la station précisée et la suivante

@@ -25,7 +25,7 @@ public class LigneTest {
 
     @Test
     @DisplayName("Changement d'incident sur une ligne")
-    void CLigneAvecIncident(){
+    void LigneAvecIncident(){
         ArrayList<Integer> tempsParcours = new ArrayList<>();
         tempsParcours.add(10);
         ArrayList<Station> listeStation = new ArrayList<Station>();

@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("LigneController")
 public class LigneControllerTest {
@@ -109,46 +107,108 @@ public class LigneControllerTest {
     }
 
     @Test
-    @DisplayName("Modification d'une ligne")
-    void ModifierLigne(){
+    @DisplayName("Modification du temps de parcours d'une ligne.")
+    void ModifierLigneTempsParcours(){
         ligneController.initialisationLignes();
         int taille = ligneController.getLignes().size();
 
-        ArrayList<Station> stations = new ArrayList<Station>();
-        Station s11 = new Station("chateau de vincennes",2,false,48.844,2.442);
-        stations.add(s11);
-        Station s12 = new Station("berault",2,false,48.845,2.427);
-        stations.add(s12);
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(0).getNomStation();
+        String station2 = l.getListeStation().get(1).getNomStation();
 
-        ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
-        tempsParcours.add(1);
+        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1,station2,5);
 
-        String reponse = ligneController.modifierLigne("1",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille),
-                () -> assertTrue(reponse.equals("La ligne a bien été modifiée"))
+                () -> assertTrue(reponse.equals("Le temps de parcours entre "+station1+" et "+station2+" a bien été modifié."))
         );
     }
 
     @Test
-    @DisplayName("Modification d'une ligne inexsitante")
-    void ModifierLigneInexistante(){
+    @DisplayName("Modification du temps de parcours d'une ligne inexistante.")
+    void ModifierLigneTempsParcoursInexistante(){
         ligneController.initialisationLignes();
         int taille = ligneController.getLignes().size();
 
-        ArrayList<Station> stations = new ArrayList<Station>();
-        Station s11 = new Station("chateau de vincennes",2,false,48.844,2.442);
-        stations.add(s11);
-        Station s12 = new Station("berault",2,false,48.845,2.427);
-        stations.add(s12);
+        String reponse = ligneController.modifierLigneTempsParcours("1000","chateau de vincennes","berault",5);
 
-        ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
-        tempsParcours.add(1);
-
-        String reponse = ligneController.modifierLigne("1bis",tempsParcours,stations);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille),
-                () -> assertTrue(reponse.equals("La ligne que vous souhaitez modifier n'existe pas"))
+                () -> assertTrue(reponse.equals("La ligne saisie n'existe pas."))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification du temps de parcours d'une ligne avec des station non reliées.")
+    void ModifierLigneTempsParcoursStationsNonReliees(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(0).getNomStation();
+        String station2 = l.getListeStation().get(2).getNomStation();
+
+        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1,station2,5);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station " + station1 + " et la station " + station2 + " ne sont pas reliées directement."))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification du temps de parcours d'une ligne avec une station inexistante.")
+    void ModifierLigneTempsParcoursStationInexistante(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = "pas de station";
+        String station2 = l.getListeStation().get(2).getNomStation();
+
+        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1,station2,5);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station " + station1 + " n'existe pas."))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification du temps de parcours d'une ligne avec inversion des stations.")
+    void ModifierLigneTempsParcoursInversionStation(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(2).getNomStation();
+        String station2 = l.getListeStation().get(1).getNomStation();
+
+        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1, station2,5);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("Le temps de parcours entre "+station2+" et "+station1+" a bien été modifié."))
+        );
+    }
+
+    @Test
+    @DisplayName("Modification du temps de parcours d'une ligne avec un temps <=0.")
+    void ModifierLigneTempsParcoursTmpIncorrect(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(0).getNomStation();
+        String station2 = l.getListeStation().get(1).getNomStation();
+        int tmpParc = l.getListeTempsParcours().get(0);
+
+        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1,station2,-2);
+        int tmpParcNouv = l.getListeTempsParcours().get(0);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("Le temps de parcours doit être strictement supérieur à 0."))
         );
     }
 
