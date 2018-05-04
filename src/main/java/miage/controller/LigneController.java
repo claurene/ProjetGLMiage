@@ -219,15 +219,8 @@ public class LigneController {
                         if (ligne.trouverStation(station2)) {
 
                             //On récupère la position des deux stations dans la liste
-                            ArrayList<Station> listeStation = ligne.getListeStation();
-                            for (int i = 0; i < listeStation.size(); i++) {
-                                if (listeStation.get(i).getNomStation().equals(station1)) {
-                                    posStation1 = i;
-                                }
-                                if (listeStation.get(i).getNomStation().equals(station2)) {
-                                    posStation2 = i;
-                                }
-                            }
+                            posStation1 = ligne.trouverPosListeStation(station1);
+                            posStation2 = ligne.trouverPosListeStation(station2);
 
                             int posTmpParcours = posStation1 - posStation2;
 
@@ -264,6 +257,56 @@ public class LigneController {
         return reponse;
     }
 
+    /**
+     * Méthode qui permet de supprimer une station d'une ligne
+     * @param nomLigne la ligne à modifier
+     * @param nomStation la station à supprimer
+     * @return
+     */
+    public String modifierLigneSupprimerStation(String nomLigne, String nomStation){
+        String reponse = "";
+        int pos = 0;
+        //On vérifie que la ligne existe
+        if(this.lignes.containsKey(nomLigne)) {
+            Ligne ligne = this.lignes.get(nomLigne);
+
+            //On vérifier que la ligne détient la station
+            if (ligne.trouverStation(nomStation)) {
+
+                //On vérifier qu'il restera au moins deux stations à la ligne en cas de suppression
+                if(ligne.getListeStation().size() > 2) {
+
+                    //On récupère la position de la station dans la liste
+                    pos = ligne.trouverPosListeStation(nomStation);
+
+                    if (pos == 0) {
+                        ligne.getListeTempsParcours().remove(pos);
+                        ligne.getListeStation().remove(pos);
+                    }else if(pos == ligne.getListeStation().size() - 1){
+                        ligne.getListeTempsParcours().remove(pos-1);
+                        ligne.getListeStation().remove(pos);
+                    } else {
+                        String stationPrec = ligne.getListeStation().get(pos-1).getNomStation();
+                        int tmpParcPrec = ligne.getListeTempsParcours().get(pos-1);
+                        int tmpParcSuiv = ligne.getListeTempsParcours().get(pos);
+                        int somTmpParc = tmpParcPrec + tmpParcSuiv;
+                        ligne.setTempsParcours(somTmpParc, stationPrec,ligne.getListeTempsParcours());
+                        ligne.getListeTempsParcours().remove(pos);
+                        ligne.getListeStation().remove(pos);
+                    }
+                    reponse = "La station "+nomStation+" a été supprimée de la ligne "+nomLigne+".";
+                }else{
+                    reponse = "La station "+nomStation+" ne peut pas être supprimer puisque la ligne ne comportera plus qu'une seule station.";
+                }
+            }else{
+                reponse = "La station "+nomStation+" n'existe pas dans la ligne.";
+            }
+        }else{
+            reponse = "La ligne saisie n'existe pas.";
+        }
+
+        return reponse;
+    }
 
     public String modifierLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
         String reponse = "";

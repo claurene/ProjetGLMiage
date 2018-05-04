@@ -203,7 +203,7 @@ public class LigneControllerTest {
         String station2 = l.getListeStation().get(1).getNomStation();
         int tmpParc = l.getListeTempsParcours().get(0);
 
-        String reponse = ligneController.modifierLigneTempsParcours(ligneController.getLignes().get("1").getNomLigne(),station1,station2,-2);
+        String reponse = ligneController.modifierLigneTempsParcours(l.getNomLigne(),station1,station2,-2);
         int tmpParcNouv = l.getListeTempsParcours().get(0);
 
         assertAll(
@@ -211,6 +211,86 @@ public class LigneControllerTest {
                 () -> assertTrue(reponse.equals("Le temps de parcours doit être strictement supérieur à 0."))
         );
     }
+
+    @Test
+    @DisplayName("Supprimer une station dans une ligne.")
+    void ModifierLigneSupprimerStation(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(1).getNomStation();
+        String reponse = ligneController.modifierLigneSupprimerStation(l.getNomLigne(), station1);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station "+station1+" a été supprimée de la ligne "+l.getNomLigne()+"."))
+        );
+    }
+
+    @Test
+    @DisplayName("Supprimer la station de départ dans une ligne.")
+    void ModifierLigneSupprimerStationDepart(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(0).getNomStation();
+        String reponse = ligneController.modifierLigneSupprimerStation(l.getNomLigne(), station1);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station "+station1+" a été supprimée de la ligne "+l.getNomLigne()+"."))
+        );
+    }
+
+    @Test
+    @DisplayName("Supprimer la station terminus dans une ligne.")
+    void ModifierLigneSupprimerStationTerminus(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(l.getListeStation().size()-1).getNomStation();
+        String reponse = ligneController.modifierLigneSupprimerStation(l.getNomLigne(), station1);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station "+station1+" a été supprimée de la ligne "+l.getNomLigne()+"."))
+        );
+    }
+
+    @Test
+    @DisplayName("Supprimer une station inexistante dans une ligne.")
+    void ModifierLigneSupprimerStationInexistante(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+        String reponse = ligneController.modifierLigneSupprimerStation("1", "pas station");
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station pas station n'existe pas dans la ligne."))
+        );
+    }
+
+    /*
+    A revoir car aucune ligne n'a que deux stations dans jeu de données
+    @Test
+    @DisplayName("Supprimer une station alors que la ligne n'a plus que 2 stations.")
+    void ModifierLigneSupprimerStationListeInsuffisante(){
+        ligneController.initialisationLignes();
+        int taille = ligneController.getLignes().size();
+
+
+        Ligne l = ligneController.getLignes().get("1");
+        String station1 = l.getListeStation().get(1).getNomStation();
+        String reponse = ligneController.modifierLigneSupprimerStation(l.getNomLigne(), station1);
+
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station "+station1+" ne peut pas être supprimer puisque la ligne ne comportera plus qu'une seule station."))
+        );
+    }*/
 
     @Test
     @DisplayName("Ajout d'un incident sur une ligne")

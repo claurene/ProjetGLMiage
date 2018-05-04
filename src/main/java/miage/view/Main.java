@@ -137,7 +137,7 @@
                         supprimerLigneUtilisateur(sc);
                         break;
                     case 6:
-                        //TODO Modifier une ligne de métro
+                        //TModifier une ligne de métro
                         sc.nextLine();
                         modifierLigneUtilisateur(sc);
                         break;
@@ -311,6 +311,9 @@
          */
         public static void modifierLigneUtilisateur(Scanner sc){
             boolean run = true;
+            String message = "";
+            String station1, station2, listeStation;
+            int tmpParc = 0;
             System.out.println("Les lignes disponibles sont : ");
             listeLigneExiste = ligneController.listeLigne();
             if(!listeLigneExiste.equals("noLigne")) {
@@ -335,31 +338,41 @@
                         }
                         switch (choix) {
                             case 1:
-                                //TODO modifier temps parcours
+                                //modifier temps parcours
                                 //Afficher les stations de la ligne
-                                String listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                listeStation = ligneController.listeStationsParLigne(nomLigne);
                                 System.out.println(listeStation);
                                 sc.nextLine();
 
                                 //Sélectionner 2 stations
                                 System.out.println("Veuillez saisir les stations entre lesquelles vous voulez changer le temps de parcours");
                                 System.out.println("Station 1 : ");
-                                String station1 = sc.nextLine().toLowerCase();
+                                station1 = sc.nextLine().toLowerCase();
                                 System.out.println("Station 2 : ");
-                                String station2 = sc.nextLine().toLowerCase();
+                                station2 = sc.nextLine().toLowerCase();
 
                                 //Saisir temps de parcours à modifier
                                 System.out.println("Veuillez saisir le nouveau temps de parcours entre la station "+station1+" et la station "+station2);
-                                int tmpParc = sc.nextInt();
+                                tmpParc = sc.nextInt();
 
-                                String message = ligneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
+                                message = ligneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
                                 System.out.println(message);
                                 break;
                             case 2:
                                 //TODO Ajouter une station entre 2
                                 break;
                             case 3:
-                                //TODO Supprimer une station entre 2
+                                //Supprimer une station entre 2
+                                listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                System.out.println(listeStation);
+                                sc.nextLine();
+
+                                //Sélectionner la station à supprimer
+                                System.out.println("Veuillez saisir la station que vous souhaitez supprimer :");
+                                station1 = sc.nextLine();
+
+                                message = ligneController.modifierLigneSupprimerStation(nomLigne, station1);
+                                System.out.println(message);
                                 break;
                             case 0:
                                 run = false;
