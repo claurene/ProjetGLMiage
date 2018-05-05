@@ -6,6 +6,7 @@ import miage.model.Station;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -436,6 +437,25 @@ public class LigneController {
             reponse = "La ligne "+nomLigne+" que vous souhaitez modifier n'existe pas.";
         }
         return reponse;
+    }
+    /**
+     * Fonction qui permet de renvoyer sous forme de liste les lignes dont fait partie la station renseignée
+     * en paramètre
+     * @param nomStation le nom de la station
+     * @return une Liste comprenant les lignes dont fait partie la station
+     */
+
+    public List<String> lignesDeLaStation(String nomStation){
+        List<String> lignesDeLaStation = new ArrayList<>();
+        for(Map.Entry<String, Ligne> entry : lignes.entrySet()) {
+            ArrayList<Station> stations = entry.getValue().getListeStation();
+            for (Station station : stations){
+                if (station.getNomStation().equals(nomStation)){
+                    lignesDeLaStation.add(entry.getValue().getNomLigne());
+                }
+            }
+        }
+        return lignesDeLaStation;
     }
 
     /**
