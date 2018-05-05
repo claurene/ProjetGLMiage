@@ -3,3 +3,4 @@
 app.iml
 target/
 .gitignore
+src/main/resources/*

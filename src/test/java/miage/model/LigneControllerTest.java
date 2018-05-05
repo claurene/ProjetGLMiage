@@ -328,7 +328,103 @@ public class LigneControllerTest {
     @Test
     @DisplayName("Ajouter une station entre deux stations dans une ligne.")
     void ModifierLigneAjouterStationEntreDeux(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(0).getNomStation();
+        String stationSuiv = l.getListeStation().get(1).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("L'ajout de la station "+l2.getListeStation().get(0).getNomStation()+" a été effectué entre les stations " + stationPrec + " et " + stationSuiv + "."))
+        );
+    }
 
+    @Test
+    @DisplayName("Ajouter une station entre deux stations avec l'ordre de saisie inversé dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeuxInversee(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(1).getNomStation();
+        String stationSuiv = l.getListeStation().get(0).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("L'ajout de la station "+l2.getListeStation().get(0).getNomStation()+" a été effectué entre les stations " + stationPrec + " et " + stationSuiv + "."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station entre deux stations non reliées dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeuxNonReliees(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(0).getNomStation();
+        String stationSuiv = l.getListeStation().get(5).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("les stations " + stationPrec + " et " + stationSuiv + " ne sont pas directement reliées."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station entre deux stations avec tmps parcours erroné dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeuxTmpParcIncorrect(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(0).getNomStation();
+        String stationSuiv = l.getListeStation().get(1).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, -5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("Le temps de parcours entre doit être strictement supérieur à 0."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station entre deux fois la meme station dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeuxMemeStation(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(0).getNomStation();
+        String stationSuiv = l.getListeStation().get(0).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("Les stations précédente et suivante sont les mêmes."))
+        );
+    }
+
+    @Test
+    @DisplayName("Ajouter une station entre deux stations dont une pas dans la ligne dans une ligne.")
+    void ModifierLigneAjouterStationEntreDeuxInexistante(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+        int taille = ligneController.getLignes().size();
+        Ligne l = ligneController.getLignes().get("1");
+        Ligne l2 = ligneController.getLignes().get("3");
+        String stationPrec = l.getListeStation().get(0).getNomStation();
+        String stationSuiv = l2.getListeStation().get(0).getNomStation();
+        String reponse = ligneController.modifierLigneAjouterStation(3, stationController.getStations(), "1", l2.getListeStation().get(0).getNomStation(), stationPrec,stationSuiv, 5, 5);
+        assertAll(
+                () -> assertTrue(ligneController.getLignes().size()==taille),
+                () -> assertTrue(reponse.equals("La station " + stationSuiv + " n'est pas présente dans la ligne " + l.getNomLigne() + "."))
+        );
     }
 
     @Test

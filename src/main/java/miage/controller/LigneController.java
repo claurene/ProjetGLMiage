@@ -115,6 +115,7 @@ public class LigneController {
         String reponse = "";
         ArrayList<Station> listeStations = getLignes().get(nomLigne).getListeStation();
         ArrayList<Integer> tmpParcours = getLignes().get(nomLigne).getListeTempsParcours();
+        System.out.println(listeStations.size());
         for(int i = 0; i<listeStations.size(); i++){
             reponse += "Station : "+listeStations.get(i).getNomStation()+"\n";
             if(i != listeStations.size()-1) {
@@ -308,18 +309,18 @@ public class LigneController {
         return reponse;
     }
 
-    public String modifierLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
-        String reponse = "";
-        Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
-        if (ligneExiste(nomLigne)){
-            this.lignes.put(nomLigne,l);
-            reponse = "La ligne a bien été modifiée";
-        } else {
-            reponse = "La ligne que vous souhaitez modifier n'existe pas";
-        }
-        return reponse;
-    }
-
+    /**
+     * Méthode qui permet d'ajouter une station en départ, entre 2 ou en Terminus d'une ligne
+     * @param choix départ, entre deux ou terminus
+     * @param listeStations liste de toutes les stations
+     * @param nomLigne nom de la ligne à modifier
+     * @param nouvStation nouvelle station à ajouter
+     * @param precStation station après laquelle ajouter la nouvelle station
+     * @param suivStation station avant laquelle ajouter la nouvelle station
+     * @param tmpParcPrec temps de parcours entre la précédente et la nouvelle station
+     * @param tmpParcSuiv temps de parcours entre la nouvelle et la station suivante
+     * @return string la ligne a été modifiée
+     */
     public String modifierLigneAjouterStation(int choix, HashMap<String, Station> listeStations, String nomLigne, String nouvStation, String precStation, String suivStation, int tmpParcPrec, int tmpParcSuiv){
         String reponse = "";
         int posStation = 0;
@@ -367,6 +368,42 @@ public class LigneController {
                         break;
                     case 3:
                         //Entre deux stations
+                        if(listeStations.containsKey(nouvStation)) {
+                            if(!precStation.equals(suivStation)){
+                                if (ligne.trouverStation(precStation)) {
+                                    if (ligne.trouverStation(suivStation)) {
+                                        if (tmpParcPrec > 0 && tmpParcSuiv > 0) {
+                                            int posPrec = ligne.trouverPosListeStation(precStation);
+                                            int posSuiv = ligne.trouverPosListeStation(suivStation);
+                                            int somPos = posSuiv - posPrec;
+                                            if(somPos ==1 || somPos ==-1 ){
+                                                if(somPos == -1) {
+                                                    int postmp = posPrec;
+                                                    posPrec = posSuiv;
+                                                    posSuiv = postmp;
+                                                }
+                                                ligne.getListeStation().add(posSuiv, stationController.getStations().get(nouvStation));
+                                                ligne.getListeTempsParcours().add(posPrec, tmpParcPrec);
+                                                ligne.getListeTempsParcours().add(posSuiv, tmpParcSuiv);
+                                                reponse = "L'ajout de la station " + nouvStation + " a été effectué entre les stations " + precStation + " et " + suivStation + ".";
+                                            }else{
+                                                reponse = "les stations " + precStation + " et " + suivStation + " ne sont pas directement reliées.";
+                                            }
+                                        } else {
+                                            reponse = "Le temps de parcours entre doit être strictement supérieur à 0.";
+                                        }
+                                    } else {
+                                        reponse = "La station " + suivStation + " n'est pas présente dans la ligne " + nomLigne + ".";
+                                    }
+                                } else {
+                                    reponse = "La station " + precStation + " n'est pas présente dans la ligne " + nomLigne + ".";
+                                }
+                            } else {
+                                reponse = "Les stations précédente et suivante sont les mêmes.";
+                            }
+                        }else{
+                            reponse = "La station " + nouvStation + " n'existe pas.";
+                        }
                         break;
                 }
             }else{

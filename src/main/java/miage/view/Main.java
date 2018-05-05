@@ -310,7 +310,6 @@
          * @param sc
          */
         public static void modifierLigneUtilisateur(Scanner sc){
-            boolean run = true;
             String message = "";
             String station1, station2, listeStation;
             int tmpParc = 0;
@@ -322,21 +321,16 @@
                 System.out.println("Nom de la ligne");
                 nomLigne = sc.nextLine().toLowerCase();
                 if (ligneController.getLignes().containsKey(nomLigne)){
+
                     Ligne ligne = ligneController.getLignes().get(nomLigne);
-                    while(run) {
                         System.out.println("[1] Modifier le temps de parcours entre 2 stations");
                         System.out.println("[2] Ajouter une station entre 2 stations");
                         System.out.println("[3] Supprimer une station entre 2 stations");
                         System.out.println("[0] Fin dela modification d'une ligne");
 
                         System.out.println("Entrez votre choix : ");
-                        int choix;
-                        try {
-                            choix = sc.nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
-                            continue;
-                        }
+                        int choix = sc.nextInt();
+
                         switch (choix) {
                             case 1:
                                 //modifier temps parcours
@@ -365,38 +359,61 @@
                                 //Paramètres
                                 String stationNouv="", stationPrec="", stationSuiv ="";
                                 int tmpParcPrec=0, tmpParcSuiv=0;
+
                                 //Afficher la liste des stations
                                 System.out.println("Les stations disponibles sont : ");
                                 listeStationExiste = stationController.listeStation();
                                 if(!listeStationExiste.equals("noStation")) {
+                                    System.out.println((listeStationExiste));
 
                                     //Saisir la station à ajouter
                                     System.out.println("Veuillez saisir la station que vous souhaitez ajouter à la ligne " + nomLigne + " :");
                                     stationNouv = sc.nextLine();
-                                    if(stationController.getStations().containsKey(stationNouv)) {
-                                        System.out.println("[1] Ajouter la station en départ");
-                                        System.out.println("[2] Ajouter la station en terminus");
-                                        System.out.println("[3] Ajouter la station entre 2 stations");
-                                        System.out.println("Veuillez choisir l'action à réaliser :");
-                                        int ch = sc.nextInt();
-                                        switch (ch){
-                                            case 1:
-                                                stationSuiv = ligne.getListeStation().get(0).getNomStation();
-                                                System.out.println("Veuillez saisir le temps de parcours entre "+stationNouv+" et "+stationSuiv+" :");
-                                                tmpParcSuiv = sc.nextInt();
-                                                ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
-                                                break;
-                                            case 2 :
-                                                stationPrec= ligne.getListeStation().get(ligne.getListeStation().size()-1).getNomStation();
-                                                System.out.println("Veuillez saisir le temps de parcours entre "+stationPrec+" et "+stationNouv+" :");
-                                                tmpParcPrec = sc.nextInt();
-                                                ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
-                                                break;
-                                            case 3 :
-                                                break;
+                                    System.out.println(stationNouv);
+
+                                    //Vérifier que la station n'est pas présente dans la ligne
+                                    if(!ligne.trouverStation(stationNouv)) {
+                                        if (stationController.getStations().containsKey(stationNouv)) {
+                                            System.out.println("[1] Ajouter la station en départ");
+                                            System.out.println("[2] Ajouter la station en terminus");
+                                            System.out.println("[3] Ajouter la station entre 2 stations");
+                                            System.out.println("Veuillez choisir l'action à réaliser :");
+                                            int ch = sc.nextInt();
+                                            switch (ch) {
+                                                case 1:
+                                                    //Départ
+                                                    stationSuiv = ligne.getListeStation().get(0).getNomStation();
+                                                    System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
+                                                    tmpParcSuiv = sc.nextInt();
+                                                    message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
+                                                    System.out.println(message);
+                                                    break;
+                                                case 2:
+                                                    //Terminus
+                                                    stationPrec = ligne.getListeStation().get(ligne.getListeStation().size() - 1).getNomStation();
+                                                    System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
+                                                    tmpParcPrec = sc.nextInt();
+                                                    message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
+                                                    System.out.println(message);
+                                                    break;
+                                                case 3:
+                                                    //Entre deux stations
+                                                    System.out.println("Veuillez saisir les stations entre lesquelles vous voulez placer " + stationNouv + " :");
+                                                    stationPrec = sc.nextLine();
+                                                    stationSuiv = sc.nextLine();
+                                                    System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
+                                                    tmpParcPrec = sc.nextInt();
+                                                    System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
+                                                    tmpParcSuiv = sc.nextInt();
+                                                    message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
+                                                    System.out.println(message);
+                                                    break;
+                                            }
+                                        } else {
+                                            System.out.println("La station " + stationNouv + " n'existe pas dans la ligne");
                                         }
                                     }else{
-                                        System.out.println("La station "+stationNouv+" n'existe pas dans la ligne");
+                                        System.out.println("La station "+stationNouv+" existe déjà dans la ligne "+nomLigne+".");
                                     }
                                 }else{
                                     System.out.println("Il n'y a aucune station.");
@@ -404,10 +421,10 @@
 
                                 break;
                             case 3:
+                                sc.nextLine();
                                 //Supprimer une station entre 2
                                 listeStation = ligneController.listeStationsParLigne(nomLigne);
                                 System.out.println(listeStation);
-                                sc.nextLine();
 
                                 //Sélectionner la station à supprimer
                                 System.out.println("Veuillez saisir la station que vous souhaitez supprimer :");
@@ -417,12 +434,10 @@
                                 System.out.println(message);
                                 break;
                             case 0:
-                                run = false;
                                 break;
                             default:
                                 System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
                         }
-                    }
                 }else{
                     System.out.println("La ligne "+nomLigne+" n'existe pas.");
                 }
@@ -430,6 +445,7 @@
                 System.out.println("Aucune ligne n'est disponble.");
             }
         }
+
 
         /**
          * Méthode qui permet à l'utilisateur de modifier l'incident d'une ligne
