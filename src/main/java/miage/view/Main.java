@@ -57,7 +57,6 @@ public class Main {
                 System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
                 continue;
             }
-
             // Action effectuée en fonction du choix :
             switch(choix) {
                 case 1:
@@ -104,6 +103,11 @@ public class Main {
                         }
                         else {
                             System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
+                            int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
+                            if (temps == 0){
+                                break;
+                            }
+                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");
                         }
                     }
                     break;
