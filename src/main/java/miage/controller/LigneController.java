@@ -324,7 +324,6 @@ public class LigneController {
     public String modifierLigneAjouterStation(int choix, HashMap<String, Station> listeStations, String nomLigne, String nouvStation, String precStation, String suivStation, int tmpParcPrec, int tmpParcSuiv){
         String reponse = "";
         int posStation = 0;
-        StationController stationController = new StationController();
         //On vérifie que la ligne existe
         if(this.lignes.containsKey(nomLigne)){
             Ligne ligne = this.lignes.get(nomLigne);
@@ -335,7 +334,7 @@ public class LigneController {
                         if(listeStations.containsKey(nouvStation)) {
                             if (ligne.trouverStation(suivStation)) {
                                 if (tmpParcSuiv > 0) {
-                                    ligne.getListeStation().add(0, stationController.getStations().get(nouvStation));
+                                    ligne.getListeStation().add(0, listeStations.get(nouvStation));
                                     ligne.getListeTempsParcours().add(0, tmpParcSuiv);
                                     reponse = "L'ajout de la station "+nouvStation+" a été effectué en tant que départ de la ligne "+nomLigne+".";
                                 } else {
@@ -353,7 +352,7 @@ public class LigneController {
                         if(listeStations.containsKey(nouvStation)) {
                             if (ligne.trouverStation(precStation)) {
                                 if (tmpParcPrec > 0) {
-                                    ligne.getListeStation().add(stationController.getStations().get(nouvStation));
+                                    ligne.getListeStation().add(listeStations.get(nouvStation));
                                     ligne.getListeTempsParcours().add(tmpParcPrec);
                                     reponse = "L'ajout de la station "+nouvStation+" a été effectué en tant que terminus de la ligne "+nomLigne+".";
                                 } else {
@@ -382,7 +381,7 @@ public class LigneController {
                                                     posPrec = posSuiv;
                                                     posSuiv = postmp;
                                                 }
-                                                ligne.getListeStation().add(posSuiv, stationController.getStations().get(nouvStation));
+                                                ligne.getListeStation().add(posSuiv, listeStations.get(nouvStation));
                                                 ligne.getListeTempsParcours().add(posPrec, tmpParcPrec);
                                                 ligne.getListeTempsParcours().add(posSuiv, tmpParcSuiv);
                                                 reponse = "L'ajout de la station " + nouvStation + " a été effectué entre les stations " + precStation + " et " + suivStation + ".";
