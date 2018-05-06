@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Ligne")
@@ -99,5 +100,27 @@ public class LigneTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         assertEquals(l.getTerminus(),listeStation.get(listeStation.size()-1), "La station finale doit etre Republique.");
+    }
+
+    @Test
+    @DisplayName("Direction inverse de la ligne")
+    void directionInverse(){
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(10);
+        tempsParcours.add(5);
+        tempsParcours.add(7);
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,49.82,2.2));
+        listeStation.add(new Station("Jacques-Bonsergent",2,false,50.19,2.4));
+        listeStation.add(new Station("Republique",2,false,51.19,2.6));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+        Ligne lInverse = l.getDirectionInverse();
+        assertAll(
+                () -> assertTrue(l.getDepart().getNomStation().equals("Gare du nord")),
+                () -> assertTrue(lInverse.getDepart().getNomStation().equals("Republique")),
+                () -> assertTrue(l.getListeTempsParcours().get(0)==10),
+                () -> assertTrue(lInverse.getListeTempsParcours().get(0)==7)
+        );
     }
 }

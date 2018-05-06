@@ -2,6 +2,7 @@ package miage.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +37,18 @@ public class Ligne implements Serializable {
                 this.incident = false;
             }
         }
+    }
+
+    /**
+     * Méthode pour avoir la ligne dans la direction inverse
+     * @return la ligne dans l'autre direction
+     */
+    public Ligne getDirectionInverse(){
+        ArrayList<Integer> newTempsParcours = (ArrayList<Integer>) tempsParcours.clone();
+        Collections.reverse(newTempsParcours);
+        ArrayList<Station> newListeStation = (ArrayList<Station>) listeStation.clone();
+        Collections.reverse(newListeStation);
+        return new Ligne(nomLigne,newTempsParcours,newListeStation);
     }
 
     public String getNomLigne() {
