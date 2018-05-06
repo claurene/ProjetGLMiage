@@ -43,8 +43,8 @@ public class Horaire {
      * Calcul des horaires de passage des rames à la station de départ de chaque ligne
      * @return table des horaires
      */
-    private ArrayList<LocalDateTime> tableHoraireRames(LocalDate date){
-        LocalDateTime heure = LocalDateTime.of(date,DEBUT_RAMES);
+    private ArrayList<LocalDateTime> tableHoraireRames(LocalDate date, LocalTime debutRames){
+        LocalDateTime heure = LocalDateTime.of(date,debutRames);
         ArrayList<LocalDateTime> tableHoraire = new ArrayList<LocalDateTime>();
         for (int i=0;i<24*NOMBRE_RAMES_HEURE;i++){
             tableHoraire.add(heure);
@@ -53,12 +53,12 @@ public class Horaire {
         return tableHoraire;
     }
 
-    private LocalDateTime getDateDepartRame(LocalDateTime heure) {
-        for (LocalDateTime e : tableHoraireRames(heure.toLocalDate())) {
+    private LocalDateTime getDateDepartRame(LocalDateTime heure, LocalTime debutRames) {
+        for (LocalDateTime e : tableHoraireRames(heure.toLocalDate(),debutRames)) {
             if (e.isAfter(heure)) {return e;}
         }
         //Si passage après 24h
-        return LocalDateTime.of(heure.toLocalDate().plusDays(1),DEBUT_RAMES);
+        return LocalDateTime.of(heure.toLocalDate().plusDays(1),debutRames);
     }
 
     /**
@@ -66,14 +66,23 @@ public class Horaire {
      * @return l'horaire approprié
      */
     public LocalDateTime getHoraire() {
-        //TODO : gérer la direction !!
+        //TODO : gérer la direction !! => dans le main
         Station departLigne = this.ligne.getDepart();
         LocalDateTime horaire = this.heure; //initialisation
         // Si la station est un départ de ligne :
         if (this.arret.getNomStation().equals(departLigne.getNomStation())) {
-            horaire = getDateDepartRame(this.heure);
+            horaire = getDateDepartRame(this.heure,DEBUT_RAMES);
         } else {
-            //TODO : avec temps de parcours entre deux stations
+            // Calcul du temps de parcours jusqu'à l'arret choisi
+            int posArret = this.ligne.trouverPosListeStation(this.arret.getNomStation());
+            ArrayList<Integer> tempsParcours = this.ligne.getListeTempsParcours();
+            ArrayList<Station> listeStations = this.ligne.getListeStation();
+            int total = 0;
+            for (int i=0;i<posArret;i++) {
+                total+=tempsParcours.get(i)+listeStations.get(i).getTempsArret();
+            }
+            // Horaire en fonction du temps du départ jusqu'à l'arret
+            horaire = getDateDepartRame(this.heure,DEBUT_RAMES.plusMinutes(total));
         }
         return horaire;
     }
