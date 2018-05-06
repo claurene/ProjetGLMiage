@@ -66,7 +66,6 @@ public class HoraireTest {
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
         Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
-        System.out.println(h.getHoraire());
 
         assertEquals(h.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,6)));
 
@@ -75,9 +74,9 @@ public class HoraireTest {
     @Test
     @DisplayName("Horaire pour une station quelconque")
     void horaireStation(){
-        LocalDateTime heureTest = LocalDateTime.now();
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
         ArrayList<Integer> tempsParcours = new ArrayList<>();
-        tempsParcours.add(10);
+        tempsParcours.add(11);
         Station s = new Station("Gare de l'est",2,false,48.79,2.12);
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
@@ -85,15 +84,17 @@ public class HoraireTest {
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
         Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
-        System.out.println(h.getHoraire());
 
-        assertEquals(h.getHoraire(),heureTest);
+        /* Temps entre les deux stations = 13min, rames toutes les 6 min à partir de 00h00 au départ :
+         * Donc rames à 00h13, 00h18, etc. => 06h01
+         */
+        assertEquals(h.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,1)));
 
     }
 
     @Test
-    @DisplayName("Horaire pour une station après 24h")
-    void horaire24H(){
+    @DisplayName("Horaire pour une station de départ après 24h")
+    void horaire24HDepart(){
         LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,55));
         ArrayList<Integer> tempsParcours = new ArrayList<>();
         tempsParcours.add(10);
@@ -104,9 +105,27 @@ public class HoraireTest {
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
         Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
-        System.out.println(h.getHoraire());
 
         assertEquals(h.getHoraire(),LocalDateTime.of(heureTest.toLocalDate().plusDays(1),LocalTime.MIDNIGHT));
+
+    }
+
+    @Test
+    @DisplayName("Horaire pour une station quelconque après 24h")
+    void horaire24H(){
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(23,55));
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(11);
+        Station s = new Station("Gare de l'est",2,false,48.79,2.12);
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+
+        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+
+        // De même, rames de 00h13 à 00h01 d'après le temps de parcours
+        assertEquals(h.getHoraire(),LocalDateTime.of(heureTest.toLocalDate().plusDays(1),LocalTime.MIDNIGHT.plusMinutes(1)));
 
     }
 }
