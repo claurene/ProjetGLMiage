@@ -8,32 +8,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Horaire")
 public class HoraireTest {
-
-    @Test
-    @DisplayName("Changement de direction")
-    void changementDirection(){
-        LocalDateTime heureTest = LocalDateTime.now();
-        ArrayList<Integer> tempsParcours = new ArrayList<>();
-        tempsParcours.add(10);
-        Station s = new Station("Gare de l'est",2,false,48.79,2.12);
-        ArrayList<Station> listeStation = new ArrayList<Station>();
-        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
-        listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
-        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
-
-        h.setDirection("Est-Nord");
-
-        System.out.println(h.toString());
-        assertEquals(h.getDirection(),"Est-Nord","La direction devrait être Est-Nord");
-    }
-
 
     @Test
     @DisplayName("Changement de statut")
@@ -46,7 +25,7 @@ public class HoraireTest {
         listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+        Horaire h = new Horaire(s,l,"En service",heureTest);
 
         h.setStatut("Annulé");
 
@@ -65,7 +44,8 @@ public class HoraireTest {
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+        Horaire h = new Horaire(s,l,"En service",heureTest);
+        System.out.println(h.toString());
 
         assertEquals(h.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,6)));
 
@@ -83,7 +63,7 @@ public class HoraireTest {
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+        Horaire h = new Horaire(s,l,"En service",heureTest);
 
         /* Temps entre les deux stations = 13min, rames toutes les 6 min à partir de 00h00 au départ :
          * Donc rames à 00h13, 00h18, etc. => 06h01
@@ -104,7 +84,7 @@ public class HoraireTest {
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+        Horaire h = new Horaire(s,l,"En service",heureTest);
 
         assertEquals(h.getHoraire(),LocalDateTime.of(heureTest.toLocalDate().plusDays(1),LocalTime.MIDNIGHT));
 
@@ -122,10 +102,35 @@ public class HoraireTest {
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        Horaire h = new Horaire(s,l,"Nord-Est","En service",heureTest);
+        Horaire h = new Horaire(s,l,"En service",heureTest);
 
         // De même, rames de 00h13 à 00h01 d'après le temps de parcours
         assertEquals(h.getHoraire(),LocalDateTime.of(heureTest.toLocalDate().plusDays(1),LocalTime.MIDNIGHT.plusMinutes(1)));
 
+    }
+
+    @Test
+    @DisplayName("Horaire pour la ligne passant dans l'autre sens")
+    void horaireStationDirection(){
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(10);
+        tempsParcours.add(5);
+        tempsParcours.add(7);
+        Station s = new Station("Gare du nord",2,false,48.79,2.12);
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,49.82,2.2));
+        listeStation.add(new Station("Jacques-Bonsergent",2,false,50.19,2.4));
+        listeStation.add(new Station("Republique",2,false,51.19,2.6));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+
+        Horaire h1 = new Horaire(s,l,"En service",heureTest);
+        Horaire h2 = new Horaire(s,l.getDirectionInverse(),"En service",heureTest);
+
+        assertAll(
+                () -> assertEquals(h1.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,6))),
+                () -> assertEquals(h2.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,4)))
+        );
     }
 }

@@ -16,7 +16,6 @@ public class Horaire {
     private final LocalTime DEBUT_RAMES = LocalTime.MIDNIGHT;
     private Station arret;
     private Ligne ligne;
-    private String direction;
     private String statut;
     private LocalDateTime heure;
 
@@ -25,22 +24,21 @@ public class Horaire {
      * Constructeur des horaires de metro
      * @param arret nom de la station
      * @param ligne nom de la ligne
-     * @param direction direction de la ligne
      * @param statut statut
      * @param heure heure
      */
 
-    public Horaire(Station arret, Ligne ligne, String direction, String statut, LocalDateTime heure){
-
+    public Horaire(Station arret, Ligne ligne, String statut, LocalDateTime heure){
         this.arret = arret;
         this.ligne = ligne;
-        this.direction = direction;
         this.statut = statut;
         this.heure = heure;
     }
 
     /**
-     * Calcul des horaires de passage des rames à la station de départ de chaque ligne
+     * Calcul des horaires de passage de toutes les rames à un certain arret
+     * @param date la date de passage
+     * @param debutRames l'heure du début de passage des rames à l'arret choisi
      * @return table des horaires
      */
     private ArrayList<LocalDateTime> tableHoraireRames(LocalDate date, LocalTime debutRames){
@@ -53,6 +51,12 @@ public class Horaire {
         return tableHoraire;
     }
 
+    /**
+     * Renvoie le prochain passage de la rame en fonction de ses horaires et de l'heure actuelle
+     * @param heure l'heure actuelle
+     * @param debutRames le début des passages de la rame à l'arret
+     * @return l'heure de passage à l'arret après l'heure actuelle
+     */
     private LocalDateTime getDateDepartRame(LocalDateTime heure, LocalTime debutRames) {
         for (LocalDateTime e : tableHoraireRames(heure.toLocalDate(),debutRames)) {
             if (e.isAfter(heure)) {return e;}
@@ -62,13 +66,12 @@ public class Horaire {
     }
 
     /**
-     * Obtenir l'horaire désiré en fonction de la ligne, la station, la direction et l'heure choisies
+     * Obtenir l'horaire désiré en fonction de la ligne, la station, et l'heure choisies
      * @return l'horaire approprié
      */
     public LocalDateTime getHoraire() {
-        //TODO : gérer la direction !! => dans le main
         Station departLigne = this.ligne.getDepart();
-        LocalDateTime horaire = this.heure; //initialisation
+        LocalDateTime horaire;
         // Si la station est un départ de ligne :
         if (this.arret.getNomStation().equals(departLigne.getNomStation())) {
             horaire = getDateDepartRame(this.heure,DEBUT_RAMES);
@@ -88,28 +91,10 @@ public class Horaire {
     }
 
     /**
-     * Fonction qui permet de verifier le nombre de minutes avant le prochain passage
-     * On récupère d'abord la date à laquelle la fonction a été executée puis on extrait
-     * les minutes, ensuite on calcul le nombre de minutes avant la prochaine rame et on l'ajoute
-     * à la date actuelle
-     * @return la date de prochain passage au format LocalDateTime
-     */
-
-    private LocalDateTime getProchainPassage() {
-        LocalDateTime heureActuelle = LocalDateTime.now();
-        int minutes = heureActuelle.getMinute();
-        int calcul = minutesEntreRames() - (minutes % minutesEntreRames());
-        return heureActuelle.plusMinutes(calcul);
-    }
-
-
-    /**
      * Fonction qui permet de calculer le nombre de minutes entre deux rames en partant de
      * la constante NOMBRE_RAMES_HEURE
      * @return un int du nombre de minutes entre deux rames
      */
-
-
     private int minutesEntreRames(){
         int minutesRames;
         minutesRames = 60/NOMBRE_RAMES_HEURE;
@@ -136,14 +121,6 @@ public class Horaire {
         this.ligne = ligne;
     }
 
-    public String getDirection() {
-        return direction;
-    }
-
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
-
     public String getStatut() {
         return statut;
     }
@@ -158,7 +135,8 @@ public class Horaire {
 
     @Override
     public String toString() {
-        return "Le prochain passage d'une rame à l'arrêt : " + arret.getNomStation() + " de la ligne "+ ligne.getNomLigne() +" direction "+ direction + " se fera le " + getProchainPassage();
+        LocalDateTime horaire = getHoraire();
+        return "Le prochain passage d'une rame à l'arrêt : " + arret.getNomStation() + " de la ligne "+ ligne.getNomLigne() +" direction : "+ ligne.getTerminus().getNomStation() + " se fera le " + horaire.toLocalDate() + " à "+horaire.toLocalTime();
     }
 
 }
