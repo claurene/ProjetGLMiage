@@ -382,7 +382,7 @@ public class LigneController {
                                                     posSuiv = postmp;
                                                 }
                                                 ligne.getListeStation().add(posSuiv, listeStations.get(nouvStation));
-                                                ligne.getListeTempsParcours().add(posPrec, tmpParcPrec);
+                                                ligne.getListeTempsParcours().set(posPrec, tmpParcPrec);
                                                 ligne.getListeTempsParcours().add(posSuiv, tmpParcSuiv);
                                                 reponse = "L'ajout de la station " + nouvStation + " a été effectué entre les stations " + precStation + " et " + suivStation + ".";
                                             }else{

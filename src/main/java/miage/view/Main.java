@@ -329,7 +329,12 @@
                         System.out.println("[0] Fin dela modification d'une ligne");
 
                         System.out.println("Entrez votre choix : ");
-                        int choix = sc.nextInt();
+                        int choix = -1;
+                        try {
+                            choix = sc.nextInt();
+                        } catch (InputMismatchException e) {
+                            System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
+                        }
 
                         switch (choix) {
                             case 1:
@@ -348,13 +353,17 @@
 
                                 //Saisir temps de parcours à modifier
                                 System.out.println("Veuillez saisir le nouveau temps de parcours entre la station "+station1+" et la station "+station2);
-                                tmpParc = sc.nextInt();
+                                try {
+                                    tmpParc = sc.nextInt();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Votre choix est invalide. Le temps de parocurs doit être un entier strictement supérieur à 0.");
+                                }
 
                                 message = ligneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
                                 System.out.println(message);
                                 break;
                             case 2:
-                                //TODO Ajouter une station entre 2
+                                //Ajouter une station entre 2
                                 sc.nextLine();
                                 //Paramètres
                                 String stationNouv="", stationPrec="", stationSuiv ="";
@@ -378,10 +387,19 @@
                                             System.out.println("[2] Ajouter la station en terminus");
                                             System.out.println("[3] Ajouter la station entre 2 stations");
                                             System.out.println("Veuillez choisir l'action à réaliser :");
-                                            int ch = sc.nextInt();
+                                            int ch = -1;
+                                            try {
+                                                ch = sc.nextInt();
+                                            } catch (InputMismatchException e) {
+                                                System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
+                                            }
                                             switch (ch) {
                                                 case 1:
+                                                    sc.nextLine();
                                                     //Départ
+                                                    //Afficher les stations de la ligne
+                                                    listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                                    System.out.println(listeStation);
                                                     stationSuiv = ligne.getListeStation().get(0).getNomStation();
                                                     System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
                                                     tmpParcSuiv = sc.nextInt();
@@ -389,7 +407,11 @@
                                                     System.out.println(message);
                                                     break;
                                                 case 2:
+                                                    sc.nextLine();
                                                     //Terminus
+                                                    //Afficher les stations de la ligne
+                                                    listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                                    System.out.println(listeStation);
                                                     stationPrec = ligne.getListeStation().get(ligne.getListeStation().size() - 1).getNomStation();
                                                     System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
                                                     tmpParcPrec = sc.nextInt();
@@ -397,10 +419,16 @@
                                                     System.out.println(message);
                                                     break;
                                                 case 3:
+                                                    sc.nextLine();
                                                     //Entre deux stations
+                                                    //Afficher les stations de la ligne
+                                                    listeStation = ligneController.listeStationsParLigne(nomLigne);
+                                                    System.out.println(listeStation);
                                                     System.out.println("Veuillez saisir les stations entre lesquelles vous voulez placer " + stationNouv + " :");
-                                                    stationPrec = sc.nextLine();
-                                                    stationSuiv = sc.nextLine();
+                                                    System.out.print("Station précédente : ");
+                                                    stationPrec = sc.nextLine().toLowerCase();
+                                                    System.out.print("Station suivante : ");
+                                                    stationSuiv = sc.nextLine().toLowerCase();
                                                     System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
                                                     tmpParcPrec = sc.nextInt();
                                                     System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
