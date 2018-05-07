@@ -63,7 +63,6 @@ public class Main {
                 System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
                 continue;
             }
-
             // Action effectuée en fonction du choix :
             switch(choix) {
                 case 1:
