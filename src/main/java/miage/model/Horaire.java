@@ -36,6 +36,32 @@ public class Horaire {
     }
 
     /**
+     * Constructeur des horaires de métro avec détection automatique du statut
+     * @param arret nom de la station
+     * @param ligne nom de la ligne
+     * @param heure heure
+     */
+    public Horaire(Station arret, Ligne ligne, LocalDateTime heure) {
+        this.arret = arret;
+        this.ligne = ligne;
+        this.heure = heure;
+        detectionStatutIncident();
+    }
+
+    /**
+     * Défini le statut de l'horaire en fonction des incidents sur la ligne ou la station
+     */
+    private void detectionStatutIncident(){
+        if (arret.isIncident()) {
+            this.statut = "Incident sur la station";
+        } else if (ligne.isIncident()) {
+            this.statut = "Incident sur la ligne";
+        } else {
+            this.statut = "En service";
+        }
+    }
+
+    /**
      * Calcul des horaires de passage de toutes les rames à un certain arret
      * @param date la date de passage
      * @param debutRames l'heure du début de passage des rames à l'arret choisi
@@ -54,15 +80,15 @@ public class Horaire {
     /**
      * Renvoie le prochain passage de la rame en fonction de ses horaires et de l'heure actuelle
      * @param heure l'heure actuelle
-     * @param debutRames le début des passages de la rame à l'arret
+     * @param tableHoraire la table des passages de la rame
      * @return l'heure de passage à l'arret après l'heure actuelle
      */
-    private LocalDateTime getDateDepartRame(LocalDateTime heure, LocalTime debutRames) {
-        for (LocalDateTime e : tableHoraireRames(heure.toLocalDate(),debutRames)) {
+    private LocalDateTime getDateDepartRame(LocalDateTime heure, ArrayList<LocalDateTime> tableHoraire) {
+        for (LocalDateTime e : tableHoraire) {
             if (e.isAfter(heure)) {return e;}
         }
         //Si passage après 24h
-        return LocalDateTime.of(heure.toLocalDate().plusDays(1),debutRames);
+        return LocalDateTime.of(heure.toLocalDate().plusDays(1), LocalTime.from(tableHoraire.get(0)));
     }
 
     /**
@@ -70,11 +96,19 @@ public class Horaire {
      * @return l'horaire approprié
      */
     public LocalDateTime getHoraire() {
+        return getDateDepartRame(this.heure,getTableHoraire());
+    }
+
+    /**
+     * Obtenir la table des horaires à un arret spécifié, pour une ligne et une date choisies
+     * @return la table des horaires
+     */
+    public ArrayList<LocalDateTime> getTableHoraire() {
         Station departLigne = this.ligne.getDepart();
-        LocalDateTime horaire;
+        ArrayList<LocalDateTime> horaire;
         // Si la station est un départ de ligne :
         if (this.arret.getNomStation().equals(departLigne.getNomStation())) {
-            horaire = getDateDepartRame(this.heure,DEBUT_RAMES);
+            horaire = tableHoraireRames(this.heure.toLocalDate(),DEBUT_RAMES);
         } else {
             // Calcul du temps de parcours jusqu'à l'arret choisi
             int posArret = this.ligne.trouverPosListeStation(this.arret.getNomStation());
@@ -85,7 +119,7 @@ public class Horaire {
                 total+=tempsParcours.get(i)+listeStations.get(i).getTempsArret();
             }
             // Horaire en fonction du temps du départ jusqu'à l'arret
-            horaire = getDateDepartRame(this.heure,DEBUT_RAMES.plusMinutes(total));
+            horaire = tableHoraireRames(this.heure.toLocalDate(),DEBUT_RAMES.plusMinutes(total));
         }
         return horaire;
     }
@@ -136,7 +170,11 @@ public class Horaire {
     @Override
     public String toString() {
         LocalDateTime horaire = getHoraire();
-        return "Le prochain passage d'une rame à l'arrêt : " + arret.getNomStation() + " de la ligne "+ ligne.getNomLigne() +" direction : "+ ligne.getTerminus().getNomStation() + " se fera le " + horaire.toLocalDate() + " à "+horaire.toLocalTime();
+        return "Le prochain passage d'une rame à l'arrêt : " + arret.getNomStation() +
+                " de la ligne "+ ligne.getNomLigne() +
+                " direction : "+ ligne.getTerminus().getNomStation() +
+                " se fera le " + horaire.toLocalDate() +
+                " à "+horaire.toLocalTime();
     }
 
 }

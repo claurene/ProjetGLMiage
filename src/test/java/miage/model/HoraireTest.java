@@ -33,6 +33,42 @@ public class HoraireTest {
     }
 
     @Test
+    @DisplayName("Incident sur la station")
+    void incidentStation(){
+        LocalDateTime heureTest = LocalDateTime.now();
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(10);
+        Station s = new Station("Gare de l'est",2,false,48.79,2.12);
+        s.setIncident(true);
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+
+        Horaire h = new Horaire(s,l,heureTest);
+
+        assertEquals(h.getStatut(),"Incident sur la station","Le statut devrait indiquer un incident");
+    }
+
+    @Test
+    @DisplayName("Incident sur la ligne")
+    void incidentLigne(){
+        LocalDateTime heureTest = LocalDateTime.now();
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(10);
+        Station s = new Station("Gare de l'est",2,false,48.79,2.12);
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+        l.setIncident(true);
+
+        Horaire h = new Horaire(s,l,heureTest);
+
+        assertEquals(h.getStatut(),"Incident sur la ligne","Le statut devrait indiquer un incident");
+    }
+
+    @Test
     @DisplayName("Horaire pour une station de départ")
     void horaireDepart(){
         LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
@@ -131,6 +167,30 @@ public class HoraireTest {
         assertAll(
                 () -> assertEquals(h1.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,6))),
                 () -> assertEquals(h2.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,4)))
+        );
+    }
+
+    @Test
+    @DisplayName("Table des horaires d'un arret")
+    void tableHoraires(){
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
+        ArrayList<Station> listeStation = new ArrayList<Station>();
+        ArrayList<Integer> tempsParcours = new ArrayList<>();
+        tempsParcours.add(10);
+        tempsParcours.add(5);
+        tempsParcours.add(7);
+        Station s = new Station("Gare du nord",2,false,48.79,2.12);
+        listeStation.add(new Station("Gare du nord",2,false,48.79,2.12));
+        listeStation.add(new Station("Gare de l'est",2,false,49.82,2.2));
+        listeStation.add(new Station("Jacques-Bonsergent",2,false,50.19,2.4));
+        listeStation.add(new Station("Republique",2,false,51.19,2.6));
+        Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
+
+        Horaire h1 = new Horaire(s,l,"En service",heureTest);
+
+        assertAll(
+                () -> assertEquals(h1.getTableHoraire().get(0),LocalDateTime.of(LocalDate.now(),LocalTime.MIDNIGHT)),
+                () -> assertEquals(h1.getTableHoraire().get(h1.getTableHoraire().size()-1),LocalDateTime.of(LocalDate.now(),LocalTime.of(23,54)))
         );
     }
 }
