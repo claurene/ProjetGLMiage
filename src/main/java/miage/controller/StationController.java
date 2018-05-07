@@ -11,14 +11,14 @@ import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class StationController {
     // Création du logger
     private static final Logger LOG = Logger.getLogger(StationController.class.getName());
 
     //Liste des stations de metro
     private HashMap<String,Station> stations = new HashMap<String,Station>();
+
+    private static LigneController ligneController = new LigneController();
 
     public HashMap<String, Station> getStations() {
         return stations;
@@ -266,4 +266,45 @@ public class StationController {
         return proches;
 
     }
+
+    /**
+     * Fonction qui permet de calculer le temps de parcours + temps d'arrêt entre deux stations d'une même ligne
+     * @param station1
+     * @param station2
+     * @return int du temps de parcours entre les deux stations
+     */
+
+    public int calculTempsParcours(Station station1, Station station2){
+        //todo gérer le calcul dans les deux sens (i--)
+        ligneController.initialisationLignes();
+
+        String nomDepart = station1.getNomStation();
+        String nomArrivee = station2.getNomStation();
+
+        List<String> lignesDepart = ligneController.lignesDeLaStation(nomDepart);
+        List<String> lignesArrivee = ligneController.lignesDeLaStation(nomArrivee);
+
+        for(int i = lignesArrivee.size() - 1; i > -1; --i){
+            String str = lignesArrivee.get(i);
+            if(!lignesDepart.remove(str))
+                lignesArrivee.remove(str);
+        }
+
+        if (lignesArrivee.isEmpty()){
+            System.out.println("Les stations ne font pas partie de la même ligne");
+            return 0;
+        }
+
+        Ligne ligne = ligneController.getLignes().get(lignesArrivee.get(0));
+        ArrayList<Station> listeStations = ligneController.getLignes().get(lignesArrivee.get(0)).getListeStation();
+        int debutIndex = ligneController.getLignes().get(lignesArrivee.get(0)).trouverPosListeStation(nomDepart);
+        int tempsParcours = ligne.getTempsParcours(listeStations.get(debutIndex).getNomStation(),ligne.getListeTempsParcours());
+
+        for (int i = debutIndex+1; !listeStations.get(i).getNomStation().equals(nomArrivee); i++ ){
+            tempsParcours += listeStations.get(i).getTempsArret() + ligne.getTempsParcours(listeStations.get(i).getNomStation(),ligne.getListeTempsParcours());
+        }
+
+        return tempsParcours;
+    }
+
 }
