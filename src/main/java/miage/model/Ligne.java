@@ -44,18 +44,6 @@ public class Ligne implements Serializable {
         return new Ligne(nomLigne,newTempsParcours,newListeStation);
     }
 
-    /**
-     * Méthode pour avoir la ligne dans la direction inverse
-     * @return la ligne dans l'autre direction
-     */
-    public Ligne getDirectionInverse(){
-        ArrayList<Integer> newTempsParcours = (ArrayList<Integer>) tempsParcours.clone();
-        Collections.reverse(newTempsParcours);
-        ArrayList<Station> newListeStation = (ArrayList<Station>) listeStation.clone();
-        Collections.reverse(newListeStation);
-        return new Ligne(nomLigne,newTempsParcours,newListeStation);
-    }
-
     public String getNomLigne() {
         return nomLigne;
     }
