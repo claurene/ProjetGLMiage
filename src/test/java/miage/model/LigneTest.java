@@ -24,15 +24,16 @@ public class LigneTest {
     }
 
     @Test
-    @DisplayName("Initialisation d'une ligne avec incident")
-    void CreationLigneAvecIncident(){
+    @DisplayName("Changement d'incident sur une ligne")
+    void LigneAvecIncident(){
         ArrayList<Integer> tempsParcours = new ArrayList<>();
         tempsParcours.add(10);
         ArrayList<Station> listeStation = new ArrayList<Station>();
         listeStation.add(new Station("Gare du nord",2,true,48.79,2.12));
         listeStation.add(new Station("Gare de l'est",2,false,48.79,2.12));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
-        assertTrue( l.isIncident());
+        l.setIncident(true);
+        assertTrue(l.isIncident());
     }
 
     @Test
@@ -47,6 +48,7 @@ public class LigneTest {
         l.setTempsParcours(60,"Gare du nord",tempsParcours);
         assertEquals(l.getTempsParcours("Gare du nord",tempsParcours),60, "Le temps devrait être 60.");
     }
+
     @Test
     @DisplayName("Temps de parcours total d'une ligne")
     void TempsParcoursTotal(){

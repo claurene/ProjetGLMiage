@@ -1,5 +1,6 @@
 package miage.model;
 
+import miage.controller.LigneController;
 import miage.controller.StationController;
 
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("StationController")
 public class StationControllerTest {
     private final StationController stationController = new StationController();
-
+    private final LigneController ligneController = new LigneController();
     @Test
     @DisplayName("2 Plus proches stations différentes")
     void DeuxPlusProchesNotEquals(){
@@ -116,10 +117,15 @@ public class StationControllerTest {
     @DisplayName("Suppression d'une station de la HashMap")
     void SuppressionStationHashMap(){
         stationController.initialisationStations();
+        ligneController.initialisationLignes();
         int taille = stationController.getStations().size();
-        String reponse = stationController.supprimerStation("gare du nord");
+        int tailleligne = ligneController.getLignes().get("4").getListeStation().size();
+        int tailleparcours = ligneController.getLignes().get("4").getListeTempsParcours().size();
+        String reponse = stationController.supprimerStation("gare du nord",ligneController);
         assertAll(
                 () -> assertTrue(stationController.getStations().size()==taille-1),
+                () -> assertTrue(ligneController.getLignes().get("4").getListeStation().size()==tailleligne-1),
+                () -> assertTrue( ligneController.getLignes().get("4").getListeTempsParcours().size()==tailleparcours-1),
                 () -> assertTrue(reponse.equals("La station a bien été supprimée"))
         );
     }
@@ -128,13 +134,19 @@ public class StationControllerTest {
     @DisplayName("Suppression d'une station inexistante de la HashMap")
     void SuppressionStationInexistanteHashMap(){
         stationController.initialisationStations();
+        ligneController.initialisationLignes();
         int taille = stationController.getStations().size();
-        String reponse = stationController.supprimerStation("gare fantooooooome");
+        int tailleligne = ligneController.getLignes().get("4").getListeStation().size();
+        int tailleparcours = ligneController.getLignes().get("4").getListeTempsParcours().size();
+        String reponse = stationController.supprimerStation("gare fantooooooome",ligneController);
         assertAll(
                 () -> assertTrue(stationController.getStations().size()==taille),
+                () -> assertTrue(ligneController.getLignes().get("4").getListeStation().size()==tailleligne),
+                () -> assertTrue( ligneController.getLignes().get("4").getListeTempsParcours().size()==tailleparcours),
                 () -> assertTrue(reponse.equals("La station n'a pas pu être supprimée car elle n'existe pas"))
         );
     }
+
 
     @Test
     @DisplayName("Modification de l'incident d'une station en True")

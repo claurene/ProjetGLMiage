@@ -9,10 +9,10 @@ import java.util.Random;
 public class Position implements Serializable {
     private static final long serialVersionUID = 7195882432555722461L;
 
-    private final double LATITUDE_MIN = 48.7534;
-    private final double LATITUDE_MAX = 48.9534;
-    private final double LONGITUDE_MIN = 2.0488;
-    private final double LONGITUDE_MAX = 2.5488;
+    private static final double LATITUDE_MIN = 48.7534;
+    private static final double LATITUDE_MAX = 48.9534;
+    private static final double LONGITUDE_MIN = 2.0488;
+    private static final double LONGITUDE_MAX = 2.5488;
     private double lat;
     private double lon;
 
@@ -55,19 +55,19 @@ public class Position implements Serializable {
         lon = lony;
     }
 
-    public double getLATITUDE_MIN() {
+    public static double getLATITUDE_MIN() {
         return LATITUDE_MIN;
     }
 
-    public double getLATITUDE_MAX() {
+    public static double getLATITUDE_MAX() {
         return LATITUDE_MAX;
     }
 
-    public double getLONGITUDE_MIN() {
+    public static double getLONGITUDE_MIN() {
         return LONGITUDE_MIN;
     }
 
-    public double getLONGITUDE_MAX() {
+    public static double getLONGITUDE_MAX() {
         return LONGITUDE_MAX;
     }
 
@@ -81,7 +81,7 @@ public class Position implements Serializable {
      * @param lony la longitude
      * @return boolean
      */
-    public boolean VerifierLongitude(double lony){
+    public static boolean VerifierLongitude(double lony){
         return (lony >= LONGITUDE_MIN && lony <= LONGITUDE_MAX);
     }
 
@@ -90,7 +90,7 @@ public class Position implements Serializable {
      * @param latx la latitude
      * @return boolean
      */
-    public boolean VerifierLatitude(double latx){
+    public static boolean VerifierLatitude(double latx){
         return (latx>=LATITUDE_MIN && latx<=LATITUDE_MAX);
     }
 
@@ -101,7 +101,7 @@ public class Position implements Serializable {
      * @return boolean
      */
 
-    public boolean VerifierPosition(double latx,double lony){
+    public static boolean VerifierPosition(double latx,double lony){
         return (VerifierLatitude(latx) && VerifierLongitude(lony));
     }
 

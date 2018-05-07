@@ -1,5 +1,6 @@
 package miage.controller;
 
+import miage.model.Ligne;
 import miage.model.Station;
 import miage.model.Position;
 
@@ -205,11 +206,21 @@ public class StationController {
      * @param nom , le nom de la station a supprimée
      * @return reponse, la reponse a affichée
      */
-    public String supprimerStation(String nom){
+    public String supprimerStation(String nom, LigneController lc){
         String reponse ="";
+
+        boolean suppressionpossible = true;
+        // On commence par vérifier que la station existe et si la suppression est possible
+        // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
         if(this.stations.containsKey(nom)) {
-            this.stations.remove(nom);
-            reponse = "La station a bien été supprimée";
+            if(lc.supprimerStationLigne(nom)){
+                // Puis on supprime la station de la liste des stations
+                this.stations.remove(nom);
+                reponse = "La station a bien été supprimée";
+            }
+            else{
+                reponse = "La station n'a pas pu être supprimée car elle existe dans une ligne ne comportant que 2 stations";
+            }
         }
         else{
             reponse = "La station n'a pas pu être supprimée car elle n'existe pas";

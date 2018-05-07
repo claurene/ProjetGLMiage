@@ -8,8 +8,8 @@ import java.io.Serializable;
 public class Station implements Serializable {
     private static final long serialVersionUID = -2864975348390153703L;
 
-    private final int TEMPS_MINIMUM_ARRET = 0;
-    private final int TEMPS_MAXIMUM_ARRET = 10;
+    private static final int TEMPS_MINIMUM_ARRET = 0;
+    private static final int TEMPS_MAXIMUM_ARRET = 10;
     private String nomStation;
     private int tempsArret;
     private boolean incident;
@@ -88,7 +88,7 @@ public class Station implements Serializable {
      * @param tps le temps d'arret
      * @return true si le temps d'arret et correct, false sinon
      */
-    public boolean verifierTempsArret(int tps){
+    public static boolean verifierTempsArret(int tps){
         return (tps>=TEMPS_MINIMUM_ARRET && tps<=TEMPS_MAXIMUM_ARRET);
     }
 }

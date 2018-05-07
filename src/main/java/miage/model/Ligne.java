@@ -28,14 +28,7 @@ public class Ligne implements Serializable {
         this.nomLigne = nomLigne;
         this.tempsParcours = tempsParcours;
         this.listeStation = listeStation;
-        for (Station aListeStation : this.listeStation) {
-            if (aListeStation.isIncident()) {
-                this.incident = true;
-                break;
-            } else {
-                this.incident = false;
-            }
-        }
+        this.incident = false;
     }
 
     public String getNomLigne() {
@@ -51,7 +44,7 @@ public class Ligne implements Serializable {
     }
 
     /**
-    * permet de récupérer le temps de parcours entre les deux stations de la ligne
+     * permet de récupérer le temps de parcours entre les deux stations de la ligne
      * @param stationDepart nom de la station de départ
      * @param tempsParcours liste des temps de parcours
      * @return le temps de parcours entre la station précisée et la suivante
@@ -137,7 +130,7 @@ public class Ligne implements Serializable {
         Boolean existe = false;
         for (Station aListeStation : this.listeStation) {
             nomStationActuelle = aListeStation.getNomStation();
-            if (nomStation == nomStationActuelle) {
+            if (nomStation.equals(nomStationActuelle)) {
                 existe = true;
             }
         }
