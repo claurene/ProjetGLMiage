@@ -18,6 +18,6 @@ public class ItineraireTest {
         Graphe g = new Graphe(ligneController.getLignes());
         Itineraire i = new Itineraire(g,"temple","bastille");
 
-        System.out.println(i.constItineraireRapide());
+        System.out.println(i.constItineraireRapide().toString());
     }
 }

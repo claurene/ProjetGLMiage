@@ -7,9 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 //TODO: assertions
 
 @DisplayName("Graphe")
@@ -30,9 +27,7 @@ public class GrapheTest {
         listeLignes.put(l.getNomLigne(),l);
 
         Graphe g = new Graphe(listeLignes);
-        Itineraire i = new Itineraire(g,"Gare du nord","Gare de l'est");
-
-        System.out.println(i.constItineraireRapide());
+        System.out.println(g.toString());
     }
 
     @Test

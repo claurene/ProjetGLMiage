@@ -8,14 +8,17 @@ public class Arc {
     private String destination;
     private int tempsParcours;
     private String nomLigne;
-    //TODO: afficher direction
+    private String directionAvant;
+    private String directionInverse;
 
     // Constructeur
-    public Arc(String origine, String destination, int tempsParcours, String nomLigne) {
+    public Arc(String origine, String destination, int tempsParcours, String nomLigne, String directionAvant, String directionInverse) {
         this.origine = origine;
         this.destination = destination;
         this.tempsParcours = tempsParcours;
         this.nomLigne = nomLigne;
+        this.directionAvant = directionAvant;
+        this.directionInverse = directionInverse;
     }
 
     // Getters & Setters
@@ -51,13 +54,31 @@ public class Arc {
         this.nomLigne = nomLigne;
     }
 
+    public String getDirectionAvant() {
+        return directionAvant;
+    }
+
+    public void setDirectionAvant(String directionAvant) {
+        this.directionAvant = directionAvant;
+    }
+
+    public String getDirectionInverse() {
+        return directionInverse;
+    }
+
+    public void setDirectionInverse(String directionInverse) {
+        this.directionInverse = directionInverse;
+    }
+
     @Override
     public String toString() {
         return "Arc{" +
-                "origine=" + origine +
-                ", destination=" + destination +
+                "origine='" + origine + '\'' +
+                ", destination='" + destination + '\'' +
                 ", tempsParcours=" + tempsParcours +
                 ", nomLigne='" + nomLigne + '\'' +
+                ", directionAvant='" + directionAvant + '\'' +
+                ", directionInverse='" + directionInverse + '\'' +
                 '}';
     }
 }

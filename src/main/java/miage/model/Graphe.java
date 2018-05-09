@@ -20,15 +20,20 @@ public class Graphe {
             ArrayList<Station> listeStations = ligneEntry.getValue().getListeStation();
             ArrayList<Integer> tempsParcours = ligneEntry.getValue().getListeTempsParcours();
             for (int i=0; i<listeStations.size()-1; i++) {
-                Arc a = new Arc(listeStations.get(i).getNomStation(),listeStations.get(i+1).getNomStation(),tempsParcours.get(i),ligneEntry.getKey());
+                Arc a = new Arc(listeStations.get(i).getNomStation(),
+                        listeStations.get(i+1).getNomStation(),
+                        tempsParcours.get(i),ligneEntry.getKey(),
+                        ligneEntry.getValue().getTerminus().getNomStation(),
+                        ligneEntry.getValue().getDepart().getNomStation());
                 m++;
                 // On ajoute les sommets adjacents dans les deux sens
                 try {
                     adjacents.get(listeStations.get(i).getNomStation()).get(0);
                 } catch (NullPointerException e) {
                     adjacents.put(listeStations.get(i).getNomStation(),new ArrayList<String>());
-                    n++;
+                    n++; // On incrémente le nombre de stations uniquement si elle n'a pas encore été traitée
                 }
+                // Sens de direction inverse :
                 adjacents.get(listeStations.get(i).getNomStation()).add(listeStations.get(i+1).getNomStation());
                 try {
                     adjacents.get(listeStations.get(i+1).getNomStation()).get(0);
@@ -37,7 +42,7 @@ public class Graphe {
                     n++;
                 }
                 adjacents.get(listeStations.get(i+1).getNomStation()).add(listeStations.get(i).getNomStation());
-                // On ajoute le temps de parcours à la liste des listeArcs
+                // On garde l'arc en mémoire
                 listeArcs.add(a);
             }
         }
@@ -53,11 +58,23 @@ public class Graphe {
         return -1;
     }
 
+    //TODO: à voir si encore utile
     String getNomLigne(String x, String y){
         for (Arc a : listeArcs) {
             if ((a.getOrigine().equals(x) && a.getDestination().equals(y))
                     || (a.getOrigine().equals(y) && a.getDestination().equals(x))){
                 return a.getNomLigne();
+            }
+        }
+        return "";
+    }
+
+    String getNomLigneDirection(String x, String y){
+        for (Arc a : listeArcs) {
+            if (a.getOrigine().equals(x) && a.getDestination().equals(y)){
+                return a.getNomLigne()+" direction \""+a.getDirectionAvant()+"\"";
+            } else if (a.getOrigine().equals(y) && a.getDestination().equals(x)) {
+                return a.getNomLigne()+" direction \""+a.getDirectionInverse()+"\"";
             }
         }
         return "";
