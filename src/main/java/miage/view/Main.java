@@ -1,5 +1,6 @@
 package miage.view;
 
+import miage.controller.ItineraireController;
 import miage.controller.LigneController;
 import miage.controller.StationController;
 import miage.model.*;
@@ -12,6 +13,8 @@ public class Main {
 
     private static LigneController ligneController = new LigneController();
     private static StationController stationController = new StationController();
+    private static ItineraireController itineraireController = new ItineraireController();
+
 
     private static Position utilisateur = new Position();
 
@@ -29,6 +32,7 @@ public class Main {
 
         // Chargement des stations de métro
         stationController.initialisationStations();
+
 
 
 
@@ -109,13 +113,52 @@ public class Main {
                         }
                         else {
                             System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
-                            int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
+                            //TODO L'itineraire m'affiche que les stations ne font pas partie de la même ligne et ne me donne pas le temps
+                            /*int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
                             if (temps == 0){
                                 break;
                             }
-                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");
+                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");*/
                         }
                     }
+                    System.out.println("Quel type d'itineraire souhaitez-vous ?");
+                    System.out.println("[1] - Rapide");
+                    System.out.println("[2] - Points de passages");
+                    System.out.println("[3] - Moins de changements");
+                    int typeitineraire = sc.nextInt();
+                    ArrayList<String> listeStations = new ArrayList<String>();
+                    String reponseitineraire;
+                    String passage ="";
+                    String reponsepassage;
+                    boolean ajoutpassage = true;
+                    if(typeitineraire==1) {
+                        reponseitineraire = itineraireController.itinerairePlusRapide(ligneController.getLignes(), depart, arrivee);
+                    }
+                    else if(typeitineraire==2) {
+                        sc.nextLine();
+                        listeStations.add(depart);
+                        while(ajoutpassage){
+                            System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
+                            reponsepassage = sc.nextLine();
+                            if(reponsepassage.equals("Y")){
+                                System.out.println("Indiquer votre point de passage");
+                                passage = sc.nextLine();
+                                if(stationController.getStations().containsKey(passage)) {
+                                    listeStations.add(passage);
+                                }
+                                else
+                                    System.out.println("Cette station n'existe pas");
+                            }
+                            else
+                                ajoutpassage = false;
+                        }
+                        listeStations.add(arrivee);
+                        reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), listeStations);
+                    }
+                    else
+                        //TODO Moins de changements
+                        reponseitineraire = "TODO : Faire moins de changements";
+                    System.out.println(reponseitineraire);
                     break;
 
                 case 2:

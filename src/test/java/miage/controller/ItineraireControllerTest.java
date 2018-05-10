@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 //TODO: assertions
 
@@ -22,6 +24,10 @@ public class ItineraireControllerTest {
 
         String response = itineraireController.itinerairePlusRapide(ligneController.getLignes(),"temple","bastille");
 
+        assertAll(
+                () -> assertTrue(response.contains("Descendre à bastille")),
+                () -> assertFalse(response.contains("Aucun chemin possible avec les paramètres renseignés"))
+        );
         System.out.println(response);
     }
 
@@ -41,15 +47,20 @@ public class ItineraireControllerTest {
 
     @Test
     @DisplayName("Affichage itinéraire avec changements définis")
-    void itineraireChangements(){
+    void itineraireChangementsSimple(){
         ligneController.initialisationLignes();
 
         ArrayList<String> listeStations = new ArrayList<String>();
-        listeStations.add("temple");
-        listeStations.add("avron");
+        listeStations.add("château de vincennes");
         listeStations.add("bastille");
+        listeStations.add("château de vincennes");
 
         String response = itineraireController.itineraireAvecChangements(ligneController.getLignes(),listeStations);
+        assertAll(
+                () -> assertTrue(response.contains("Descendre à bastille")),
+                () -> assertTrue(response.contains("Descendre à château de vincennes")),
+                () -> assertFalse(response.contains("Aucun chemin possible avec les paramètres renseignés"))
+        );
 
         System.out.println(response);
     }
