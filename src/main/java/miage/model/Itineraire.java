@@ -1,5 +1,7 @@
 package miage.model;
 
+import miage.controller.StationController;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -64,11 +66,16 @@ public class Itineraire {
      * @param x la station en train d'être traitée par l'algorithme
      */
     private void maj(String y, String x){
-        int newDist = dist.get(x) + g.getPoids(x,y);
-        if (dist.get(y)>newDist) {
-            dist.put(y,newDist);
-            pred.put(y,x);
-            nonTraites.add(y);
+        //On récupére la station correspondante a y
+        Station station =  StationController.getStations().get(y);
+        //si cette station n'est pas en incident, on peut l'ajouter a la liste des stations a traiter dans l'algorithme.
+        if(!station.isIncident()){
+            int newDist = dist.get(x) + g.getPoids(x,y);
+            if (dist.get(y)>newDist) {
+                dist.put(y,newDist);
+                pred.put(y,x);
+                nonTraites.add(y);
+            }
         }
     }
 
@@ -77,6 +84,15 @@ public class Itineraire {
      * Modifie les variables de l'itinéraire afin de pouvoir reconstruire le chemin
      * @return le temps du plus court chemin
      */
+    /*
+    on boucle sur toutes les stations possibles non traitées précédement
+        on recupère la station la plus proche
+        si c'est la destination, on retourne la distance correspondante
+        sinon
+            s'il y'a des sommets adjacents
+                pour tout les adjacent de la station
+                    on met a jour les distances
+    */
     private int dijkstra(){
         String x = source;
         while (nonTraites.size()>0){
@@ -146,6 +162,9 @@ public class Itineraire {
      * Construit l'itinéraire le plus rapide
      * Applique l'algorithme de Dijkstra et modifie les variables de la classe
      * @return le tableau correspondant à l'itinéraire
+     */
+    /*
+        dijkstra retourne toujours le temps de parcours le plus rapide. en sachant qu'on a mis a jour les différentes listes, on sait que notre itinéraire est le plus rapide.
      */
     public ArrayList<ArrayList<String>> constItineraireRapide(){
         ArrayList<ArrayList<String>> response = new ArrayList<ArrayList<String>>();

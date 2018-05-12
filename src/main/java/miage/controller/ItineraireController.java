@@ -34,6 +34,11 @@ public class ItineraireController {
      * @param destStation
      * @return les directions de l'itinéraire le plus rapide
      */
+    /*
+         On crée un graphe a partir de la liste des lignes
+         A partir de ce graphe, on fait la recherche d'itinéraire le plus rapide
+         on retourne l'afficage de l'itinéraire trouvé.
+     */
     public String itinerairePlusRapide(HashMap<String,Ligne> listeLignes, String sourceStation, String destStation){
         Graphe g = new Graphe(listeLignes);
         ArrayList<ArrayList<String>> itineraire = new Itineraire(g,sourceStation,destStation).constItineraireRapide();
