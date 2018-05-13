@@ -16,34 +16,36 @@ public class Graphe {
     public Graphe(HashMap<String,Ligne> listeLignes) {
         // Pour chaque ligne
         for (HashMap.Entry<String,Ligne> ligneEntry : listeLignes.entrySet()) {
-            // Pour chaque station de la ligne
-            ArrayList<Station> listeStations = ligneEntry.getValue().getListeStation();
-            ArrayList<Integer> tempsParcours = ligneEntry.getValue().getListeTempsParcours();
-            for (int i=0; i<listeStations.size()-1; i++) {
-                Arc a = new Arc(listeStations.get(i).getNomStation(),
-                        listeStations.get(i+1).getNomStation(),
-                        tempsParcours.get(i),ligneEntry.getKey(),
-                        ligneEntry.getValue().getTerminus().getNomStation(),
-                        ligneEntry.getValue().getDepart().getNomStation());
-                m++;
-                // On ajoute les sommets adjacents dans les deux sens
-                try {
-                    adjacents.get(listeStations.get(i).getNomStation()).get(0);
-                } catch (NullPointerException e) {
-                    adjacents.put(listeStations.get(i).getNomStation(),new ArrayList<String>());
-                    n++; // On incrémente le nombre de stations uniquement si elle n'a pas encore été traitée
+            if (!ligneEntry.getValue().isIncident()) {
+                // Pour chaque station de la ligne
+                ArrayList<Station> listeStations = ligneEntry.getValue().getListeStation();
+                ArrayList<Integer> tempsParcours = ligneEntry.getValue().getListeTempsParcours();
+                for (int i = 0; i < listeStations.size() - 1; i++) {
+                    Arc a = new Arc(listeStations.get(i).getNomStation(),
+                            listeStations.get(i + 1).getNomStation(),
+                            tempsParcours.get(i), ligneEntry.getKey(),
+                            ligneEntry.getValue().getTerminus().getNomStation(),
+                            ligneEntry.getValue().getDepart().getNomStation());
+                    m++;
+                    // On ajoute les sommets adjacents dans les deux sens
+                    try {
+                        adjacents.get(listeStations.get(i).getNomStation()).get(0);
+                    } catch (NullPointerException e) {
+                        adjacents.put(listeStations.get(i).getNomStation(), new ArrayList<String>());
+                        n++; // On incrémente le nombre de stations uniquement si elle n'a pas encore été traitée
+                    }
+                    // Sens de direction inverse :
+                    adjacents.get(listeStations.get(i).getNomStation()).add(listeStations.get(i + 1).getNomStation());
+                    try {
+                        adjacents.get(listeStations.get(i + 1).getNomStation()).get(0);
+                    } catch (NullPointerException e) {
+                        adjacents.put(listeStations.get(i + 1).getNomStation(), new ArrayList<String>());
+                        n++;
+                    }
+                    adjacents.get(listeStations.get(i + 1).getNomStation()).add(listeStations.get(i).getNomStation());
+                    // On garde l'arc en mémoire
+                    listeArcs.add(a);
                 }
-                // Sens de direction inverse :
-                adjacents.get(listeStations.get(i).getNomStation()).add(listeStations.get(i+1).getNomStation());
-                try {
-                    adjacents.get(listeStations.get(i+1).getNomStation()).get(0);
-                } catch (NullPointerException e) {
-                    adjacents.put(listeStations.get(i+1).getNomStation(),new ArrayList<String>());
-                    n++;
-                }
-                adjacents.get(listeStations.get(i+1).getNomStation()).add(listeStations.get(i).getNomStation());
-                // On garde l'arc en mémoire
-                listeArcs.add(a);
             }
         }
     }

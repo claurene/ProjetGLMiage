@@ -520,7 +520,7 @@ public class Main {
     public static void modifierLigneIncidentUtilisateur(Scanner sc){
         String nomLigne, incident;
         System.out.println("Veuillez saisir les informations suivantes : ");
-        System.out.println("Nom de la station");
+        System.out.println("Nom de la ligne");
         nomLigne = sc.nextLine().toLowerCase();
         System.out.println("Incident ?");
         System.out.println("y/n");
