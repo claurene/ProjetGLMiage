@@ -83,6 +83,9 @@ public class Ligne implements Serializable {
 
 
     public void setTempsParcours(int temps, String stationDepart, ArrayList<Integer> tempsParcours){
+        if (temps<1){
+            return;
+        }
         this.tempsParcours = tempsParcours;
         this.stationDepart = stationDepart;
         int positionListe = trouverPosListeStation(stationDepart);

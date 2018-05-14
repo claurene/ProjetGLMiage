@@ -539,7 +539,7 @@ public class Main {
         System.out.println("Temps d'arret de la station");
         tempsArret = entierEntree(sc);
         while(!Station.verifierTempsArret(tempsArret)){
-            System.out.println("Votre temps d'arrêt est faux recommencez");
+            System.out.println("Votre temps d'arrêt est faux, recommencez");
             tempsArret = entierEntree(sc);
         }
         System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+" et "+Position.getLATITUDE_MAX()+" )");
@@ -547,7 +547,7 @@ public class Main {
         System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
         longitude = sc.nextDouble();
         while(!Position.VerifierPosition(latitude,longitude)){
-            System.out.println("Votre latitude ou longitude est fausse veuillez recommencez");
+            System.out.println("Votre latitude ou longitude est fausse veuillez recommencer");
             System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+"et "+Position.getLATITUDE_MAX()+" )");
             latitude = sc.nextDouble();
             System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
@@ -578,7 +578,7 @@ public class Main {
             System.out.println("Temps d'arret de la station");
             tempsArret = entierEntree(sc);
             while (!Station.verifierTempsArret(tempsArret)) {
-                System.out.println("Votre temps d'arrêt est faux recommencez");
+                System.out.println("Votre temps d'arrêt est faux, recommencez");
                 tempsArret = entierEntree(sc);
             }
             // Afficher la position actuelle de la station
@@ -588,7 +588,7 @@ public class Main {
             System.out.println("Longitude ? (Entre " + Position.getLONGITUDE_MIN() + " et " + Position.getLONGITUDE_MAX() + " ) [actuellement "+positionActuelle.getLon()+"]");
             longitude = sc.nextDouble();
             while (!Position.VerifierPosition(latitude, longitude)) {
-                System.out.println("Votre latitude ou longitude est fausse veuillez recommencez");
+                System.out.println("Votre latitude ou longitude est fausse veuillez recommencer");
                 System.out.println("Latitude ? (Entre " + Position.getLATITUDE_MIN() + "et " + Position.getLATITUDE_MAX() + " ) [actuellement "+positionActuelle.getLat()+"]");
                 latitude = sc.nextDouble();
                 System.out.println("Longitude ? (Entre " + Position.getLONGITUDE_MIN() + " et " + Position.getLONGITUDE_MAX() + " ) [actuellement "+positionActuelle.getLon()+"]");
