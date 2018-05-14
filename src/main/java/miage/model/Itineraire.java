@@ -16,6 +16,7 @@ public class Itineraire {
     private HashMap<String,Integer> dist; // liste des distances à la source
     private HashMap<String,String> pred; // liste des prédécésseurs à la source
     private ArrayList<String> nonTraites = new ArrayList<String>();
+    private int totalTempsParcours;
 
     //private ArrayList<String> stationsChangement = new ArrayList<String>(); // stations de changement, complètées auto. TODO: à voir si encore utile
 
@@ -25,10 +26,10 @@ public class Itineraire {
      * @param sourceStation la station de départ
      * @param destStation la station d'arrivée
      */
-    public Itineraire(Graphe g, String sourceStation, String destStation) {
+    public Itineraire(Graphe g, Station sourceStation, Station destStation) {
         this.g = g;
-        this.source = sourceStation;
-        this.dest = destStation;
+        this.source = sourceStation.getNomStation();
+        this.dest = destStation.getNomStation();
         this.dist = new HashMap<String,Integer>();
         this.pred = new HashMap<String,String>();
 
@@ -37,7 +38,7 @@ public class Itineraire {
             dist.put(adjacentEntry.getKey(),Integer.MAX_VALUE);
             pred.put(adjacentEntry.getKey(),"");
         }
-        dist.put(source,0);
+        dist.put(source,sourceStation.getTempsArret());
         pred.put(source,source);
 
         nonTraites.add(source);
@@ -169,9 +170,18 @@ public class Itineraire {
     public ArrayList<ArrayList<String>> constItineraireRapide(){
         ArrayList<ArrayList<String>> response = new ArrayList<ArrayList<String>>();
         int tempsParcours = dijkstra();
+        this.totalTempsParcours=tempsParcours; // Pour récupérer le temps de parcours
         if (tempsParcours>0){
             response = constChemin();
         }
         return response;
+    }
+
+    /**
+     * Permet de récupérer le temps de parcours total après avoir appliqué l'algorithme de dijkstra
+     * @return totalTempsParcours
+     */
+    public int getTotalTempsParcours() {
+        return totalTempsParcours;
     }
 }

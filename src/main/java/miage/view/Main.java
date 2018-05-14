@@ -120,17 +120,19 @@ public class Main {
                     System.out.println("[2] - Points de passages");
                     System.out.println("[3] - Moins de changements");
                     int typeitineraire =  entierEntree(sc);
-                    ArrayList<String> listeStations = new ArrayList<String>();
+                    ArrayList<Station> listeStations = new ArrayList<Station>();
                     String reponseitineraire;
                     String passage ="";
                     String reponsepassage;
                     boolean ajoutpassage = true;
+                    Station stationDepart = stationController.getStations().get(depart);
+                    Station stationArrivee = stationController.getStations().get(arrivee);
                     if(typeitineraire==1) {
-                        reponseitineraire = itineraireController.itinerairePlusRapide(ligneController.getLignes(), depart, arrivee);
+                        reponseitineraire = itineraireController.itinerairePlusRapide(ligneController.getLignes(), stationController.getStations(), stationDepart, stationArrivee);
                     }
                     else if(typeitineraire==2) {
                         sc.nextLine();
-                        listeStations.add(depart);
+                        listeStations.add(stationDepart);
                         while(ajoutpassage){
                             System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
                             reponsepassage = sc.nextLine().toLowerCase();
@@ -139,7 +141,7 @@ public class Main {
                                 passage = sc.nextLine().toLowerCase();
                                 if(stationController.getStations().containsKey(passage)) {
                                     if(!stationController.getStations().get(passage).isIncident()) {
-                                        listeStations.add(passage);
+                                        listeStations.add(stationController.getStations().get(passage));
                                     }else{
                                         System.out.println("Votre point de passage est en travaux, veuillez en choisir un autre");
                                     }
@@ -152,8 +154,8 @@ public class Main {
                                 ajoutpassage = false;
                             }
                         }
-                        listeStations.add(arrivee);
-                        reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), listeStations);
+                        listeStations.add(stationArrivee);
+                        reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), stationController.getStations(), listeStations);
                     }
                     else
                         //TODO Moins de changements

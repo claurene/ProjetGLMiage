@@ -8,12 +8,14 @@ public class Graphe {
     private int m = 0; // nombre d'arcs
     private HashMap<String,ArrayList<String>> adjacents = new HashMap<String, ArrayList<String>>(); // liste des sommets adjacents
     private ArrayList<Arc> listeArcs = new ArrayList<Arc>(); // liste des arcs pondérés
+    private HashMap<String,Station> toutesStations; // liste de toutes les stations (pour le calcul du temps d'arrêt)
 
     /**
      * Génération automatique du graphe du réseau à partir de la liste des lignes
      * @param listeLignes
      */
-    public Graphe(HashMap<String,Ligne> listeLignes) {
+    public Graphe(HashMap<String,Ligne> listeLignes,HashMap<String,Station> toutesStations) {
+        this.toutesStations = toutesStations;
         // Pour chaque ligne
         for (HashMap.Entry<String,Ligne> ligneEntry : listeLignes.entrySet()) {
             if (!ligneEntry.getValue().isIncident()) {
@@ -23,7 +25,8 @@ public class Graphe {
                 for (int i = 0; i < listeStations.size() - 1; i++) {
                     Arc a = new Arc(listeStations.get(i).getNomStation(),
                             listeStations.get(i + 1).getNomStation(),
-                            tempsParcours.get(i), ligneEntry.getKey(),
+                            tempsParcours.get(i),
+                            ligneEntry.getKey(),
                             ligneEntry.getValue().getTerminus().getNomStation(),
                             ligneEntry.getValue().getDepart().getNomStation());
                     m++;
@@ -54,7 +57,8 @@ public class Graphe {
         for (Arc a : listeArcs) {
             if ((a.getOrigine().equals(x) && a.getDestination().equals(y))
                 || (a.getOrigine().equals(y) && a.getDestination().equals(x))){
-                return a.getTempsParcours();
+                // Ajout du temps d'arrêt de la station d'arrivée
+                return a.getTempsParcours()+toutesStations.get(y).getTempsArret();
             }
         }
         return -1;

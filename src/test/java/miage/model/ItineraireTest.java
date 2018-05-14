@@ -5,7 +5,11 @@ import miage.controller.StationController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-//TODO: assertions
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashMap;
 
 @DisplayName("Itinéraire")
 public class ItineraireTest {
@@ -18,9 +22,15 @@ public class ItineraireTest {
         ligneController.initialisationLignes();
         stationController.initialisationStations();
 
-        Graphe g = new Graphe(ligneController.getLignes());
-        Itineraire i = new Itineraire(g,"temple","bastille");
+        HashMap<String,Station> listeStations = stationController.getStations();
+
+        Graphe g = new Graphe(ligneController.getLignes(),listeStations);
+        Itineraire i = new Itineraire(g,listeStations.get("temple"),listeStations.get("bastille"));
 
         i.constItineraireRapide();
+
+        assertAll(
+                () -> assertEquals(i.getTotalTempsParcours(),34)
+        );
     }
 }
