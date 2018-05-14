@@ -78,19 +78,19 @@ public class Main {
                     while(depart.equals(arrivee) || depart.equals("") || arrivee.equals("")) {
                         if(depart.equals("")) {
                             System.out.println("Indiquer votre départ  : ");
-                            depart = sc.nextLine();
+                            depart = sc.nextLine().toLowerCase();
                         }
                         while(!stationController.getStations().containsKey(depart)) {
                             System.out.println("La station demandée n'existe pas, réessayez");
-                            depart = sc.nextLine();
+                            depart = sc.nextLine().toLowerCase();
                         }
                         if(arrivee.equals("")) {
                             System.out.println("Indiquer votre arrivée : ");
-                            arrivee = sc.nextLine();
+                            arrivee = sc.nextLine().toLowerCase();
                         }
                         while(!stationController.getStations().containsKey(arrivee)) {
                             System.out.println("La station demandée n'existe pas, réessayez");
-                            arrivee = sc.nextLine();
+                            arrivee = sc.nextLine().toLowerCase();
                         }
                         if (depart.equals(arrivee)) {
                             System.out.println("Veuillez choisir un départ différent de l'arrivée !");
@@ -133,18 +133,24 @@ public class Main {
                         listeStations.add(depart);
                         while(ajoutpassage){
                             System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
-                            reponsepassage = sc.nextLine();
-                            if(reponsepassage.equals("Y")){
+                            reponsepassage = sc.nextLine().toLowerCase();
+                            if(reponsepassage.equals("y")){
                                 System.out.println("Indiquer votre point de passage");
-                                passage = sc.nextLine();
+                                passage = sc.nextLine().toLowerCase();
                                 if(stationController.getStations().containsKey(passage)) {
-                                    listeStations.add(passage);
+                                    if(!stationController.getStations().get(passage).isIncident()) {
+                                        listeStations.add(passage);
+                                    }else{
+                                        System.out.println("Votre point de passage est en travaux, veuillez en choisir un autre");
+                                    }
                                 }
-                                else
+                                else {
                                     System.out.println("Cette station n'existe pas");
+                                }
                             }
-                            else
+                            else {
                                 ajoutpassage = false;
+                            }
                         }
                         listeStations.add(arrivee);
                         reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), listeStations);
