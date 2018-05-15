@@ -16,11 +16,11 @@ public class StationController {
     private static final Logger LOG = Logger.getLogger(StationController.class.getName());
 
     //Liste des stations de metro
-    private HashMap<String,Station> stations = new HashMap<String,Station>();
+    private static HashMap<String,Station> stations = new HashMap<String,Station>();
 
     private static LigneController ligneController = new LigneController();
 
-    public HashMap<String, Station> getStations() {
+    public static HashMap<String, Station> getStations() {
         return stations;
     }
 

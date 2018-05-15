@@ -1,7 +1,9 @@
-package miage.model;
+package miage.controller;
 
 import miage.controller.LigneController;
 import miage.controller.StationController;
+import miage.model.Ligne;
+import miage.model.Station;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

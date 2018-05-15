@@ -1,5 +1,6 @@
 package miage.view;
 
+import miage.controller.ItineraireController;
 import miage.controller.LigneController;
 import miage.controller.StationController;
 import miage.model.*;
@@ -12,6 +13,8 @@ public class Main {
 
     private static LigneController ligneController = new LigneController();
     private static StationController stationController = new StationController();
+    private static ItineraireController itineraireController = new ItineraireController();
+
 
     private static Position utilisateur = new Position();
 
@@ -29,6 +32,7 @@ public class Main {
 
         // Chargement des stations de métro
         stationController.initialisationStations();
+
 
 
 
@@ -56,13 +60,7 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             sc.useLocale(Locale.US);
             System.out.println("Entrez votre choix : ");
-            int choix;
-            try {
-                choix = sc.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
-                continue;
-            }
+            int choix = entierEntree(sc);
             // Action effectuée en fonction du choix :
             switch(choix) {
                 case 1:
@@ -80,19 +78,19 @@ public class Main {
                     while(depart.equals(arrivee) || depart.equals("") || arrivee.equals("")) {
                         if(depart.equals("")) {
                             System.out.println("Indiquer votre départ  : ");
-                            depart = sc.nextLine();
+                            depart = sc.nextLine().toLowerCase();
                         }
                         while(!stationController.getStations().containsKey(depart)) {
                             System.out.println("La station demandée n'existe pas, réessayez");
-                            depart = sc.nextLine();
+                            depart = sc.nextLine().toLowerCase();
                         }
                         if(arrivee.equals("")) {
                             System.out.println("Indiquer votre arrivée : ");
-                            arrivee = sc.nextLine();
+                            arrivee = sc.nextLine().toLowerCase();
                         }
                         while(!stationController.getStations().containsKey(arrivee)) {
                             System.out.println("La station demandée n'existe pas, réessayez");
-                            arrivee = sc.nextLine();
+                            arrivee = sc.nextLine().toLowerCase();
                         }
                         if (depart.equals(arrivee)) {
                             System.out.println("Veuillez choisir un départ différent de l'arrivée !");
@@ -109,13 +107,60 @@ public class Main {
                         }
                         else {
                             System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
-                            int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
+                            //TODO L'itineraire m'affiche que les stations ne font pas partie de la même ligne et ne me donne pas le temps
+                            /*int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
                             if (temps == 0){
                                 break;
                             }
-                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");
+                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");*/
                         }
                     }
+                    System.out.println("Quel type d'itineraire souhaitez-vous ?");
+                    System.out.println("[1] - Rapide");
+                    System.out.println("[2] - Points de passages");
+                    System.out.println("[3] - Moins de changements");
+                    int typeitineraire =  entierEntree(sc);
+                    ArrayList<Station> listeStations = new ArrayList<Station>();
+                    String reponseitineraire;
+                    String passage ="";
+                    String reponsepassage;
+                    boolean ajoutpassage = true;
+                    Station stationDepart = stationController.getStations().get(depart);
+                    Station stationArrivee = stationController.getStations().get(arrivee);
+                    if(typeitineraire==1) {
+                        reponseitineraire = itineraireController.itinerairePlusRapide(ligneController.getLignes(), stationController.getStations(), stationDepart, stationArrivee);
+                    }
+                    else if(typeitineraire==2) {
+                        sc.nextLine();
+                        listeStations.add(stationDepart);
+                        while(ajoutpassage){
+                            System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
+                            reponsepassage = sc.nextLine().toLowerCase();
+                            if(reponsepassage.equals("y")){
+                                System.out.println("Indiquer votre point de passage");
+                                passage = sc.nextLine().toLowerCase();
+                                if(stationController.getStations().containsKey(passage)) {
+                                    if(!stationController.getStations().get(passage).isIncident()) {
+                                        listeStations.add(stationController.getStations().get(passage));
+                                    }else{
+                                        System.out.println("Votre point de passage est en travaux, veuillez en choisir un autre");
+                                    }
+                                }
+                                else {
+                                    System.out.println("Cette station n'existe pas");
+                                }
+                            }
+                            else {
+                                ajoutpassage = false;
+                            }
+                        }
+                        listeStations.add(stationArrivee);
+                        reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), stationController.getStations(), listeStations);
+                    }
+                    else
+                        //TODO Moins de changements
+                        reponseitineraire = "TODO : Faire moins de changements";
+                    System.out.println(reponseitineraire);
                     break;
 
                 case 2:
@@ -280,7 +325,7 @@ public class Main {
             tmpParc = 0;
             System.out.println("Temps de parcours entre "+listeStation.get(i).getNomStation()+" et "+listeStation.get(i+1).getNomStation());
             while(tmpParc <= 0 ){
-                tmpParc = sc.nextInt();
+                tmpParc = entierEntree(sc);
                 if(tmpParc <= 0){
                     System.out.println("Le temps de parcours doit être strictement superieur à 0");
                 } else {
@@ -336,7 +381,7 @@ public class Main {
                 System.out.println("Entrez votre choix : ");
                 int choix = -1;
                 try {
-                    choix = sc.nextInt();
+                    choix = entierEntree(sc);
                 } catch (InputMismatchException e) {
                     System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
                 }
@@ -358,11 +403,7 @@ public class Main {
 
                         //Saisir temps de parcours à modifier
                         System.out.println("Veuillez saisir le nouveau temps de parcours entre la station "+station1+" et la station "+station2);
-                        try {
-                            tmpParc = sc.nextInt();
-                        } catch (InputMismatchException e) {
-                            System.out.println("Votre choix est invalide. Le temps de parocurs doit être un entier strictement supérieur à 0.");
-                        }
+                        tmpParc = entierEntree(sc);
 
                         message = ligneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
                         System.out.println(message);
@@ -394,7 +435,7 @@ public class Main {
                                     System.out.println("Veuillez choisir l'action à réaliser :");
                                     int ch = -1;
                                     try {
-                                        ch = sc.nextInt();
+                                        ch = entierEntree(sc);
                                     } catch (InputMismatchException e) {
                                         System.out.println("Votre choix est invalide. Veuillez choisir une option parmis celles proposées.");
                                     }
@@ -407,7 +448,7 @@ public class Main {
                                             System.out.println(listeStation);
                                             stationSuiv = ligne.getListeStation().get(0).getNomStation();
                                             System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
-                                            tmpParcSuiv = sc.nextInt();
+                                            tmpParcSuiv = entierEntree(sc);
                                             message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
                                             System.out.println(message);
                                             break;
@@ -419,7 +460,7 @@ public class Main {
                                             System.out.println(listeStation);
                                             stationPrec = ligne.getListeStation().get(ligne.getListeStation().size() - 1).getNomStation();
                                             System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
-                                            tmpParcPrec = sc.nextInt();
+                                            tmpParcPrec = entierEntree(sc);
                                             message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
                                             System.out.println(message);
                                             break;
@@ -435,9 +476,9 @@ public class Main {
                                             System.out.print("Station suivante : ");
                                             stationSuiv = sc.nextLine().toLowerCase();
                                             System.out.println("Veuillez saisir le temps de parcours entre " + stationPrec + " et " + stationNouv + " :");
-                                            tmpParcPrec = sc.nextInt();
+                                            tmpParcPrec = entierEntree(sc);
                                             System.out.println("Veuillez saisir le temps de parcours entre " + stationNouv + " et " + stationSuiv + " :");
-                                            tmpParcSuiv = sc.nextInt();
+                                            tmpParcSuiv = entierEntree(sc);
                                             message = ligneController.modifierLigneAjouterStation(ch, stationController.getStations(), nomLigne, stationNouv, stationPrec, stationSuiv, tmpParcPrec, tmpParcSuiv);
                                             System.out.println(message);
                                             break;
@@ -487,7 +528,7 @@ public class Main {
     public static void modifierLigneIncidentUtilisateur(Scanner sc){
         String nomLigne, incident;
         System.out.println("Veuillez saisir les informations suivantes : ");
-        System.out.println("Nom de la station");
+        System.out.println("Nom de la ligne");
         nomLigne = sc.nextLine().toLowerCase();
         System.out.println("Incident ?");
         System.out.println("y/n");
@@ -504,17 +545,17 @@ public class Main {
         System.out.println("Nom de la station");
         nomStation = sc.nextLine().toLowerCase();
         System.out.println("Temps d'arret de la station");
-        tempsArret = sc.nextInt();
+        tempsArret = entierEntree(sc);
         while(!Station.verifierTempsArret(tempsArret)){
-            System.out.println("Votre temps d'arrêt est faux recommencez");
-            tempsArret = sc.nextInt();
+            System.out.println("Votre temps d'arrêt est faux, recommencez");
+            tempsArret = entierEntree(sc);
         }
         System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+" et "+Position.getLATITUDE_MAX()+" )");
         latitude = sc.nextDouble();
         System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
         longitude = sc.nextDouble();
         while(!Position.VerifierPosition(latitude,longitude)){
-            System.out.println("Votre latitude ou longitude est fausse veuillez recommencez");
+            System.out.println("Votre latitude ou longitude est fausse veuillez recommencer");
             System.out.println("Latitude ? (Entre "+Position.getLATITUDE_MIN()+"et "+Position.getLATITUDE_MAX()+" )");
             latitude = sc.nextDouble();
             System.out.println("Longitude ? (Entre "+Position.getLONGITUDE_MIN()+" et "+Position.getLONGITUDE_MAX()+" )");
@@ -543,10 +584,10 @@ public class Main {
         nomStation = sc.nextLine().toLowerCase();
         if (stationController.getStations().containsKey(nomStation)){
             System.out.println("Temps d'arret de la station");
-            tempsArret = sc.nextInt();
+            tempsArret = entierEntree(sc);
             while (!Station.verifierTempsArret(tempsArret)) {
-                System.out.println("Votre temps d'arrêt est faux recommencez");
-                tempsArret = sc.nextInt();
+                System.out.println("Votre temps d'arrêt est faux, recommencez");
+                tempsArret = entierEntree(sc);
             }
             // Afficher la position actuelle de la station
             Position positionActuelle = stationController.getStations().get(nomStation).getPosition();
@@ -555,7 +596,7 @@ public class Main {
             System.out.println("Longitude ? (Entre " + Position.getLONGITUDE_MIN() + " et " + Position.getLONGITUDE_MAX() + " ) [actuellement "+positionActuelle.getLon()+"]");
             longitude = sc.nextDouble();
             while (!Position.VerifierPosition(latitude, longitude)) {
-                System.out.println("Votre latitude ou longitude est fausse veuillez recommencez");
+                System.out.println("Votre latitude ou longitude est fausse veuillez recommencer");
                 System.out.println("Latitude ? (Entre " + Position.getLATITUDE_MIN() + "et " + Position.getLATITUDE_MAX() + " ) [actuellement "+positionActuelle.getLat()+"]");
                 latitude = sc.nextDouble();
                 System.out.println("Longitude ? (Entre " + Position.getLONGITUDE_MIN() + " et " + Position.getLONGITUDE_MAX() + " ) [actuellement "+positionActuelle.getLon()+"]");
@@ -594,6 +635,27 @@ public class Main {
         else{
             System.out.println("La station n'existe pas");
         }
+    }
+
+    /**
+     * Méthode pour vérifier qu'un entier positif ou nul est saisie
+     *
+     * @return integer la valeur de l'entier
+     */
+    public static int entierEntree(Scanner sc){
+        int choix = 0;
+        boolean valide = false;
+        while (!valide) {
+            try {
+                choix = sc.nextInt();
+                valide = choix >=0;
+            } catch (Exception e) {
+                System.out.println("Veuillez saisir un nombre entier. \n");
+                sc.nextLine();
+                valide = false;
+            }
+        }
+        return choix;
     }
 
 }

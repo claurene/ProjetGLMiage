@@ -1,6 +1,8 @@
-package miage.model;
+package miage.controller;
 
 import miage.controller.HoraireController;
+import miage.model.Ligne;
+import miage.model.Station;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
