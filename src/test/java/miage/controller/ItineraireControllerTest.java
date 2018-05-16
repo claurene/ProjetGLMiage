@@ -1,5 +1,6 @@
 package miage.controller;
 
+import miage.model.Ligne;
 import miage.model.Station;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,5 +58,46 @@ public class ItineraireControllerTest {
 
         System.out.println(response);
     }
+
+    @Test
+    @DisplayName("Itinéraire avec le moins de changements de ligne")
+    void itineraireMoinsChangements(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+
+        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","temple");
+
+        assertAll(
+                () -> assertTrue(response.contains("Prendre la ligne 2 direction \"porte dauphine\"")),
+                () -> assertTrue(response.contains("À père-lachaise prendre la ligne 3 direction \"pont de levallois-becon\"")),
+                () -> assertFalse(response.contains("Aucun chemin possible avec les paramètres renseignés"))
+        );
+    }
+
+    @Test
+    @DisplayName("Itinéraire avec le moins de changements sur la même ligne")
+    void itineraireMoinsChangementsMemeLigne(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+
+        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","bastille");
+
+        assertEquals(response,"Prendre la ligne 1 de nation jusqu'à bastille");
+    }
+
+
+    @Test
+    @DisplayName("Aucun itinéraire avec le moins de changements de ligne")
+    void aucunItineraireMoinsChangements(){
+        ligneController.initialisationLignes();
+        stationController.initialisationStations();
+
+        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","templee");
+
+        assertEquals(response,"Aucun chemin possible avec les paramètres renseignés");
+    }
+
+    //TODO: ajouter des tests sur l'itinéraire avec moins de changements
+
 
 }

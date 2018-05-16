@@ -24,10 +24,10 @@ public class ItineraireTest {
 
         HashMap<String,Station> listeStations = stationController.getStations();
 
-        Graphe g = new Graphe(ligneController.getLignes(),listeStations);
-        Itineraire i = new Itineraire(g,listeStations.get("temple"),listeStations.get("bastille"));
+        GrapheStation g = new GrapheStation(ligneController.getLignes(),listeStations);
+        ItineraireStation i = new ItineraireStation(g,listeStations.get("temple"),listeStations.get("bastille"));
 
-        i.constItineraireRapide();
+        System.out.println(i.constItineraireRapide());
 
         assertAll(
                 () -> assertEquals(i.getTotalTempsParcours(),34)

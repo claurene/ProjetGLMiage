@@ -117,6 +117,16 @@ public class Ligne implements Serializable {
         return total;
     }
 
+    public int getTempsParcoursStations(String s1, String s2){
+        int x = trouverPosListeStation(s1);
+        int y = trouverPosListeStation(s2);
+        int total = this.tempsParcours.get(x);
+        for (int i=x+1;i<y;i++) {
+            total+=this.tempsParcours.get(i)+this.listeStation.get(i).getTempsArret();
+        }
+        return total;
+    }
+
     @Override
     public String toString() {
         String reponse;

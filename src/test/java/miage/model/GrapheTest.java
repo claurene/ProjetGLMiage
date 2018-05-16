@@ -35,7 +35,7 @@ public class GrapheTest {
         }
         listeLignes.put(l.getNomLigne(),l);
 
-        Graphe g = new Graphe(listeLignes,listeStations);
+        GrapheStation g = new GrapheStation(listeLignes,listeStations);
 
         assertAll(
                 () -> assertTrue(g.getNomLigne("gare du nord","gare de l'est")=="Metro 5"),
@@ -55,11 +55,21 @@ public class GrapheTest {
     void creationGrapheVide(){
         HashMap<String,Ligne> listeLignes = new HashMap<String,Ligne>();
         HashMap<String,Station> listeStations = new HashMap<>();
-        Graphe g = new Graphe(listeLignes,listeStations);
+        GrapheStation g = new GrapheStation(listeLignes,listeStations);
         assertAll(
                 () -> assertTrue(g.getNombreSommets()==0),
                 () -> assertTrue(g.getNombreArcs()==0)
         );
+    }
+
+    @Test
+    @DisplayName("Création d'un graphe simple de lignes")
+    void creationGrapheLignes(){
+        ligneController.initialisationLignes();
+
+        GrapheLigne grapheLigne = new GrapheLigne(ligneController.getLignes());
+
+        //TODO: assertions
     }
 
 }
