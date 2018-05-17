@@ -1,11 +1,13 @@
 package miage.view;
 
+import miage.controller.HoraireController;
 import miage.controller.ItineraireController;
 import miage.controller.LigneController;
 import miage.controller.StationController;
 import miage.model.*;
 
 import java.io.*;
+import java.time.*;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -14,7 +16,7 @@ public class Main {
     private static LigneController ligneController = new LigneController();
     private static StationController stationController = new StationController();
     private static ItineraireController itineraireController = new ItineraireController();
-
+    private static HoraireController horaireController = new HoraireController();
 
     private static Position utilisateur = new Position();
 
@@ -54,6 +56,7 @@ public class Main {
             System.out.println("[9] Supprimer une station de métro");
             System.out.println("[10] Modifier une station de métro");
             System.out.println("[11] Modifier un incident de station de métro");
+            System.out.println("[12] Afficher horaires");
             System.out.println("[0] Quitter l'application");
 
             // Gestion des choix de l'utilisateur
@@ -158,8 +161,7 @@ public class Main {
                         reponseitineraire = itineraireController.itineraireAvecChangements(ligneController.getLignes(), stationController.getStations(), listeStations);
                     }
                     else
-                        //TODO Moins de changements
-                        reponseitineraire = "TODO : Faire moins de changements";
+                    reponseitineraire = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),depart,arrivee);
                     System.out.println(reponseitineraire);
                     break;
 
@@ -217,6 +219,9 @@ public class Main {
                     sc.nextLine();
                     modifierStationIncidentUtilisateur(sc);
                     break;
+                case 12:
+                    sc.nextLine();
+                    afficherHoraireStationLigne(sc);
                 case 0:
                     // Quitter l'application
                     System.out.println("Au revoir !");
@@ -253,6 +258,30 @@ public class Main {
             System.out.println(message);
         }else{
             System.out.println("Il n'y a aucune ligne.");
+        }
+    }
+
+    public static void afficherHoraireStationLigne(Scanner sc){
+        System.out.println("Les lignes disponibles sont : ");
+        listeLigneExiste = ligneController.listeLigne();
+        if(!listeLigneExiste.equals("noLigne")) {
+            System.out.println(listeLigneExiste);
+            System.out.println("Sur quel ligne souhaitez vous connaitre les horaires ?");
+            String lignehoraire = sc.nextLine().toLowerCase();
+            if (ligneController.ligneExiste(lignehoraire)) {
+                String message = ligneController.afficherLigne(lignehoraire);
+                System.out.println(message);
+                System.out.println("Sur quel station souhaitez vous connaitre les horaires ?");
+                String stationhoraire = sc.nextLine().toLowerCase();
+                if (ligneController.getLignes().get(lignehoraire).trouverStation(stationhoraire)) {
+                    LocalDateTime heure = LocalDateTime.now();
+                    System.out.println(horaireController.afficherTableHoraire(stationController.getStations().get(stationhoraire), ligneController.getLignes().get(lignehoraire), heure, 5));
+                } else {
+                    System.out.println("Cette station n'existe pas sur cette ligne");
+                }
+            } else {
+                System.out.println("Cette ligne n'existe pas");
+            }
         }
     }
 
