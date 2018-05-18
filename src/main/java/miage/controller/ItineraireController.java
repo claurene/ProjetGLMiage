@@ -31,10 +31,10 @@ public class ItineraireController {
 
     /**
      * Affiche l'itinéraire le plus rapide entre deux stations
-     * @param listeLignes
-     * @param listeStations
-     * @param sourceStation
-     * @param destStation
+     * @param listeLignes liste des lignes existantes
+     * @param listeStations liste des stations existantes
+     * @param sourceStation station de départ
+     * @param destStation station d'arrivee
      * @return les directions de l'itinéraire le plus rapide
      */
     /*
@@ -43,7 +43,7 @@ public class ItineraireController {
          on retourne l'afficage de l'itinéraire trouvé.
      */
     public String itinerairePlusRapide(HashMap<String,Ligne> listeLignes, HashMap<String,Station> listeStations, Station sourceStation, Station destStation){
-        GrapheStation g = new GrapheStation(listeLignes,listeStations);
+        GrapheStation g = new GrapheStation(LigneController.getLignes(),StationController.getStations());
         ItineraireStation i = new ItineraireStation(g,sourceStation,destStation);
         ArrayList<ArrayList<String>> itineraire = i.constItineraireRapide();
         return afficherItineraire(itineraire,sourceStation.getNomStation(),destStation.getNomStation(),i.getTotalTempsParcours(),"station");
@@ -51,8 +51,9 @@ public class ItineraireController {
 
     /**
      * Affiche l'itinéraire le plus rapide avec la liste des changements spécifiés
-     * @param listeLignes
-     * @param listeStations
+     * @param listeLignes liste des lignes existantes
+     * @param toutesStations liste des stations existantes
+     * @param listeStations liste des points de passage
      * @return les direction de l'itinéraire
      */
     public String itineraireAvecChangements(HashMap<String,Ligne> listeLignes, HashMap<String,Station> toutesStations, ArrayList<Station> listeStations){

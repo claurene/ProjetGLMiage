@@ -12,8 +12,6 @@ import java.util.*;
 
 public class Main {
 
-    //private static LigneController ligneController = new LigneController();
-    //private static StationController stationController = new StationController();
     private static ItineraireController itineraireController = new ItineraireController();
     private static HoraireController horaireController = new HoraireController();
 
@@ -33,7 +31,6 @@ public class Main {
 
         // Chargement des stations de métro
         StationController.initialisationStations();
-
 
 
 
@@ -66,103 +63,9 @@ public class Main {
             // Action effectuée en fonction du choix :
             switch(choix) {
                 case 1:
-                    // Commencer un itinéraire
-                    //TODO Verifier que le choix existe
-                    //TODO Verifier que depart et arrivee ne sont pas en travaux
-
-                    // calcul des stations les plus proches par rapport à la position de l'utilisateur
-                   // List<Station> plusProches = StationController.deuxplusProches(utilisateur,StationController.getStations());
-                    List<Station> plusProches = StationController.deuxplusProches(utilisateur);
-                    System.out.println("Station la plus proche : "+plusProches.get(0).getNomStation()+"\nSeconde station la plus proche : "+plusProches.get(1).getNomStation());
-                    // On vide la ligne avant d'en lire une autre
-                    String depart = "";
-                    String arrivee = "";
+                    //Trouver un itinéraire
                     sc.nextLine();
-                    while(depart.equals(arrivee) || depart.equals("") || arrivee.equals("")) {
-                        if(depart.equals("")) {
-                            System.out.println("Indiquer votre départ  : ");
-                            depart = sc.nextLine().toLowerCase();
-                        }
-                        while(!StationController.getStations().containsKey(depart)) {
-                            System.out.println("La station demandée n'existe pas, réessayez");
-                            depart = sc.nextLine().toLowerCase();
-                        }
-                        if(arrivee.equals("")) {
-                            System.out.println("Indiquer votre arrivée : ");
-                            arrivee = sc.nextLine().toLowerCase();
-                        }
-                        while(!StationController.getStations().containsKey(arrivee)) {
-                            System.out.println("La station demandée n'existe pas, réessayez");
-                            arrivee = sc.nextLine().toLowerCase();
-                        }
-                        if (depart.equals(arrivee)) {
-                            System.out.println("Veuillez choisir un départ différent de l'arrivée !");
-                            depart = "";
-                            arrivee = "";
-                        }
-                        else if(StationController.getStations().get(depart).isIncident()){
-                            System.out.println("Votre départ est en travaux, veuillez choisir un autre départ");
-                            depart = "";
-                        }
-                        else if(StationController.getStations().get(arrivee).isIncident()){
-                            System.out.println("Votre arrivée est en travaux, veuillez choisir une autre arrivée");
-                            arrivee = "";
-                        }
-                        else {
-                            System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
-                            //TODO L'itineraire m'affiche que les stations ne font pas partie de la même ligne et ne me donne pas le temps
-                            /*int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
-                            if (temps == 0){
-                                break;
-                            }
-                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");*/
-                        }
-                    }
-                    System.out.println("Quel type d'itineraire souhaitez-vous ?");
-                    System.out.println("[1] - Rapide");
-                    System.out.println("[2] - Points de passages");
-                    System.out.println("[3] - Moins de changements");
-                    int typeitineraire =  entierEntree(sc);
-                    ArrayList<Station> listeStations = new ArrayList<>();
-                    String reponseitineraire;
-                    String passage;
-                    String reponsepassage;
-                    boolean ajoutpassage = true;
-                    Station stationDepart = StationController.getStations().get(depart);
-                    Station stationArrivee = StationController.getStations().get(arrivee);
-                    if(typeitineraire==1) {
-                        reponseitineraire = itineraireController.itinerairePlusRapide(LigneController.getLignes(), StationController.getStations(), stationDepart, stationArrivee);
-                    }
-                    else if(typeitineraire==2) {
-                        sc.nextLine();
-                        listeStations.add(stationDepart);
-                        while(ajoutpassage){
-                            System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
-                            reponsepassage = sc.nextLine().toLowerCase();
-                            if(reponsepassage.equals("y")){
-                                System.out.println("Indiquer votre point de passage");
-                                passage = sc.nextLine().toLowerCase();
-                                if(StationController.getStations().containsKey(passage)) {
-                                    if(!StationController.getStations().get(passage).isIncident()) {
-                                        listeStations.add(StationController.getStations().get(passage));
-                                    }else{
-                                        System.out.println("Votre point de passage est en travaux, veuillez en choisir un autre");
-                                    }
-                                }
-                                else {
-                                    System.out.println("Cette station n'existe pas");
-                                }
-                            }
-                            else {
-                                ajoutpassage = false;
-                            }
-                        }
-                        listeStations.add(stationArrivee);
-                        reponseitineraire = itineraireController.itineraireAvecChangements(LigneController.getLignes(), StationController.getStations(), listeStations);
-                    }
-                    else
-                    reponseitineraire = itineraireController.itineraireMoinsChangements(LigneController.getLignes(),depart,arrivee);
-                    System.out.println(reponseitineraire);
+                    trouverItineraire(sc);
                     break;
 
                 case 2:
@@ -244,14 +147,106 @@ public class Main {
     }
 
     /**
+     * Méthode qui permet de trouver un itinéraire
+     * L'utilisateur à la possibilité d'avoir un itinéraire rapide, avec des points de passage ou avec le moins de changement
+     * @param sc
+     */
+    private static void trouverItineraire(Scanner sc){
+        // Commencer un itinéraire
+        //TODO Verifier que le choix existe
+        //TODO Verifier que depart et arrivee ne sont pas en travaux
+
+        // calcul des stations les plus proches par rapport à la position de l'utilisateur
+        // List<Station> plusProches = StationController.deuxplusProches(utilisateur,StationController.getStations());
+        List<Station> plusProches = StationController.deuxplusProches(utilisateur);
+        System.out.println("Station la plus proche : "+plusProches.get(0).getNomStation()+"\nSeconde station la plus proche : "+plusProches.get(1).getNomStation());
+        // On vide la ligne avant d'en lire une autre
+        String depart = "";
+        String arrivee = "";
+        System.out.println(StationController.listeStation());
+        while(depart.equals(arrivee) || depart.equals("") || arrivee.equals("")) {
+            if(depart.equals("")) {
+                System.out.println("Indiquer votre départ  : ");
+                depart = stationDansStations(sc);
+            }
+            if(arrivee.equals("")) {
+                System.out.println("Indiquer votre arrivée : ");
+                arrivee = stationDansStations(sc);
+            }
+            if (depart.equals(arrivee)) {
+                System.out.println("Veuillez choisir un départ différent de l'arrivée !");
+                depart = "";
+                arrivee = "";
+            }
+            else if(StationController.getStations().get(depart).isIncident()){
+                System.out.println("Votre départ est en travaux, veuillez choisir un autre départ");
+                depart = "";
+            }
+            else if(StationController.getStations().get(arrivee).isIncident()){
+                System.out.println("Votre arrivée est en travaux, veuillez choisir une autre arrivée");
+                arrivee = "";
+            }
+            else {
+                System.out.println("Vous avez choisi :\r Depart : " + depart + " |  Arrivee : " + arrivee + "");
+                //TODO L'itineraire m'affiche que les stations ne font pas partie de la même ligne et ne me donne pas le temps
+                            /*int temps = stationController.calculTempsParcours(stationController.getStations().get(depart),stationController.getStations().get(arrivee));
+                            if (temps == 0){
+                                break;
+                            }
+                            System.out.println("Le temps de parcours, arrêts compris est de "+temps+" minutes");*/
+            }
+        }
+        System.out.println("Quel type d'itineraire souhaitez-vous ?");
+        System.out.println("[1] - Rapide");
+        System.out.println("[2] - Points de passages");
+        System.out.println("[3] - Moins de changements");
+        int typeitineraire =  entierEntree(sc);
+        ArrayList<Station> listeStations = new ArrayList<>();
+        String reponseitineraire, passage, reponsepassage;
+        boolean ajoutpassage = true;
+        Station stationDepart = StationController.getStations().get(depart);
+        Station stationArrivee = StationController.getStations().get(arrivee);
+
+        //Itineraire le plus rapide
+        if(typeitineraire==1) {
+            reponseitineraire = itineraireController.itinerairePlusRapide(LigneController.getLignes(), StationController.getStations(), stationDepart, stationArrivee);
+        }
+
+        //Itineraire avec points de changement
+        else if(typeitineraire==2) {
+            sc.nextLine();
+            listeStations.add(stationDepart);
+            while(ajoutpassage){
+                System.out.println("Souhaitez-vous ajouter un point de passage ? (Y pour continuer)");
+                reponsepassage = sc.nextLine().toLowerCase();
+                if(reponsepassage.equals("y")){
+                    System.out.println("Indiquer votre point de passage");
+                    passage = stationDansStations(sc);
+                    if(!StationController.getStations().get(passage).isIncident()) {
+                        listeStations.add(StationController.getStations().get(passage));
+                    }else{
+                        System.out.println("Votre point de passage est en travaux, veuillez en choisir un autre");
+                    }
+                }else {
+                    ajoutpassage = false;
+                }
+            }
+            listeStations.add(stationArrivee);
+            reponseitineraire = itineraireController.itineraireAvecChangements(LigneController.getLignes(), StationController.getStations(), listeStations);
+
+        //Itinéraire avec le moins de changement
+        }else {
+            reponseitineraire = itineraireController.itineraireMoinsChangements(LigneController.getLignes(), depart, arrivee);
+        }
+        System.out.println(reponseitineraire);
+    }
+
+    /**
      * Méthode qui permet à l'utilisateur d'afficher les informations d'une ligne
      * @param sc
      */
     private static void afficherLigneUtilisateur(Scanner sc){
-        System.out.println("Les lignes disponibles sont : ");
-        listeLigneExiste = LigneController.listeLigne();
-        if(!listeLigneExiste.equals("noLigne")){
-            System.out.println(listeLigneExiste);
+        if(listeLignesExiste()){
             System.out.println("Veuillez choisir la ligne dont vous souhaitez des informations : ");
             nomLigne = sc.nextLine().toLowerCase();
             String message = LigneController.afficherLigne(nomLigne);
@@ -261,11 +256,13 @@ public class Main {
         }
     }
 
+
+    /**
+     * Méthode qui permet d'affichier les horaires d'une station sur une ligne
+     * @param sc
+     */
     private static void afficherHoraireStationLigne(Scanner sc){
-        System.out.println("Les lignes disponibles sont : ");
-        listeLigneExiste = LigneController.listeLigne();
-        if(!listeLigneExiste.equals("noLigne")) {
-            System.out.println(listeLigneExiste);
+        if(listeLignesExiste()){
             System.out.println("Sur quel ligne souhaitez vous connaitre les horaires ?");
             String lignehoraire = sc.nextLine().toLowerCase();
             if (LigneController.ligneExiste(lignehoraire)) {
@@ -295,7 +292,7 @@ public class Main {
         if(!listeStationExiste.equals("noStation")){
             System.out.println(listeStationExiste);
             System.out.println("Veuillez choisir la station dont vous souhaitez des informations : ");
-            String nomStation = sc.nextLine().toLowerCase();
+            String nomStation = stationDansStations(sc);
             String message = StationController.afficherStation(nomStation);
             System.out.println(message);
         }else{
@@ -322,49 +319,52 @@ public class Main {
 
         //Liste de stations
         listeStationExiste = StationController.listeStation();
-        //sc.nextLine();
+
         if (!listeStationExiste.equals("noStation")) {
             System.out.println(listeStationExiste);
             System.out.println("- Veuillez saisir au moins 2 stations présentes sur une ligne " +
                     "(Saisissez 'Fin' lorsque vous aurez terminé) : ");
-
-            while(true){
+            nomStation = "";
+            while (true) {
                 System.out.print("- ");
                 nomStation = sc.nextLine().toLowerCase();
                 if (nomStation.equals("fin")) {
-                    break;
+                    if (listeStation.size() > 1) {
+                        break;
+                    } else {
+                        System.out.println("Vous devez saisir au moins 2 stations");
+                    }
                 } else {
-                    if(StationController.getStations().containsKey(nomStation)){
+                    if (StationController.getStations().containsKey(nomStation)) {
                         listeStation.add(StationController.getStations().get(nomStation));
-                    }else{
-                        System.out.println("La station "+ nomStation +" n'existe pas");
+                    } else {
+                        System.out.println("La station " + nomStation + " n'existe pas");
                     }
                 }
-
+                //Suppression des doublons
+                listeStation = new ArrayList<>(new LinkedHashSet<>(listeStation));
             }
-            //Suppression des doublons
-            listeStation = new ArrayList<>(new LinkedHashSet<>(listeStation));
-        }else{
-            System.out.println("Il n'y a aucune station de disponible, veuillez ajouter des stations avant d'ajouter une ligne.");
-        }
 
-        //temps parcours
-        System.out.println("Veuillez renseigner le temps de parcours pour chacune des stations de la ligne");
-        for (int i =0; i<(listeStation.size()-1);i++){
-            tmpParc = 0;
-            System.out.println("Temps de parcours entre "+listeStation.get(i).getNomStation()+" et "+listeStation.get(i+1).getNomStation());
-            while(tmpParc <= 0 ){
-                tmpParc = entierEntree(sc);
-                if(tmpParc <= 0){
-                    System.out.println("Le temps de parcours doit être strictement superieur à 0");
-                } else {
-                    listeTempsParcours.add(tmpParc);
+                //temps parcours
+                System.out.println("Veuillez renseigner le temps de parcours pour chacune des stations de la ligne");
+                for (int i = 0; i < (listeStation.size() - 1); i++) {
+                    tmpParc = 0;
+                    System.out.println("Temps de parcours entre " + listeStation.get(i).getNomStation() + " et " + listeStation.get(i + 1).getNomStation());
+                    while (tmpParc <= 0) {
+                        tmpParc = entierEntree(sc);
+                        if (tmpParc <= 0) {
+                            System.out.println("Le temps de parcours doit être strictement superieur à 0");
+                        } else {
+                            listeTempsParcours.add(tmpParc);
+                        }
+                    }
                 }
+                String message = LigneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation);
+                System.out.println(message);
+            }else{
+                System.out.println("Il n'y a aucune station de disponible, veuillez ajouter des stations avant d'ajouter une ligne.");
             }
-        }
 
-        String message = LigneController.ajouterLigne(nomLigne, listeTempsParcours, listeStation);
-        System.out.println(message);
     }
 
     /**
@@ -372,10 +372,7 @@ public class Main {
      * @param sc
      */
     private static void supprimerLigneUtilisateur(Scanner sc){
-        System.out.println("Les lignes disponibles sont : ");
-        listeLigneExiste = LigneController.listeLigne();
-        if(!listeLigneExiste.equals("noLigne")){
-            System.out.println(listeLigneExiste);
+        if(listeLignesExiste()){
             System.out.println("Veuillez choisir la ligne que vous souhaitez supprimer : ");
             nomLigne = sc.nextLine().toLowerCase();
             System.out.println(LigneController.supprimerLigne(nomLigne));
@@ -392,15 +389,11 @@ public class Main {
         String message;
         String station1, station2, listeStation;
         int tmpParc;
-        System.out.println("Les lignes disponibles sont : ");
-        listeLigneExiste = LigneController.listeLigne();
-        if(!listeLigneExiste.equals("noLigne")) {
-            System.out.println(listeLigneExiste);
+        if(listeLignesExiste()){
             System.out.println("Veuillez saisir les informations suivantes : ");
             System.out.println("Nom de la ligne");
             nomLigne = sc.nextLine().toLowerCase();
             if (LigneController.getLignes().containsKey(nomLigne)){
-
                 Ligne ligne = LigneController.getLignes().get(nomLigne);
                 System.out.println("[1] Modifier le temps de parcours entre 2 stations");
                 System.out.println("[2] Ajouter une station entre 2 stations");
@@ -426,17 +419,22 @@ public class Main {
                         //Sélectionner 2 stations
                         System.out.println("Veuillez saisir les stations entre lesquelles vous voulez changer le temps de parcours");
                         System.out.println("Station 1 : ");
-                        station1 = sc.nextLine().toLowerCase();
+                        station1 = stationDansLigne(ligne, sc);
+
                         System.out.println("Station 2 : ");
-                        station2 = sc.nextLine().toLowerCase();
+                        station2 = stationDansLigne(ligne, sc);
 
                         //Saisir temps de parcours à modifier
                         System.out.println("Veuillez saisir le nouveau temps de parcours entre la station "+station1+" et la station "+station2);
                         tmpParc = entierEntree(sc);
-
+                        while(tmpParc <= 0){
+                            System.out.println("Le temps de parcours doit etre strictement supérieur à 0.");
+                            tmpParc = entierEntree(sc);
+                        }
                         message = LigneController.modifierLigneTempsParcours(nomLigne, station1, station2, tmpParc);
                         System.out.println(message);
                         break;
+
                     case 2:
                         //Ajouter une station entre 2
                         sc.nextLine();
@@ -453,7 +451,6 @@ public class Main {
                             //Saisir la station à ajouter
                             System.out.println("Veuillez saisir la station que vous souhaitez ajouter à la ligne " + nomLigne + " :");
                             stationNouv = sc.nextLine();
-
                             //Vérifier que la station n'est pas présente dans la ligne
                             if(!ligne.trouverStation(stationNouv)) {
                                 if (StationController.getStations().containsKey(stationNouv)) {
@@ -607,10 +604,13 @@ public class Main {
         String nomStation;
         int tempsArret;
         double latitude, longitude;
+
+        //Afficher liste des stations
+
+
         System.out.println("Veuillez saisir les informations suivantes : ");
         System.out.println("Nom de la station");
-        nomStation = sc.nextLine().toLowerCase();
-        if (StationController.getStations().containsKey(nomStation)){
+        nomStation = stationDansStations(sc);
             System.out.println("Temps d'arret de la station");
             tempsArret = entierEntree(sc);
             while (!Station.verifierTempsArret(tempsArret)) {
@@ -632,10 +632,6 @@ public class Main {
             }
             String message = StationController.modifierStation(nomStation, tempsArret, StationController.getStations().get(nomStation).isIncident(), latitude, longitude);
             System.out.println(message);
-        }
-        else{
-            System.out.println("La station n'existe pas");
-        }
 
     }
 
@@ -644,8 +640,7 @@ public class Main {
         boolean incident = false;
         System.out.println("Veuillez saisir les informations suivantes : ");
         System.out.println("Nom de la station");
-        nomStation = sc.nextLine().toLowerCase();
-        if(StationController.getStations().containsKey(nomStation)){
+        nomStation = stationDansStations(sc);
             System.out.println("Incident ?");
             System.out.println("y/n");
             inc = sc.nextLine().toLowerCase();
@@ -659,10 +654,6 @@ public class Main {
             else{
                 System.out.println("Le systeme n'a pas compris votre reponse d'incident");
             }
-        }
-        else{
-            System.out.println("La station n'existe pas");
-        }
     }
 
     /**
@@ -685,5 +676,51 @@ public class Main {
         }
         return choix;
     }
+
+    /**
+     * Méthode pour vérifier qu'une station se trouve dans une ligne
+     *
+     * @return string la valeur de la station
+     */
+    private static String stationDansLigne(Ligne ligne,Scanner sc){
+        String station = sc.nextLine().toLowerCase();
+        while (!ligne.trouverStation(station)) {
+            System.out.println("La station "+station+" n'existe pas sur la ligne "+ligne.getNomLigne()+".\nVeuillez recommencer.");
+            station = sc.nextLine().toLowerCase();
+        }
+        return station;
+    }
+
+    /**
+     * Méthode pour vérifier qu'une station existe dans la liste des stations
+     *
+     * @return string la valeur de la station
+     */
+    private static String stationDansStations(Scanner sc){
+        String station = sc.nextLine().toLowerCase();
+        while (!StationController.getStations().containsKey(station)) {
+            System.out.println("La station "+station+" n'existe pas sur la liste des stations.\nVeuillez recommencer.");
+            station = sc.nextLine().toLowerCase();
+        }
+        return station;
+    }
+
+    /**
+     * Méthode qui permet d'afficher la liste des lignes
+     *
+     * @return boolean si la liste est remplie
+     */
+    private static boolean listeLignesExiste(){
+        boolean existe=false;
+        System.out.println("Les lignes disponibles sont : ");
+        String listeLigneExiste = LigneController.listeLigne();
+        //Si la liste existe
+        if(!listeLigneExiste.equals("noLigne")){
+            System.out.println(listeLigneExiste);
+            existe = true;
+        }
+        return existe;
+    }
+
 
 }
