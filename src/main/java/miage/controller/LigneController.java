@@ -462,21 +462,9 @@ public class LigneController {
      * @param nom nom de la station à supprimer
      * @return boolean si la station a ete supprimee
      */
-    public static boolean supprimerStationLigne(String nom) {
-        boolean suppressionpossible = true;
-        boolean suppressioneffectue = false;
-        // On commence par vérifier que la station existe et si la suppression est possible
-        // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
+    public static void supprimerStationLigne(String nom) {
         for (HashMap.Entry<String, Ligne> entry : LigneController.lignes.entrySet()) {
-            if (entry.getValue().trouverStation(nom) && entry.getValue().getListeStation().size() <= 2) {
-                suppressionpossible = false;
-            }
-        }
-        // Si la suppression est possible alors
-        if (suppressionpossible) {
-            // Pour chaque ligne où elle existe
-            for (HashMap.Entry<String, Ligne> entry : LigneController.lignes.entrySet()) {
-                if (entry.getValue().trouverStation(nom)) {
+            if(entry.getValue().trouverStation(nom) && entry.getValue().getListeStation().size() > 2) {
                     ArrayList<Station> listeStation = entry.getValue().getListeStation();
                     ArrayList<Integer> listeTempsParcours = entry.getValue().getListeTempsParcours();
                     int index = entry.getValue().trouverPosListeStation(nom);
@@ -492,10 +480,7 @@ public class LigneController {
                     listeStation.remove(index);
                     LigneController.lignes.get(entry.getKey()).setListeTempsParcours(listeTempsParcours);
                     LigneController.lignes.get(entry.getKey()).setListeStation(listeStation);
-                    suppressioneffectue = true;
-                }
             }
         }
-        return suppressioneffectue;
     }
 }
