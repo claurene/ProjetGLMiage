@@ -123,7 +123,7 @@ public class StationControllerTest {
         int taille = stationController.getStations().size();
         int tailleligne = ligneController.getLignes().get("4").getListeStation().size();
         int tailleparcours = ligneController.getLignes().get("4").getListeTempsParcours().size();
-        String reponse = stationController.supprimerStation("gare du nord",ligneController);
+        String reponse = stationController.supprimerStation("gare du nord");
         assertAll(
                 () -> assertTrue(stationController.getStations().size()==taille-1),
                 () -> assertTrue(ligneController.getLignes().get("4").getListeStation().size()==tailleligne-1),
@@ -140,7 +140,7 @@ public class StationControllerTest {
         int taille = stationController.getStations().size();
         int tailleligne = ligneController.getLignes().get("4").getListeStation().size();
         int tailleparcours = ligneController.getLignes().get("4").getListeTempsParcours().size();
-        String reponse = stationController.supprimerStation("gare fantooooooome",ligneController);
+        String reponse = stationController.supprimerStation("gare fantooooooome");
         assertAll(
                 () -> assertTrue(stationController.getStations().size()==taille),
                 () -> assertTrue(ligneController.getLignes().get("4").getListeStation().size()==tailleligne),

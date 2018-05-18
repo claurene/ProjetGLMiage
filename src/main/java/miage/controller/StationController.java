@@ -18,14 +18,12 @@ public class StationController {
     //Liste des stations de metro
     private static HashMap<String,Station> stations = new HashMap<String,Station>();
 
-    private static LigneController ligneController = new LigneController();
-
     public static HashMap<String, Station> getStations() {
         return stations;
     }
 
-    public void setStations(HashMap<String, Station> stations) {
-        this.stations = stations;
+    public static void setStations(HashMap<String, Station> stations) {
+        StationController.stations = stations;
     }
 
     /**
@@ -206,14 +204,15 @@ public class StationController {
      * @param nom , le nom de la station a supprimée
      * @return reponse, la reponse a affichée
      */
-    public String supprimerStation(String nom, LigneController lc){
+    public String supprimerStation(String nom){
+
         String reponse ="";
 
         boolean suppressionpossible = true;
         // On commence par vérifier que la station existe et si la suppression est possible
         // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
         if(this.stations.containsKey(nom)) {
-            if(lc.supprimerStationLigne(nom)){
+            if(LigneController.supprimerStationLigne(nom)){
                 // Puis on supprime la station de la liste des stations
                 this.stations.remove(nom);
                 reponse = "La station a bien été supprimée";
@@ -276,13 +275,13 @@ public class StationController {
 
     public int calculTempsParcours(Station station1, Station station2){
         //todo gérer le calcul dans les deux sens (i--)
-        ligneController.initialisationLignes();
+        //LigneController.initialisationLignes();
 
         String nomDepart = station1.getNomStation();
         String nomArrivee = station2.getNomStation();
 
-        List<String> lignesDepart = ligneController.lignesDeLaStation(nomDepart);
-        List<String> lignesArrivee = ligneController.lignesDeLaStation(nomArrivee);
+        List<String> lignesDepart = LigneController.lignesDeLaStation(nomDepart);
+        List<String> lignesArrivee = LigneController.lignesDeLaStation(nomArrivee);
 
         for(int i = lignesArrivee.size() - 1; i > -1; --i){
             String str = lignesArrivee.get(i);
@@ -295,9 +294,9 @@ public class StationController {
             return 0;
         }
 
-        Ligne ligne = ligneController.getLignes().get(lignesArrivee.get(0));
-        ArrayList<Station> listeStations = ligneController.getLignes().get(lignesArrivee.get(0)).getListeStation();
-        int debutIndex = ligneController.getLignes().get(lignesArrivee.get(0)).trouverPosListeStation(nomDepart);
+        Ligne ligne = LigneController.getLignes().get(lignesArrivee.get(0));
+        ArrayList<Station> listeStations = LigneController.getLignes().get(lignesArrivee.get(0)).getListeStation();
+        int debutIndex = LigneController.getLignes().get(lignesArrivee.get(0)).trouverPosListeStation(nomDepart);
         int tempsParcours = ligne.getTempsParcours(listeStations.get(debutIndex).getNomStation(),ligne.getListeTempsParcours());
 
         for (int i = debutIndex+1; !listeStations.get(i).getNomStation().equals(nomArrivee); i++ ){
