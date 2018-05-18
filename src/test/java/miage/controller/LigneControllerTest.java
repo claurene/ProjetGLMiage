@@ -69,12 +69,13 @@ public class LigneControllerTest {
         ligneController.initialisationLignes();
         int taille = ligneController.getLignes().size();
 
-        ArrayList<Station> stations = new ArrayList<Station>();
+        ArrayList<Station> stations = new ArrayList<>();
 
         ArrayList<Integer> tempsParcours = new ArrayList<Integer>();
         tempsParcours.add(1);
 
-        String reponse = ligneController.ajouterLigne("1bis",tempsParcours,stations);
+        String reponse = ligneController.ajouterLigne("2bis",tempsParcours,stations);
+        System.out.println(reponse);
         assertAll(
                 () -> assertTrue(ligneController.getLignes().size()==taille),
                 () -> assertFalse(stations.size()>1),

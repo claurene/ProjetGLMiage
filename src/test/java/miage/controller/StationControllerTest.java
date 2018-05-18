@@ -27,7 +27,7 @@ public class StationControllerTest {
     void DeuxPlusProchesNotEquals(){
         stationController.initialisationStations();
         Position utilisateur = new Position();
-        List<Station> plusProches = StationController.deuxplusProches(utilisateur,stationController.getStations());
+        List<Station> plusProches = StationController.deuxplusProches(utilisateur);
         assertNotEquals(plusProches.get(0),plusProches.get(1));
     }
 
@@ -36,7 +36,7 @@ public class StationControllerTest {
     void DeuxPlusProchesPasIncident(){
         stationController.initialisationStations();
         Position utilisateur = new Position();
-        List<Station> plusProches = StationController.deuxplusProches(utilisateur,stationController.getStations());
+        List<Station> plusProches = StationController.deuxplusProches(utilisateur);
         assertAll(
                 () -> assertFalse(plusProches.get(0).isIncident()),
                 () -> assertFalse(plusProches.get(1).isIncident())

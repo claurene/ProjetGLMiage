@@ -35,7 +35,6 @@ public class ItineraireControllerTest {
                 () -> assertTrue(response.contains("Descendre à bastille")),
                 () -> assertFalse(response.contains("Aucun chemin possible avec les paramètres renseignés"))
         );
-        System.out.println(response);
     }
 
     @Test
@@ -45,18 +44,16 @@ public class ItineraireControllerTest {
         stationController.initialisationStations();
 
         ArrayList<Station> listeStations = new ArrayList<Station>();
-        listeStations.add(new Station("château de vincennes",2,false,48.79,2.12));
-        listeStations.add(new Station("bastille",2,false,48.79,2.12));
-        listeStations.add(new Station("château de vincennes",2,false,48.79,2.12));
+        listeStations.add(new Station("gambetta",2,false,48.79,2.12));
+        listeStations.add(new Station("père-lachaise",2,false,48.79,2.12));
+        listeStations.add(new Station("menilmontant",2,false,48.79,2.12));
 
         String response = itineraireController.itineraireAvecChangements(ligneController.getLignes(),stationController.getStations(),listeStations);
         assertAll(
-                () -> assertTrue(response.contains("Descendre à bastille")),
-                () -> assertTrue(response.contains("Descendre à château de vincennes")),
+                () -> assertTrue(response.contains("Descendre à père-lachaise")),
+                () -> assertTrue(response.contains("Descendre à menilmontant")),
                 () -> assertFalse(response.contains("Aucun chemin possible avec les paramètres renseignés"))
         );
-
-        System.out.println(response);
     }
 
     @Test
