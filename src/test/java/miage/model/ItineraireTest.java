@@ -19,12 +19,12 @@ public class ItineraireTest {
     @Test
     @DisplayName("Itinéraire rapide avec le jeu de données")
     void itineraireRapide(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        HashMap<String,Station> listeStations = stationController.getStations();
+        HashMap<String,Station> listeStations = StationController.getStations();
 
-        GrapheStation g = new GrapheStation(ligneController.getLignes(),listeStations);
+        GrapheStation g = new GrapheStation(LigneController.getLignes(),listeStations);
         ItineraireStation i = new ItineraireStation(g,listeStations.get("temple"),listeStations.get("bastille"));
 
         System.out.println(i.constItineraireRapide());

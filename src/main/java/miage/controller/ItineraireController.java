@@ -63,9 +63,7 @@ public class ItineraireController {
         ArrayList<ArrayList<String>> cheminItineraire = new ArrayList<ArrayList<String>>();
         for (int i=0;i<listeStations.size()-1;i++){
             itineraire = new ItineraireStation(g,listeStations.get(i),listeStations.get(i+1));
-            for (ArrayList<String> l : itineraire.constItineraireRapide()){
-                cheminItineraire.add(l);
-            }
+            cheminItineraire.addAll(itineraire.constItineraireRapide());
             tempsParcours+=itineraire.getTotalTempsParcours();
         }
         return afficherItineraire(cheminItineraire,listeStations.get(0).getNomStation(),listeStations.get(listeStations.size()-1).getNomStation(),tempsParcours,"station");

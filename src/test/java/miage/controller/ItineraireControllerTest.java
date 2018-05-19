@@ -24,12 +24,12 @@ public class ItineraireControllerTest {
     @Test
     @DisplayName("Affichage d'un itinéraire rapide")
     void afficherItineraireRapide(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        HashMap<String,Station> listeStations = stationController.getStations();
+        HashMap<String,Station> listeStations = StationController.getStations();
 
-        String response = itineraireController.itinerairePlusRapide(ligneController.getLignes(),listeStations,listeStations.get("temple"),listeStations.get("bastille"));
+        String response = itineraireController.itinerairePlusRapide(LigneController.getLignes(),listeStations,listeStations.get("temple"),listeStations.get("bastille"));
 
         assertAll(
                 () -> assertTrue(response.contains("Descendre à bastille")),
@@ -40,15 +40,15 @@ public class ItineraireControllerTest {
     @Test
     @DisplayName("Affichage itinéraire avec changements définis")
     void itineraireChangementsSimple(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
         ArrayList<Station> listeStations = new ArrayList<Station>();
         listeStations.add(new Station("gambetta",2,false,48.79,2.12));
         listeStations.add(new Station("père-lachaise",2,false,48.79,2.12));
         listeStations.add(new Station("menilmontant",2,false,48.79,2.12));
 
-        String response = itineraireController.itineraireAvecChangements(ligneController.getLignes(),stationController.getStations(),listeStations);
+        String response = itineraireController.itineraireAvecChangements(LigneController.getLignes(), StationController.getStations(),listeStations);
         assertAll(
                 () -> assertTrue(response.contains("Descendre à père-lachaise")),
                 () -> assertTrue(response.contains("Descendre à menilmontant")),
@@ -59,10 +59,10 @@ public class ItineraireControllerTest {
     @Test
     @DisplayName("Itinéraire avec le moins de changements de ligne")
     void itineraireMoinsChangements(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","temple");
+        String response = itineraireController.itineraireMoinsChangements(LigneController.getLignes(),"nation","temple");
 
         assertAll(
                 () -> assertTrue(response.contains("Prendre la ligne 2 direction \"porte dauphine\"")),
@@ -74,10 +74,10 @@ public class ItineraireControllerTest {
     @Test
     @DisplayName("Itinéraire avec le moins de changements sur la même ligne")
     void itineraireMoinsChangementsMemeLigne(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","bastille");
+        String response = itineraireController.itineraireMoinsChangements(LigneController.getLignes(),"nation","bastille");
 
         assertEquals(response,"Prendre la ligne 1 de nation jusqu'à bastille");
     }
@@ -86,10 +86,10 @@ public class ItineraireControllerTest {
     @Test
     @DisplayName("Aucun itinéraire avec le moins de changements de ligne")
     void aucunItineraireMoinsChangements(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        String response = itineraireController.itineraireMoinsChangements(ligneController.getLignes(),"nation","templee");
+        String response = itineraireController.itineraireMoinsChangements(LigneController.getLignes(),"nation","templee");
 
         assertEquals(response,"Aucun chemin possible avec les paramètres renseignés");
     }

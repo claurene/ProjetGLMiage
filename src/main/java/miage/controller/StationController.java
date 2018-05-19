@@ -135,7 +135,7 @@ public class StationController {
     public static String ajouterStation(String nom, int temps, boolean inc, double latitude, double longitude){
         String reponse;
         Station s = new Station(nom, temps, inc, latitude,longitude);
-        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
+        if(Position.VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
             if(StationController.stations.containsKey(nom)){
                 reponse = "La station existe déjà";
             }
@@ -162,7 +162,7 @@ public class StationController {
     public static String modifierStation(String nom, int temps, boolean inc, double latitude, double longitude){
         String reponse;
         Station s = new Station(nom, temps, inc, latitude,longitude);
-        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
+        if(Position.VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
             if(StationController.stations.containsKey(nom)){
                 StationController.stations.put(nom,s);
                 reponse = "La station a été remplacée";

@@ -35,7 +35,7 @@ public class StationTest {
         System.out.println(s.toString());
         assertAll(
                 () -> assertEquals(s.getTempsArret(),s.getTEMPS_MINIMUM_ARRET(),"Le temps minimum doit etre "+s.getTEMPS_MINIMUM_ARRET()),
-                () -> assertTrue(s.verifierTempsArret(s.getTempsArret()))
+                () -> assertTrue(Station.verifierTempsArret(s.getTempsArret()))
         );
     }
 
@@ -46,7 +46,7 @@ public class StationTest {
         System.out.println(s.toString());
         assertAll(
                 () -> assertEquals(s.getTempsArret(),s.getTEMPS_MINIMUM_ARRET(),"Le temps minimum doit etre "+s.getTEMPS_MINIMUM_ARRET()),
-                () -> assertTrue(s.verifierTempsArret(s.getTempsArret()))
+                () -> assertTrue(Station.verifierTempsArret(s.getTempsArret()))
         );
     }
 

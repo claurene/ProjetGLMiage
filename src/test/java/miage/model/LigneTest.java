@@ -1,5 +1,6 @@
 package miage.model;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -119,10 +120,10 @@ public class LigneTest {
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
         Ligne lInverse = l.getDirectionInverse();
         assertAll(
-                () -> assertTrue(l.getDepart().getNomStation().equals("Gare du nord")),
-                () -> assertTrue(lInverse.getDepart().getNomStation().equals("Republique")),
-                () -> assertTrue(l.getListeTempsParcours().get(0)==10),
-                () -> assertTrue(lInverse.getListeTempsParcours().get(0)==7)
+                () -> assertEquals("Gare du nord", l.getDepart().getNomStation()),
+                () -> assertEquals("Republique", lInverse.getDepart().getNomStation()),
+                () -> assertEquals(10, (int) l.getListeTempsParcours().get(0)),
+                () -> assertEquals(7, (int) lInverse.getListeTempsParcours().get(0))
         );
     }
 }

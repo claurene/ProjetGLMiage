@@ -3,6 +3,7 @@ package miage.model;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +17,7 @@ public class PositionTest {
         // Initialisation d'une position aléatoire
         Position p = new Position();
         System.out.println(p.toString());
-        assertTrue( p != null);
+        assertNotNull(p);
     }
 
     @Test
@@ -25,13 +26,13 @@ public class PositionTest {
         Position p = new Position();
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLat() <= p.getLATITUDE_MAX()),
-                () -> assertTrue(p.getLat() >= p.getLATITUDE_MIN()),
-                () -> assertTrue(p.getLon() <= p.getLONGITUDE_MAX()),
-                () -> assertTrue(p.getLon() >= p.getLONGITUDE_MIN()),
-                () -> assertTrue(p.VerifierLatitude(p.getLat())),
-                () -> assertTrue(p.VerifierLongitude(p.getLon())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLat() <= Position.getLATITUDE_MAX()),
+                () -> assertTrue(p.getLat() >= Position.getLATITUDE_MIN()),
+                () -> assertTrue(p.getLon() <= Position.getLONGITUDE_MAX()),
+                () -> assertTrue(p.getLon() >= Position.getLONGITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLatitude(p.getLat())),
+                () -> assertTrue(Position.VerifierLongitude(p.getLon())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
 
         );
     }
@@ -51,13 +52,13 @@ public class PositionTest {
         Position p = new Position(48.8, 2.12);
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLat() <= p.getLATITUDE_MAX()),
-                () -> assertTrue(p.getLat() >= p.getLATITUDE_MIN()),
-                () -> assertTrue(p.getLon() <= p.getLONGITUDE_MAX()),
-                () -> assertTrue(p.getLon() >= p.getLONGITUDE_MIN()),
-                () -> assertTrue(p.VerifierLatitude(p.getLat())),
-                () -> assertTrue(p.VerifierLongitude(p.getLon())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLat() <= Position.getLATITUDE_MAX()),
+                () -> assertTrue(p.getLat() >= Position.getLATITUDE_MIN()),
+                () -> assertTrue(p.getLon() <= Position.getLONGITUDE_MAX()),
+                () -> assertTrue(p.getLon() >= Position.getLONGITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLatitude(p.getLat())),
+                () -> assertTrue(Position.VerifierLongitude(p.getLon())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
         );
     }
 
@@ -90,10 +91,10 @@ public class PositionTest {
         p.setLat(60);
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLat() <= p.getLATITUDE_MAX()),
-                () -> assertTrue(p.getLat() >= p.getLATITUDE_MIN()),
-                () -> assertTrue(p.VerifierLatitude(p.getLat())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLat() <= Position.getLATITUDE_MAX()),
+                () -> assertTrue(p.getLat() >= Position.getLATITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLatitude(p.getLat())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
         );
     }
 
@@ -104,10 +105,10 @@ public class PositionTest {
         p.setLon(8.24);
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLon() <= p.getLONGITUDE_MAX()),
-                () -> assertTrue(p.getLon() >= p.getLONGITUDE_MIN()),
-                () -> assertTrue(p.VerifierLongitude(p.getLon())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLon() <= Position.getLONGITUDE_MAX()),
+                () -> assertTrue(p.getLon() >= Position.getLONGITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLongitude(p.getLon())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
         );
     }
 
@@ -118,10 +119,10 @@ public class PositionTest {
         p.setLat(-48.8);
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLat() <= p.getLATITUDE_MAX()),
-                () -> assertTrue(p.getLat() >= p.getLATITUDE_MIN()),
-                () -> assertTrue(p.VerifierLatitude(p.getLat())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLat() <= Position.getLATITUDE_MAX()),
+                () -> assertTrue(p.getLat() >= Position.getLATITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLatitude(p.getLat())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
         );
     }
 
@@ -132,10 +133,10 @@ public class PositionTest {
         p.setLon(-2.12);
         System.out.println(p.toString());
         assertAll(
-                () -> assertTrue(p.getLon() <= p.getLONGITUDE_MAX()),
-                () -> assertTrue(p.getLon() >= p.getLONGITUDE_MIN()),
-                () -> assertTrue(p.VerifierLongitude(p.getLon())),
-                () -> assertTrue(p.VerifierPosition(p.getLat(),p.getLon()))
+                () -> assertTrue(p.getLon() <= Position.getLONGITUDE_MAX()),
+                () -> assertTrue(p.getLon() >= Position.getLONGITUDE_MIN()),
+                () -> assertTrue(Position.VerifierLongitude(p.getLon())),
+                () -> assertTrue(Position.VerifierPosition(p.getLat(),p.getLon()))
         );
     }
 
