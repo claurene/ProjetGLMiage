@@ -7,9 +7,16 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 public class ItineraireController {
-    // Création du logger
-    private static final Logger LOG = Logger.getLogger(ItineraireController.class.getName());
 
+    /**
+     * Méthode qui permet d'afficher un itinéraire
+     * @param itineraire
+     * @param source
+     * @param dest
+     * @param tempsParcours
+     * @param option
+     * @return
+     */
     private String afficherItineraire(ArrayList<ArrayList<String>> itineraire,String source, String dest, int tempsParcours, String option){
         String response = "";
         if (!itineraire.isEmpty()){

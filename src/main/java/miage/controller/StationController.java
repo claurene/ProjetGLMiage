@@ -266,8 +266,6 @@ public class StationController {
      */
 
     public static int calculTempsParcours(Station station1, Station station2){
-        //todo gérer le calcul dans les deux sens (i--)
-        //LigneController.initialisationLignes();
 
         String nomDepart = station1.getNomStation();
         String nomArrivee = station2.getNomStation();

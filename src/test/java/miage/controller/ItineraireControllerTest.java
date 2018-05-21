@@ -13,13 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-//TODO: assertions
 
 @DisplayName("Itinéraire Controller")
 public class ItineraireControllerTest {
     private final ItineraireController itineraireController = new ItineraireController();
-    private final LigneController ligneController = new LigneController();
-    private final StationController stationController = new StationController();
 
     @Test
     @DisplayName("Affichage d'un itinéraire rapide")
@@ -93,8 +90,5 @@ public class ItineraireControllerTest {
 
         assertEquals(response,"Aucun chemin possible avec les paramètres renseignés");
     }
-
-    //TODO: ajouter des tests sur l'itinéraire avec moins de changements
-
 
 }
