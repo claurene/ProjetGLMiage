@@ -15,21 +15,21 @@ public class LigneController {
     private static final Logger LOG = Logger.getLogger(LigneController.class.getName());
 
     // Liste des lignes de métro
-    HashMap<String,Ligne> lignes = new HashMap<String,Ligne>();
+    private static HashMap<String,Ligne> lignes = new HashMap<String,Ligne>();
 
-    public HashMap<String, Ligne> getLignes() {
+    public static HashMap<String, Ligne> getLignes() {
         return lignes;
     }
 
-    public void setLignes(HashMap<String, Ligne> lignes) {
-        this.lignes = lignes;
+    public static void setLignes(HashMap<String, Ligne> nvlLignes) {
+        lignes = nvlLignes;
     }
 
     /**
      * Méthode qui permet de recuperer les donnees du fichier lignes.txt
      */
-    public void initialisationLignes(){
-        FileInputStream in = null;
+    public static void initialisationLignes(){
+        FileInputStream in;
         ObjectInputStream ois = null;
 
         try {
@@ -39,7 +39,7 @@ public class LigneController {
                 while(true) {
                     try {
                         Ligne l = (Ligne) ois.readObject();
-                        this.lignes.put(l.getNomLigne(),l);
+                        LigneController.lignes.put(l.getNomLigne(),l);
                     } catch (EOFException e){
                         break;
                     }
@@ -65,7 +65,7 @@ public class LigneController {
     /**
      * Methode qui permet de sauvegarder les nouvelles donnees dans le fichier lignes.txt
      */
-    public void sauvegardeLignes(){
+    public static void sauvegardeLignes(){
         FileOutputStream out=null;
         ObjectOutputStream oos=null;
 
@@ -78,7 +78,7 @@ public class LigneController {
 
         try {
             oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Ligne> entry : this.lignes.entrySet()) {
+            for (HashMap.Entry<String,Ligne> entry : LigneController.lignes.entrySet()) {
                 oos.writeObject(entry.getValue());
             }
             oos.flush();
@@ -95,10 +95,10 @@ public class LigneController {
      * Méthode qui permet de lister toutes les lignes existantes
      * @return string la liste des lignes
      */
-    public String listeLigne(){
+    public static String listeLigne(){
         String reponse = "";
-        if(this.lignes.size()>0){
-            for(Map.Entry<String, Ligne> ligne : this.lignes.entrySet()){
+        if(LigneController.lignes.size()>0){
+            for(Map.Entry<String, Ligne> ligne : LigneController.lignes.entrySet()){
                 reponse += ligne.getKey()+"\n";
             }
         } else {
@@ -112,7 +112,7 @@ public class LigneController {
      * @param nomLigne ligne dont on souhaite les stations
      * @return string la liste des stations de la ligne
      */
-    public String listeStationsParLigne(String nomLigne){
+    public static String listeStationsParLigne(String nomLigne){
         String reponse = "";
         ArrayList<Station> listeStations = getLignes().get(nomLigne).getListeStation();
         ArrayList<Integer> tmpParcours = getLignes().get(nomLigne).getListeTempsParcours();
@@ -131,10 +131,10 @@ public class LigneController {
      * @param nomLigne la ligne dont l'utilisateur veut les informations
      * @return string les informations de la ligne
      */
-    public String afficherLigne(String nomLigne){
+    public static String afficherLigne(String nomLigne){
         String reponse = "";
-        if(this.lignes.containsKey(nomLigne)){
-            reponse += this.lignes.get(nomLigne);
+        if(LigneController.lignes.containsKey(nomLigne)){
+            reponse += LigneController.lignes.get(nomLigne);
         }else{
             reponse = "La ligne "+nomLigne+" n'existe pas.";
         }
@@ -146,11 +146,11 @@ public class LigneController {
      * @param nomLigne la ligne à supprimer
      * @return string la ligne supprimée
      */
-    public String supprimerLigne(String nomLigne){
-        String reponse = "";
-        if(this.lignes.containsKey(nomLigne)){
+    public static String supprimerLigne(String nomLigne){
+        String reponse;
+        if(LigneController.lignes.containsKey(nomLigne)){
             //Suppression de la boisson
-            this.lignes.remove(nomLigne);
+            LigneController.lignes.remove(nomLigne);
             reponse = "La ligne "+nomLigne+" a été supprimée.";
         }else{
             reponse = "La ligne "+nomLigne+" n'existe pas.";
@@ -163,9 +163,9 @@ public class LigneController {
      * @param nomLigne la ligne à identifier
      * @return true si la ligne existe
      */
-    public Boolean ligneExiste(String nomLigne){
+    public static Boolean ligneExiste(String nomLigne){
         Boolean reponse = false;
-        if(this.lignes.containsKey(nomLigne)){
+        if(LigneController.lignes.containsKey(nomLigne)){
             reponse = true;
         }
         return reponse;
@@ -178,12 +178,12 @@ public class LigneController {
      * @param listeStation liste des stations de la ligne
      * @return string la ligne a été ajoutée
      */
-    public String ajouterLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
+    public static String ajouterLigne(String nomLigne, ArrayList<Integer> tempsParcours, ArrayList<Station> listeStation){
         String reponse;
         if(!ligneExiste(nomLigne)){
             if(listeStation.size() > 1){
                 Ligne l = new Ligne(nomLigne, tempsParcours, listeStation);
-                this.lignes.put(nomLigne, l);
+                LigneController.lignes.put(nomLigne, l);
                 reponse = "La ligne "+ nomLigne +" a été ajoutée avec succès.";
             }else{
                 reponse = "Il faut au moins deux stations pour pouvoir créer une ligne.";
@@ -202,13 +202,13 @@ public class LigneController {
      * @param tmpParc le nouveau temps de parcours entre les deux stations
      * @return String la ligne a été modifiée
      */
-    public String modifierLigneTempsParcours(String nomLigne, String station1, String station2, int tmpParc){
-        String reponse="";
-        int posStation1 = 0, posStation2 = 0;
+    public static String modifierLigneTempsParcours(String nomLigne, String station1, String station2, int tmpParc){
+        String reponse;
+        int posStation1, posStation2;
 
         //On vérifie que la ligne existe
-        if(this.lignes.containsKey(nomLigne)){
-            Ligne ligne = this.lignes.get(nomLigne);
+        if(LigneController.lignes.containsKey(nomLigne)){
+            Ligne ligne = LigneController.lignes.get(nomLigne);
 
             //On vérifie que le temps de parcours saisie est strictement supérieur à 0
             if(tmpParc > 0) {
@@ -263,14 +263,14 @@ public class LigneController {
      * Méthode qui permet de supprimer une station d'une ligne
      * @param nomLigne la ligne à modifier
      * @param nomStation la station à supprimer
-     * @return
+     * @return String la ligne a été supprimée
      */
-    public String modifierLigneSupprimerStation(String nomLigne, String nomStation){
-        String reponse = "";
-        int pos = 0;
+    public static String modifierLigneSupprimerStation(String nomLigne, String nomStation){
+        String reponse;
+        int pos;
         //On vérifie que la ligne existe
-        if(this.lignes.containsKey(nomLigne)) {
-            Ligne ligne = this.lignes.get(nomLigne);
+        if(LigneController.lignes.containsKey(nomLigne)) {
+            Ligne ligne = LigneController.lignes.get(nomLigne);
 
             //On vérifier que la ligne détient la station
             if (ligne.trouverStation(nomStation)) {
@@ -322,12 +322,11 @@ public class LigneController {
      * @param tmpParcSuiv temps de parcours entre la nouvelle et la station suivante
      * @return string la ligne a été modifiée
      */
-    public String modifierLigneAjouterStation(int choix, HashMap<String, Station> listeStations, String nomLigne, String nouvStation, String precStation, String suivStation, int tmpParcPrec, int tmpParcSuiv){
+    public static String modifierLigneAjouterStation(int choix, HashMap<String, Station> listeStations, String nomLigne, String nouvStation, String precStation, String suivStation, int tmpParcPrec, int tmpParcSuiv){
         String reponse = "";
-        int posStation = 0;
         //On vérifie que la ligne existe
-        if(this.lignes.containsKey(nomLigne)){
-            Ligne ligne = this.lignes.get(nomLigne);
+        if(LigneController.lignes.containsKey(nomLigne)){
+            Ligne ligne = LigneController.lignes.get(nomLigne);
             if(!ligne.trouverStation(nouvStation)) {
                 switch (choix) {
                     case 1:
@@ -422,10 +421,10 @@ public class LigneController {
      * @param incident yes/no il y a un incident
      * @return string l'indent a été modifié
      */
-    public String modifierLigneIncident(String nomLigne, String incident){
-        String reponse = "";
+    public static String modifierLigneIncident(String nomLigne, String incident){
+        String reponse;
         if (ligneExiste(nomLigne)){
-            Ligne l = this.lignes.get(nomLigne);
+            Ligne l = LigneController.lignes.get(nomLigne);
             if (incident.equals("y")) {
                 l.setIncident(true);
                 reponse = "La ligne "+nomLigne+" possède maintenant un incident.";
@@ -445,9 +444,9 @@ public class LigneController {
      * @return une Liste comprenant les lignes dont fait partie la station
      */
 
-    public List<String> lignesDeLaStation(String nomStation){
+    public static List<String> lignesDeLaStation(String nomStation){
         List<String> lignesDeLaStation = new ArrayList<>();
-        for(Map.Entry<String, Ligne> entry : lignes.entrySet()) {
+        for(Map.Entry<String, Ligne> entry : LigneController.lignes.entrySet()) {
             ArrayList<Station> stations = entry.getValue().getListeStation();
             for (Station station : stations){
                 if (station.getNomStation().equals(nomStation)){
@@ -463,21 +462,9 @@ public class LigneController {
      * @param nom nom de la station à supprimer
      * @return boolean si la station a ete supprimee
      */
-    public boolean supprimerStationLigne(String nom) {
-        boolean suppressionpossible = true;
-        boolean suppressioneffectue = false;
-        // On commence par vérifier que la station existe et si la suppression est possible
-        // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
-        for (HashMap.Entry<String, Ligne> entry : this.lignes.entrySet()) {
-            if (entry.getValue().trouverStation(nom) && entry.getValue().getListeStation().size() <= 2) {
-                suppressionpossible = false;
-            }
-        }
-        // Si la suppression est possible alors
-        if (suppressionpossible) {
-            // Pour chaque ligne où elle existe
-            for (HashMap.Entry<String, Ligne> entry : this.lignes.entrySet()) {
-                if (entry.getValue().trouverStation(nom)) {
+    public static void supprimerStationLigne(String nom) {
+        for (HashMap.Entry<String, Ligne> entry : LigneController.lignes.entrySet()) {
+            if(entry.getValue().trouverStation(nom) && entry.getValue().getListeStation().size() > 2) {
                     ArrayList<Station> listeStation = entry.getValue().getListeStation();
                     ArrayList<Integer> listeTempsParcours = entry.getValue().getListeTempsParcours();
                     int index = entry.getValue().trouverPosListeStation(nom);
@@ -491,12 +478,9 @@ public class LigneController {
                         listeTempsParcours.remove(index - 1);
                     }
                     listeStation.remove(index);
-                    this.lignes.get(entry.getKey()).setListeTempsParcours(listeTempsParcours);
-                    this.lignes.get(entry.getKey()).setListeStation(listeStation);
-                    suppressioneffectue = true;
-                }
+                    LigneController.lignes.get(entry.getKey()).setListeTempsParcours(listeTempsParcours);
+                    LigneController.lignes.get(entry.getKey()).setListeStation(listeStation);
             }
         }
-        return suppressioneffectue;
     }
 }

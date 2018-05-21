@@ -19,15 +19,14 @@ public class ItineraireTest {
     @Test
     @DisplayName("Itinéraire rapide avec le jeu de données")
     void itineraireRapide(){
-        ligneController.initialisationLignes();
-        stationController.initialisationStations();
+        LigneController.initialisationLignes();
+        StationController.initialisationStations();
 
-        HashMap<String,Station> listeStations = stationController.getStations();
+        HashMap<String,Station> listeStations = StationController.getStations();
 
-        Graphe g = new Graphe(ligneController.getLignes(),listeStations);
-        Itineraire i = new Itineraire(g,listeStations.get("temple"),listeStations.get("bastille"));
+        GrapheStation g = new GrapheStation(LigneController.getLignes(),listeStations);
+        ItineraireStation i = new ItineraireStation(g,listeStations.get("temple"),listeStations.get("bastille"));
 
-        i.constItineraireRapide();
 
         assertAll(
                 () -> assertEquals(i.getTotalTempsParcours(),34)

@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 //TODO: assertions
 
@@ -35,18 +34,18 @@ public class GrapheTest {
         }
         listeLignes.put(l.getNomLigne(),l);
 
-        Graphe g = new Graphe(listeLignes,listeStations);
+        GrapheStation g = new GrapheStation(listeLignes,listeStations);
 
         assertAll(
-                () -> assertTrue(g.getNomLigne("gare du nord","gare de l'est")=="Metro 5"),
-                () -> assertTrue(g.getNomLigne("gare de l'est","gare du nord")=="Metro 5"),
-                () -> assertTrue(g.getPoids("gare du nord","gare de l'est")==13),
-                () -> assertTrue(g.getPoids("gare de l'est","gare du nord")==12),
-                () -> assertTrue(g.getPoids("gare de l'est","gare du sud")==12),
-                () -> assertTrue(g.getPoids("gare du nord","gare du sud")==-1),
-                () -> assertTrue(g.getNomLigne("gare du nord","gare de l'est")=="Metro 5"),
-                () -> assertTrue(g.getNombreSommets()==3),
-                () -> assertTrue(g.getNombreArcs()==2)
+                () -> assertSame("Metro 5", g.getNomLigne("gare du nord", "gare de l'est")),
+                () -> assertSame("Metro 5", g.getNomLigne("gare de l'est", "gare du nord")),
+                () -> assertEquals(13, g.getPoids("gare du nord", "gare de l'est")),
+                () -> assertEquals(12, g.getPoids("gare de l'est", "gare du nord")),
+                () -> assertEquals(12, g.getPoids("gare de l'est", "gare du sud")),
+                () -> assertEquals(g.getPoids("gare du nord", "gare du sud"), -1),
+                () -> assertSame("Metro 5", g.getNomLigne("gare du nord", "gare de l'est")),
+                () -> assertEquals(3, g.getNombreSommets()),
+                () -> assertEquals(2, g.getNombreArcs())
         );
     }
 
@@ -55,11 +54,21 @@ public class GrapheTest {
     void creationGrapheVide(){
         HashMap<String,Ligne> listeLignes = new HashMap<String,Ligne>();
         HashMap<String,Station> listeStations = new HashMap<>();
-        Graphe g = new Graphe(listeLignes,listeStations);
+        GrapheStation g = new GrapheStation(listeLignes,listeStations);
         assertAll(
-                () -> assertTrue(g.getNombreSommets()==0),
-                () -> assertTrue(g.getNombreArcs()==0)
+                () -> assertEquals(0, g.getNombreSommets()),
+                () -> assertEquals(0, g.getNombreArcs())
         );
+    }
+
+    @Test
+    @DisplayName("Création d'un graphe simple de lignes")
+    void creationGrapheLignes(){
+        LigneController.initialisationLignes();
+
+        GrapheLigne grapheLigne = new GrapheLigne(LigneController.getLignes());
+
+        //TODO: assertions
     }
 
 }

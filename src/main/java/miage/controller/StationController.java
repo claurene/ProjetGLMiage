@@ -18,21 +18,19 @@ public class StationController {
     //Liste des stations de metro
     private static HashMap<String,Station> stations = new HashMap<String,Station>();
 
-    private static LigneController ligneController = new LigneController();
-
     public static HashMap<String, Station> getStations() {
         return stations;
     }
 
-    public void setStations(HashMap<String, Station> stations) {
-        this.stations = stations;
+    public static void setStations(HashMap<String, Station> stations) {
+        StationController.stations = stations;
     }
 
     /**
      * Méthode qui permet de recuperer les donnees du fichier stations.txt
      */
-    public void initialisationStations(){
-        FileInputStream in = null;
+    public static void initialisationStations(){
+        FileInputStream in;
         ObjectInputStream ois = null;
 
         try {
@@ -42,7 +40,7 @@ public class StationController {
                 while(true) {
                     try {
                         Station s = (Station) ois.readObject();
-                        this.stations.put(s.getNomStation(),s);
+                        StationController.stations.put(s.getNomStation(),s);
                     } catch (EOFException e){
                         break;
                     }
@@ -68,7 +66,7 @@ public class StationController {
     /**
      * Methode qui permet de sauvegarder les nouvelles donnees dans le fichier stations.txt
      */
-    public void sauvegardeStations(){
+    public static void sauvegardeStations(){
         FileOutputStream out=null;
         ObjectOutputStream oos=null;
 
@@ -81,7 +79,7 @@ public class StationController {
 
         try {
             oos = new ObjectOutputStream(out);
-            for (HashMap.Entry<String,Station> entry : this.stations.entrySet()) {
+            for (HashMap.Entry<String,Station> entry : StationController.stations.entrySet()) {
                 oos.writeObject(entry.getValue());
             }
             oos.flush();
@@ -98,10 +96,10 @@ public class StationController {
      * Méthode qui permet de lister toutes les stations existantes
      * @return string la liste des stations
      */
-    public String listeStation(){
+    public static String listeStation(){
         String reponse = "";
-        if(this.stations.size()>0){
-            for(Map.Entry<String, Station> station : this.stations.entrySet()){
+        if(StationController.stations.size()>0){
+            for(Map.Entry<String, Station> station : StationController.stations.entrySet()){
                 reponse += station.getKey()+"\n";
             }
         } else {
@@ -115,10 +113,10 @@ public class StationController {
      * @param nomStation la station dont l'utilisateur veut les informations
      * @return string les informations de la station
      */
-    public String afficherStation(String nomStation){
+    public static String afficherStation(String nomStation){
         String reponse = "";
-        if(this.stations.containsKey(nomStation)){
-            reponse += this.stations.get(nomStation);
+        if(StationController.stations.containsKey(nomStation)){
+            reponse += StationController.stations.get(nomStation);
         }else{
             reponse = "La station "+nomStation+" n'existe pas.";
         }
@@ -134,15 +132,15 @@ public class StationController {
      * @param longitude , la longitude de la station
      * @return reponse , la reponse de l'ajout de la station
      */
-    public String ajouterStation(String nom, int temps, boolean inc, double latitude, double longitude){
-        String reponse ="";
+    public static String ajouterStation(String nom, int temps, boolean inc, double latitude, double longitude){
+        String reponse;
         Station s = new Station(nom, temps, inc, latitude,longitude);
-        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
-            if(this.stations.containsKey(nom)){
+        if(Position.VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
+            if(StationController.stations.containsKey(nom)){
                 reponse = "La station existe déjà";
             }
             else {
-                this.stations.put(nom, s);
+                StationController.stations.put(nom, s);
                 reponse = "La station a bien été ajoutée";
             }
         }
@@ -161,12 +159,12 @@ public class StationController {
      * @param longitude , la longitude de la station
      * @return reponse , la reponse de la modification de la station
      */
-    public String modifierStation(String nom, int temps, boolean inc, double latitude, double longitude){
-        String reponse ="";
+    public static String modifierStation(String nom, int temps, boolean inc, double latitude, double longitude){
+        String reponse;
         Station s = new Station(nom, temps, inc, latitude,longitude);
-        if(s.getPosition().VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && nom != "") {
-            if(this.stations.containsKey(nom)){
-                this.stations.put(nom,s);
+        if(Position.VerifierPosition(s.getPosition().getLat(),s.getPosition().getLon()) && !nom.equals("")) {
+            if(StationController.stations.containsKey(nom)){
+                StationController.stations.put(nom,s);
                 reponse = "La station a été remplacée";
             }
             else {
@@ -185,12 +183,12 @@ public class StationController {
      * @param inc , présence d'un incident ou non
      * @return reponse , la reponse de la modification de l'incident de la station
      */
-    public String modifierStationIncident(String nom, boolean inc) {
-        String reponse = "";
-        if (this.stations.containsKey(nom)) {
-            Station s = this.stations.get(nom);
+    public static String modifierStationIncident(String nom, boolean inc) {
+        String reponse;
+        if (StationController.stations.containsKey(nom)) {
+            Station s = StationController.stations.get(nom);
             s.setIncident(inc);
-            this.stations.put(nom, s);
+            StationController.stations.put(nom, s);
             if (inc)
                 reponse = "La station possède maintenant un incident";
             else
@@ -206,23 +204,16 @@ public class StationController {
      * @param nom , le nom de la station a supprimée
      * @return reponse, la reponse a affichée
      */
-    public String supprimerStation(String nom, LigneController lc){
-        String reponse ="";
-
-        boolean suppressionpossible = true;
+    public static String supprimerStation(String nom){
+        String reponse;
         // On commence par vérifier que la station existe et si la suppression est possible
         // C'est a dire que la station n'est pas l'une des deux seules stations d'une ligne
-        if(this.stations.containsKey(nom)) {
-            if(lc.supprimerStationLigne(nom)){
+        if(StationController.stations.containsKey(nom)) {
+                LigneController.supprimerStationLigne(nom);
                 // Puis on supprime la station de la liste des stations
-                this.stations.remove(nom);
+                StationController.stations.remove(nom);
                 reponse = "La station a bien été supprimée";
-            }
-            else{
-                reponse = "La station n'a pas pu être supprimée car elle existe dans une ligne ne comportant que 2 stations";
-            }
-        }
-        else{
+        }else{
             reponse = "La station n'a pas pu être supprimée car elle n'existe pas";
         }
         return reponse;
@@ -233,10 +224,10 @@ public class StationController {
     /**
      * Fonction qui permet de renvoyer sous forme de liste les deux stations les plus proches d'une position
      * @param utilisateur position par rapport à laquelle on veut calculer les stations les plus proches
-     * @param stations Hashmap des différentes stations
      * @return une Liste comprenant les deux stations les plus proches
      */
-    public static List<Station> deuxplusProches(Position utilisateur, HashMap<String,Station> stations){
+   // public static List<Station> deuxplusProches(Position utilisateur, HashMap<String,Station> stations){
+    public static List<Station> deuxplusProches(Position utilisateur){
         // initialisation des variables
         String clefs[] =  {"", ""};
         List<Station> proches = new ArrayList<>();
@@ -245,7 +236,7 @@ public class StationController {
         premier = deuxieme = Double.MAX_VALUE;
 
         // parcours de la hashmap
-        for(Map.Entry<String, Station> entry : stations.entrySet()) {
+        for(Map.Entry<String, Station> entry : StationController.getStations().entrySet()) {
 
             double distance = utilisateur.distance(entry.getValue().getPosition());
             // on passe l'itération s'il y a un accident
@@ -261,28 +252,26 @@ public class StationController {
                 clefs[1] = entry.getKey();
             }
         }
-        proches.add(stations.get(clefs[0]));
-        proches.add(stations.get(clefs[1]));
+        proches.add(StationController.stations.get(clefs[0]));
+        proches.add(StationController.stations.get(clefs[1]));
         return proches;
 
     }
 
     /**
      * Fonction qui permet de calculer le temps de parcours + temps d'arrêt entre deux stations d'une même ligne
-     * @param station1
-     * @param station2
+     * @param station1 premiere station saisie
+     * @param station2 deuxieme station saisie
      * @return int du temps de parcours entre les deux stations
      */
 
-    public int calculTempsParcours(Station station1, Station station2){
-        //todo gérer le calcul dans les deux sens (i--)
-        ligneController.initialisationLignes();
+    public static int calculTempsParcours(Station station1, Station station2){
 
         String nomDepart = station1.getNomStation();
         String nomArrivee = station2.getNomStation();
 
-        List<String> lignesDepart = ligneController.lignesDeLaStation(nomDepart);
-        List<String> lignesArrivee = ligneController.lignesDeLaStation(nomArrivee);
+        List<String> lignesDepart = LigneController.lignesDeLaStation(nomDepart);
+        List<String> lignesArrivee = LigneController.lignesDeLaStation(nomArrivee);
 
         for(int i = lignesArrivee.size() - 1; i > -1; --i){
             String str = lignesArrivee.get(i);
@@ -295,9 +284,9 @@ public class StationController {
             return 0;
         }
 
-        Ligne ligne = ligneController.getLignes().get(lignesArrivee.get(0));
-        ArrayList<Station> listeStations = ligneController.getLignes().get(lignesArrivee.get(0)).getListeStation();
-        int debutIndex = ligneController.getLignes().get(lignesArrivee.get(0)).trouverPosListeStation(nomDepart);
+        Ligne ligne = LigneController.getLignes().get(lignesArrivee.get(0));
+        ArrayList<Station> listeStations = LigneController.getLignes().get(lignesArrivee.get(0)).getListeStation();
+        int debutIndex = LigneController.getLignes().get(lignesArrivee.get(0)).trouverPosListeStation(nomDepart);
         int tempsParcours = ligne.getTempsParcours(listeStations.get(debutIndex).getNomStation(),ligne.getListeTempsParcours());
 
         for (int i = debutIndex+1; !listeStations.get(i).getNomStation().equals(nomArrivee); i++ ){

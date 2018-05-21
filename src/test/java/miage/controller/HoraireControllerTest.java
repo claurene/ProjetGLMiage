@@ -33,7 +33,6 @@ public class HoraireControllerTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        System.out.println(horaireController.afficherProchainPassage(s,l,heureTest));
         //TODO: assert
     }
 
@@ -53,7 +52,6 @@ public class HoraireControllerTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        System.out.println(horaireController.afficherTableHoraire(s,l,heureTest,5));
         //TODO: assert
     }
 
@@ -72,7 +70,6 @@ public class HoraireControllerTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        System.out.println(horaireController.afficherProchainPassage(s,l,heureTest));
 
         assertAll(
                 () -> assertEquals(horaireController.afficherProchainPassage(s,l,heureTest),"La ligne Metro 5 ne passe pas à l'arret Gare du nord")
