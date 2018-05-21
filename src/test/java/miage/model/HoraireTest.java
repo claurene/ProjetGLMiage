@@ -81,7 +81,6 @@ public class HoraireTest {
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
         Horaire h = new Horaire(s,l,"En service",heureTest);
-        System.out.println(h.toString());
 
         assertEquals(h.getHoraire(),LocalDateTime.of(LocalDate.now(),LocalTime.of(6,6)));
 
