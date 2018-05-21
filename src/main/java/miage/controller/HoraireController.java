@@ -28,8 +28,10 @@ public class HoraireController {
             ArrayList<LocalDateTime> tableHoraire = h.getTableHoraire();
             int i = 1;
             for (LocalDateTime l : tableHoraire) {
-                response+="- "+l.toLocalDate()+" "+l.toLocalTime()+"\n";
-                i++;
+                if (l.isAfter(heure)) {
+                    response += "- " + l.toLocalDate() + " " + l.toLocalTime() + "\n";
+                    i++;
+                }
                 if (i>maxHoraires){break;} // Nombre maximum d'horaires affichés
             }
         } else {

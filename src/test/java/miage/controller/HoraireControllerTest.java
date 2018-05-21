@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HoraireControllerTest {
     private final HoraireController horaireController = new HoraireController();
@@ -33,7 +32,8 @@ public class HoraireControllerTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        //TODO: assert
+        String reponse = horaireController.afficherProchainPassage(s,l,heureTest);
+        assertEquals(reponse,"Le prochain passage d'une rame à l'arrêt : Gare du nord de la ligne Metro 5 direction : Republique se fera le 2018-05-21 à 06:06");
     }
 
     @Test
@@ -52,7 +52,13 @@ public class HoraireControllerTest {
         listeStation.add(new Station("Republique",2,false,51.19,2.6));
         Ligne l = new Ligne("Metro 5",tempsParcours,listeStation);
 
-        //TODO: assert
+        String reponse = horaireController.afficherTableHoraire(s,l,heureTest,6);
+        assertAll(
+                () -> assertTrue(reponse.contains("Horaires pour la ligne Metro 5 direction Republique à l'arrêt Gare du nord :")),
+                () -> assertTrue(reponse.contains("- 2018-05-21 06:06")),
+                () -> assertTrue(reponse.contains("- 2018-05-21 06:36")),
+                () -> assertFalse(reponse.contains("La ligne Metro 5 ne passe pas à l'arret Gare du nord"))
+        );
     }
 
     @Test

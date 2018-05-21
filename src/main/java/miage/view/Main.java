@@ -125,6 +125,7 @@ public class Main {
                 case 12:
                     sc.nextLine();
                     afficherHoraireStationLigne(sc);
+                    break;
                 case 0:
                     // Quitter l'application
                     System.out.println("Au revoir !");
@@ -254,12 +255,12 @@ public class Main {
      */
     private static void afficherHoraireStationLigne(Scanner sc){
         if(listeLignesExiste()){
-            System.out.println("Sur quel ligne souhaitez vous connaitre les horaires ?");
+            System.out.println("Sur quelle ligne souhaitez vous connaitre les horaires ?");
             String lignehoraire = sc.nextLine().toLowerCase();
             if (LigneController.ligneExiste(lignehoraire)) {
                 String message = LigneController.afficherLigne(lignehoraire);
                 System.out.println(message);
-                System.out.println("Sur quel station souhaitez vous connaitre les horaires ?");
+                System.out.println("Sur quelle station souhaitez vous connaitre les horaires ?");
                 String stationhoraire = sc.nextLine().toLowerCase();
                 if (LigneController.getLignes().get(lignehoraire).trouverStation(stationhoraire)) {
                     LocalDateTime heure = LocalDateTime.now();
