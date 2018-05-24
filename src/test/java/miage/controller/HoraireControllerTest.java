@@ -19,7 +19,7 @@ public class HoraireControllerTest {
     @Test
     @DisplayName("Afficher le prochain passage d'une rame")
     void afficherProchainPassage(){
-        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.of(2018,05,21), LocalTime.of(6,0));
         ArrayList<Station> listeStation = new ArrayList<Station>();
         ArrayList<Integer> tempsParcours = new ArrayList<>();
         tempsParcours.add(10);
@@ -39,7 +39,7 @@ public class HoraireControllerTest {
     @Test
     @DisplayName("Afficher les horaires d'une rame")
     void afficherHoraires(){
-        LocalDateTime heureTest = LocalDateTime.of(LocalDate.now(), LocalTime.of(6,0));
+        LocalDateTime heureTest = LocalDateTime.of(LocalDate.of(2018,05,21), LocalTime.of(6,0));
         ArrayList<Station> listeStation = new ArrayList<Station>();
         ArrayList<Integer> tempsParcours = new ArrayList<>();
         tempsParcours.add(10);
